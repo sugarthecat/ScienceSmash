@@ -1,14 +1,12 @@
-let fade = 0
-let fadeDir = -2
+let player = new Player(0,0)
 function setup(){
     createCanvas(windowWidth,windowHeight)
+    frameRate(60)
 }
 function draw(){
-    background(fade)
-    if(fade >= 255 || fade <= 0){
-        fadeDir *= -1
-    }
-    fade += fadeDir
+    background(0)
+    player.runMoveTick()
+    player.draw()
 }
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
