@@ -10,11 +10,11 @@ class Camera{
         let diffx = (this.x-desx)/width;
         let diffy = (this.y - desy)/height;
         if(diffx != 0){
-            this.x -= (diffx* diffx * (diffx/abs(diffx)))*width/4
+            this.x -= (diffx* diffx * (diffx/abs(diffx)))*width/20
         }
         
         if(diffy != 0){
-          this.y -= diffy* diffy * (diffy/abs(diffy))*height/4
+          this.y -= diffy* diffy * (diffy/abs(diffy))*height/20
         }
         //dconsole.log(this.x + "," + desx + ",")
         translate(-this.x,-this.y)
