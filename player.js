@@ -39,7 +39,7 @@ class Player{
         if(this.dirx != 0 && this.diry != 0){
             this.x += this.dirx * moveSpeed  / sqrt(2)
             this.y += this.diry * moveSpeed  / sqrt(2)
-            // accounts for pythagorean theorem if multi-axis movement
+            // accounts for pythagorean theorem if multi-axis movement, using 45-45-90 rule
         }else{
             this.x += this.dirx * moveSpeed
             this.y += this.diry * moveSpeed
