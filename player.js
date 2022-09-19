@@ -35,7 +35,7 @@ class Player{
     // Updates the character's x and y positions.
     runMoveTick(){
         this.fixDirections()
-        const moveSpeed = 5
+        const moveSpeed = 8
         if(this.dirx != 0 && this.diry != 0){
             this.x += this.dirx * moveSpeed  / sqrt(2)
             this.y += this.diry * moveSpeed  / sqrt(2)
