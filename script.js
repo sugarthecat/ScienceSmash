@@ -39,7 +39,6 @@ function draw(){
     rect(20,windowHeight-80,(windowWidth-40)*(loadAmount-TO_LOAD)/loadAmount,50)
     // draw loading screen
   }
-  
 }
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
