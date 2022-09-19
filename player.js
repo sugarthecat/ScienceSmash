@@ -3,8 +3,8 @@ class Player{
     constructor(x,y){
         this.x = x
         this.y = y
-        this.w = 30 // width (constant)
-        this.h = 50 // height (constant)
+        this.w = 60 // width (constant)
+        this.h = 80 // height (constant)
         this.dirx = 0 // 1, 0, or -1, representing direction x
         this.diry = 0// 1,0, or -1, representing direction y
     }
@@ -33,9 +33,11 @@ class Player{
     }
 
     // Updates the character's x and y positions.
-    runMoveTick(){
+    runMoveTick(level){
         this.fixDirections()
         const moveSpeed = 8
+        let oldX = this.x
+        let oldY = this.y
         if(this.dirx != 0 && this.diry != 0){
             this.x += this.dirx * moveSpeed  / sqrt(2)
             this.y += this.diry * moveSpeed  / sqrt(2)
@@ -44,8 +46,21 @@ class Player{
             this.x += this.dirx * moveSpeed
             this.y += this.diry * moveSpeed
         }
+        if(this.collidesWithAnyObjects(level)){
+            this.x = oldX
+            this.y = oldY
+        }
     }
-
+    collidesWithAnyObjects(level){
+        let tileArray = level.getTiles()
+        for(let i = 0; i<tileArray.length; i++){
+            //check collision
+            if(tileArray[i].collides(this)){
+                return true
+            }
+        }
+        return false;
+    }
     // Positions the character on the screen.
     draw(){
         noStroke()
