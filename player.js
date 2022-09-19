@@ -47,8 +47,25 @@ class Player{
             this.y += this.diry * moveSpeed
         }
         if(this.collidesWithAnyObjects(level)){
+            // decollide
+            let newX = this.x;
+            let newY = this.y;
             this.x = oldX
             this.y = oldY
+
+            let increment = 2;
+            for(let i = 0; i<6; i++){
+                // increments closer, seperated X and Y in smaller and smaller measurements
+                this.x += (newX-oldX)/increment
+                if(this.collidesWithAnyObjects(level)){
+                    this.x -=(newX-oldX)/increment
+                }
+                this.y += (newY-oldY)/increment
+                if(this.collidesWithAnyObjects(level)){
+                    this.y -=(newY-oldY)/increment
+                }
+                increment*=2
+            }
         }
     }
     collidesWithAnyObjects(level){
