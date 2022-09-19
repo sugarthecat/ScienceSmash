@@ -1,10 +1,16 @@
 class Level{
     constructor(){
-        this.elements = []
+        this.tiles = []
     }
-    display(){
-        for(let i = 0; i<this.elements.length; i++){
-            this.elements[i].display()
+    displayGround(){
+        for(let i = 0; i<this.tiles.length; i++){
+            this.tiles[i].displayGround()
         }
+    }
+    addTile(tile){
+        this.tiles.push(tile)
+    }
+    getTiles(){
+        return this.tiles
     }
 }
