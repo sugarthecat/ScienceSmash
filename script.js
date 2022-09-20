@@ -23,9 +23,9 @@ function setup(){
       loadImage('placeholders/test'+i+'.jpg',fileLoaded))
   }
   //nanner garage
-  for(let x = -5; x<6; x++){
-    for(let y = -5; y<5; y++){
-      if(x == -5 || x == 5 || y == -5 || y == 5){
+  for(let x = -10; x<11; x++){
+    for(let y = -10; y<11; y++){
+      if((Math.random()>0.7) && (x!= 0 || y != 0)){
         level.addTile(new CollisionTile(x*100,y*100,100,100,images.bananas[0]))
       }else{
         level.addTile(new Tile(x*100,y*100,100,100,images.bananas[1]))
@@ -41,22 +41,27 @@ function draw(){
     camera.target(player)
     scale(1,0.8)
     rotate(45)
-    for(let i = 0; i<images.bananas.length; i++){
-      //image(images.bananas[i],i*100,0,100,100)
-    }
     level.displayGround()
     player.drawGround()
     rotate(-45)
+    scale(1,1/0.8)
     player.draw()
-    
-    
+    scale(1,1)
+    rotate(-45)
+    level.displayUpper()
+
   }else{
+    stroke(0)
+    strokeWeight(10)
     // draw loading screen
     background(180,200,250)
     fill(0)
-    rect(20,windowHeight-80,windowWidth-40,50)
+    circle(width/4,height/2,min(width/3,height-200))
+    rect(20,height-80,width-40,50)
     fill(255)
-    rect(20,windowHeight-80,(windowWidth-40)*(loadAmount-TO_LOAD)/loadAmount,50)
+    rect(20,height-80,(width-40)*(loadAmount-TO_LOAD)/loadAmount,50)
+    fill(0,255,0)
+    arc(width/4,height/2,min(width/3,height-200),min(width/3,height-200),0,360*(loadAmount-TO_LOAD)/loadAmount)
   }
 }
 function windowResized() {

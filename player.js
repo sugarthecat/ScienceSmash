@@ -7,6 +7,8 @@ class Player{
         this.h = 80 // height (constant)
         this.dirx = 0 // 1, 0, or -1, representing direction x
         this.diry = 0// 1,0, or -1, representing direction y
+        this.dispw = 40
+        this.disph = 90
     }
 
     // Ensures that dirx and diry are correct.
@@ -74,6 +76,7 @@ class Player{
             }
         }
     }
+    //Given the level object, returns true if this player is colliding with any objects.
     collidesWithAnyObjects(level){
         let tileArray = level.getTiles()
         for(let i = 0; i<tileArray.length; i++){
@@ -87,17 +90,19 @@ class Player{
     // Positions the character on the screen.
     drawGround(){
         noStroke()
-        fill(255,0,0)
+        fill(255)
         rect(this.x,this.y,this.w,this.h)
+        fill(50,200,100)
+        circle(this.x+this.w/2,this.y+this.h/2,this.h)
     }
     draw(){
         //display after adjusting for isometric angle
         let dispDir = atan2(this.x,this.y)
         dispDir -= 45
         let dispDist = dist(0,0,this.x,this.y)
-        let disx = sin(dispDir)*dispDist - this.w/2
-        let disy = cos(dispDir)*dispDist 
-        fill(255,200,100)
-        rect(disx,disy,this.w,this.h)
+        let disx = sin(dispDir)*dispDist - this.dispw/2
+        let disy = cos(dispDir)*dispDist*0.8 - this.disph*0.8 + this.w/sqrt(2)*0.8
+        fill(50,100,50)
+        rect(disx,disy,this.dispw,this.disph)
     }
 }

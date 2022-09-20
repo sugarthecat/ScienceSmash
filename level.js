@@ -4,7 +4,9 @@ class Level{
     }
     displayGround(){
         for(let i = 0; i<this.tiles.length; i++){
-            this.tiles[i].displayGround()
+            if(this.tiles[i].hasGround){
+                this.tiles[i].displayGround()
+            }
         }
     }
     addTile(tile){
@@ -12,5 +14,13 @@ class Level{
     }
     getTiles(){
         return this.tiles
+    }
+    displayUpper(){
+        for(let i = 0; i<this.tiles.length; i++){
+            if(this.tiles[i].hasUpper){
+                this.tiles[i].displayUpper()
+            }
+        }
+
     }
 }
