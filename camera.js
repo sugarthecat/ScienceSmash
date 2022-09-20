@@ -12,7 +12,7 @@ class Camera{
         desdir -= 45
         let desdist = dist(0,0,desx,desy)
         desx = sin(desdir)*desdist
-        desy = cos(desdir)*desdist
+        desy = cos(desdir)*desdist*0.8
         //center in middle of screen
         desx -= width/2
         desy -= height/2
@@ -25,7 +25,7 @@ class Camera{
         if(diffy != 0){
           this.y -= diffy* diffy * (diffy/abs(diffy))*height/20
         }
-        //dconsole.log(this.x + "," + desx + ",")
+        //console.log(this.x + "," + desx + ",")
         translate(-this.x,-this.y)
     }
 }

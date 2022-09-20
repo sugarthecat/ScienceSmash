@@ -3,7 +3,7 @@ class Player{
     constructor(x,y){
         this.x = x
         this.y = y
-        this.w = 60 // width (constant)
+        this.w = 80 // width (constant)
         this.h = 80 // height (constant)
         this.dirx = 0 // 1, 0, or -1, representing direction x
         this.diry = 0// 1,0, or -1, representing direction y
@@ -85,9 +85,19 @@ class Player{
         return false;
     }
     // Positions the character on the screen.
-    draw(){
+    drawGround(){
         noStroke()
         fill(255,0,0)
         rect(this.x,this.y,this.w,this.h)
+    }
+    draw(){
+        //display after adjusting for isometric angle
+        let dispDir = atan2(this.x,this.y)
+        dispDir -= 45
+        let dispDist = dist(0,0,this.x,this.y)
+        let disx = sin(dispDir)*dispDist - this.w/2
+        let disy = cos(dispDir)*dispDist 
+        fill(255,200,100)
+        rect(disx,disy,this.w,this.h)
     }
 }

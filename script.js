@@ -45,6 +45,8 @@ function draw(){
       //image(images.bananas[i],i*100,0,100,100)
     }
     level.displayGround()
+    player.drawGround()
+    rotate(-45)
     player.draw()
     
     
