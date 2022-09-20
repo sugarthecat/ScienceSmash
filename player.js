@@ -21,13 +21,17 @@ class Player{
         this.diry = 0
         if(right && !left){
             this.dirx = 1
+            this.diry = -1
         }else if(left && !right){
             this.dirx = -1
+            this.diry = 1
         }
         if(down && !up){
-            this.diry = 1
+            this.diry += 1
+            this.dirx += 1
         }else if(up && !down){
-            this.diry = -1
+            this.diry += -1
+            this.dirx += -1
         }
         
     }
@@ -38,13 +42,11 @@ class Player{
         const moveSpeed = 8
         let oldX = this.x
         let oldY = this.y
-        if(this.dirx != 0 && this.diry != 0){
-            this.x += this.dirx * moveSpeed  / sqrt(2)
-            this.y += this.diry * moveSpeed  / sqrt(2)
-            // Accounts for pythagorean theorem if there is multi-axis movement.
-        }else{
-            this.x += this.dirx * moveSpeed
-            this.y += this.diry * moveSpeed
+        let pythDir =  sqrt(this.dirx * this.dirx + this.diry * this.diry) //Distance of dirx and diry applied to a grid 
+        if(pythDir != 0){
+            this.x += this.dirx * moveSpeed/pythDir
+            this.y += this.diry * moveSpeed/pythDir
+            // Accounts for distance via pythagorean theorem if there is movement.
         }
         if(this.collidesWithAnyObjects(level)){
             // decollide
