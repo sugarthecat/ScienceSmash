@@ -5,8 +5,17 @@ class Camera{
     }
     target(target){
         // target is player
-        let desx = target.x + target.w/2 - windowWidth/2 // destination x
-        let desy = target.y + target.h/2 - windowHeight/2 // destination x
+        let desx = target.x + target.w/2  // destination x
+        let desy = target.y + target.h/2  // destination y
+        //account for rotation of isometric perspective
+        let desdir = atan2(desx,desy)
+        desdir -= 45
+        let desdist = dist(0,0,desx,desy)
+        desx = sin(desdir)*desdist
+        desy = cos(desdir)*desdist
+        //center in middle of screen
+        desx -= width/2
+        desy -= height/2
         let diffx = (this.x-desx)/width; // difference x
         let diffy = (this.y - desy)/height; // difference x
         // the further away, the fa

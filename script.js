@@ -47,6 +47,7 @@ function draw(){
     level.displayGround()
     player.draw()
     
+    
   }else{
     // draw loading screen
     background(180,200,250)
