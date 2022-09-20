@@ -22,16 +22,20 @@ class Player{
         if(right && !left){
             this.dirx = 1
             this.diry = -1
+            // moving right and not left, convert to actual grid.
         }else if(left && !right){
             this.dirx = -1
             this.diry = 1
+            // moving left and not right, convert to actual grid.
         }
         if(down && !up){
             this.diry += 1
             this.dirx += 1
+            // moving down and not up, convert to actual grid.
         }else if(up && !down){
             this.diry += -1
             this.dirx += -1
+            // moving up and not down, convert to actual grid.
         }
         
     }
