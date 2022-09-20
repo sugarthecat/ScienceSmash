@@ -12,20 +12,26 @@ function fileLoaded(){
   }
 }
 function setup(){
-  player = new Player(windowWidth/2,windowHeight/2)
+  player = new Player(0,0)
   camera = new Camera(player.x-windowWidth/2,player.y-windowHeight/2)
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
+  angleMode(DEGREES)
   images.bananas = []
   for(let i = 1; i<9; i++){
     images.bananas.push(
       loadImage('placeholders/test'+i+'.jpg',fileLoaded))
   }
-  level.addTile(new CollisionTile(0,0,100,100,images.bananas[0]))
-  level.addTile(new CollisionTile(200,0,100,100,images.bananas[0]))
-  level.addTile(new CollisionTile(300,100,100,100,images.bananas[0]))
-  level.addTile(new CollisionTile(500,200,100,100,images.bananas[0]))
-  level.addTile(new CollisionTile(0,500,100,100,images.bananas[0]))
+  //nanner garage
+  for(let x = -5; x<6; x++){
+    for(let y = -5; y<5; y++){
+      if(x == -5 || x == 5 || y == -5 || y == 5){
+        level.addTile(new CollisionTile(x*100,y*100,100,100,images.bananas[0]))
+      }else{
+        level.addTile(new Tile(x*100,y*100,100,100,images.bananas[1]))
+      }
+    }
+  }
 }
 function draw(){
   if(loaded){
@@ -33,11 +39,14 @@ function draw(){
     background(0)
     player.runMoveTick(level)
     camera.target(player)
+    scale(1,0.8)
+    rotate(45)
     for(let i = 0; i<images.bananas.length; i++){
       //image(images.bananas[i],i*100,0,100,100)
     }
     level.displayGround()
     player.draw()
+    
   }else{
     // draw loading screen
     background(180,200,250)
