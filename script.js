@@ -24,9 +24,9 @@ function setup(){
   loadImage('sprites/floorTile.png',fileLoaded)
 ]
   //nanner garage
-  for(let x = 0; x<21; x++){
-    for(let y = 0; y<21; y++){
-      if(abs(x+y)%5 >= 3 && (x!= 0 || y != 0)){
+  for(let x = 0; x<22; x++){
+    for(let y = 0; y<22; y++){
+      if(Math.random()<0.3 && (x!= floor(player.x/100) || y != floor(player.x/100))){
         level.addTile(new CollisionTile(x*100,y*100,100,100,images.bananas[0]),x,y)
       }else{
         level.addTile(new Tile(x*100,y*100,100,100,images.bananas[1]),x,y)
@@ -44,25 +44,15 @@ function draw(){
     player.runMoveTick(level)
     camera.target(player)
     noStroke()
+
     push()
     scale(1,TILE_SCALE)
     rotate(45)
     level.displayGround()
     player.drawGround()
     pop();
-    player.draw()
-    push()
-    rotate(-45)
-    scale(0.6,1)
-    rotate(60)
-    level.displayLeft()
-    pop()
-    push()
-    rotate(-45)
-    scale(1,0.6)
-    rotate(30)
-    level.displayRight()
-    pop()
+
+    level.displayUpper(player)
 
 
   }else{
