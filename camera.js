@@ -12,7 +12,7 @@ class Camera{
         desdir -= 45
         let desdist = dist(0,0,desx,desy)
         desx = sin(desdir)*desdist
-        desy = cos(desdir)*desdist*0.8
+        desy = cos(desdir)*desdist*TILE_SCALE
         //center in middle of screen
         desx -= width/2
         desy -= height/2

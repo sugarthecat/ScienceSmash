@@ -13,7 +13,7 @@ function fileLoaded(){
   }
 }
 function setup(){
-  player = new Player(0,0)
+  player = new Player(500,500)
   camera = new Camera(player.x-windowWidth/2,player.y-windowHeight/2)
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
@@ -22,15 +22,16 @@ function setup(){
   loadImage('sprites/floorTile.png',fileLoaded)
 ]
   //nanner garage
-  for(let x = -10; x<11; x++){
-    for(let y = -10; y<11; y++){
+  for(let x = 0; x<21; x++){
+    for(let y = 0; y<21; y++){
       if(abs(x+y)%5 >= 3 && (x!= 0 || y != 0)){
-        level.addTile(new CollisionTile(x*100,y*100,100,100,images.bananas[0]))
+        level.addTile(new CollisionTile(x*100,y*100,100,100,images.bananas[0]),x,y)
       }else{
-        level.addTile(new Tile(x*100,y*100,100,100,images.bananas[1]))
+        level.addTile(new Tile(x*100,y*100,100,100,images.bananas[1]),x,y)
       }
     }
   }
+  level.finishSetup()
 }
 function draw(){
   if(loaded){
@@ -46,10 +47,19 @@ function draw(){
     player.drawGround()
     pop();
     player.draw()
+    push()
     rotate(-45)
     scale(0.6,1)
     rotate(60)
     level.displayLeft()
+    pop()
+    push()
+    rotate(-45)
+    scale(1,0.6)
+    rotate(30)
+    level.displayRight()
+    pop()
+
 
   }else{
     stroke(0)

@@ -78,13 +78,11 @@ class Player{
     }
     //Given the level object, returns true if this player is colliding with any objects.
     collidesWithAnyObjects(level){
-        let tileArray = level.getTiles()
-        for(let i = 0; i<tileArray.length; i++){
-            //check collision
-            if(tileArray[i].collides(this)){
-                return true
-            }
+        //check collision
+        if(level.collides(this)){
+            return true
         }
+        
         return false;
     }
     // Positions the character on the screen.
