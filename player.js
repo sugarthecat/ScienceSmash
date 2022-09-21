@@ -88,8 +88,6 @@ class Player{
     // Positions the character on the screen.
     drawGround(){
         noStroke()
-        fill(255)
-        rect(this.x,this.y,this.w,this.h)
         fill(50,200,100)
         circle(this.x+this.w/2,this.y+this.h/2,this.h)
     }
@@ -99,7 +97,7 @@ class Player{
         dispDir -= 45
         let dispDist = dist(0,0,this.x,this.y)
         let disx = sin(dispDir)*dispDist - this.dispw/2
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph )
+        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph*1.2)
         fill(50,100,50)
         rect(disx,disy,this.dispw,this.disph)
     }

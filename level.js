@@ -24,6 +24,7 @@ class Level{
         return this.tiles
     }
     finishSetup(){
+        //remove any walls that would be behing others
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles[x].length; y++){
                 if(y+1<this.tiles[x].length && this.tiles[x][y].hasLeft && this.tiles[x][y+1].hasLeft){
@@ -35,20 +36,32 @@ class Level{
             }
         }
     }
-    displayLeft(){
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles.length; y++){
-                if(this.tiles[x][y].hasLeft){
-                    this.tiles[x][y].displayLeft()
+    displayUpper(player){
+        let playerDrawn = false
+        for(let d = 0; d<this.tiles.length + this.tiles[0].length ; d++){
+            for(let p = 0; p<=d; p++){
+                let x = d - p
+                let y = p
+                if((x+y)*100< player.x+player.y){
+                    player.draw()
                 }
-            }
-        }
-    }
-    displayRight(){
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles.length; y++){
-                if(this.tiles[x][y].hasRight){
-                    this.tiles[x][y].displayRight()
+                if( x < this.tiles.length && y < this.tiles[x].length){
+                    if(this.tiles[x][y].hasLeft){
+                        push()
+                        rotate(-45)
+                        scale(0.6,1)
+                        rotate(60)
+                        this.tiles[x][y].displayLeft()
+                        pop()
+                    }
+                    if(this.tiles[x][y].hasRight){
+                        push()
+                        rotate(-45)
+                        scale(1,0.6)
+                        rotate(30)
+                        this.tiles[x][y].displayRight()
+                        pop()
+                    }
                 }
             }
         }
