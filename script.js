@@ -1,11 +1,12 @@
 let player 
 let camera
 let loaded = false
-let TO_LOAD = 2
+let TO_LOAD = 3
 const loadAmount = TO_LOAD
 const TILE_SCALE = 0.5
 let images = {}
 let level = new Level()
+let song;
 function fileLoaded(){
   TO_LOAD--;
   if(TO_LOAD == 0){
@@ -17,12 +18,13 @@ function fileLoaded(){
 function setup(){
   player = new Player(500,500)
   camera = new Camera(player.x-windowWidth/2,player.y-windowHeight/2)
+  song = loadSound('music/sneaky_snitch.mp3',fileLoaded)
+  song.play();
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
   images.bananas = [loadImage('placeholders/test1.jpg',fileLoaded),
-  loadImage('sprites/floorTile.png',fileLoaded)
-]
+  loadImage('sprites/floorTile.png',fileLoaded)]
   //nanner garage
   for(let x = 0; x<21; x++){
     for(let y = 0; y<21; y++){
