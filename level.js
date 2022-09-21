@@ -15,10 +15,10 @@ class Level{
     getTiles(){
         return this.tiles
     }
-    displayUpper(){
+    displayLeft(){
         for(let i = 0; i<this.tiles.length; i++){
-            if(this.tiles[i].hasUpper){
-                this.tiles[i].displayUpper()
+            if(this.tiles[i].hasLeft){
+                this.tiles[i].displayLeft()
             }
         }
 

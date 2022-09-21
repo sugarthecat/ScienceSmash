@@ -1,8 +1,9 @@
 let player 
 let camera
 let loaded = false
-let TO_LOAD = 8
+let TO_LOAD = 2
 const loadAmount = TO_LOAD
+const TILE_SCALE = 0.5
 let images = {}
 let level = new Level()
 function fileLoaded(){
@@ -17,15 +18,13 @@ function setup(){
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
-  images.bananas = []
-  for(let i = 1; i<9; i++){
-    images.bananas.push(
-      loadImage('placeholders/test'+i+'.jpg',fileLoaded))
-  }
+  images.bananas = [loadImage('placeholders/test1.jpg',fileLoaded),
+  loadImage('sprites/floorTile.png',fileLoaded)
+]
   //nanner garage
   for(let x = -10; x<11; x++){
     for(let y = -10; y<11; y++){
-      if((Math.random()>0.7) && (x!= 0 || y != 0)){
+      if(abs(x+y)%5 >= 3 && (x!= 0 || y != 0)){
         level.addTile(new CollisionTile(x*100,y*100,100,100,images.bananas[0]))
       }else{
         level.addTile(new Tile(x*100,y*100,100,100,images.bananas[1]))
@@ -39,16 +38,18 @@ function draw(){
     background(0)
     player.runMoveTick(level)
     camera.target(player)
-    scale(1,0.8)
+    noStroke()
+    push()
+    scale(1,TILE_SCALE)
     rotate(45)
     level.displayGround()
     player.drawGround()
-    rotate(-45)
-    scale(1,1/0.8)
+    pop();
     player.draw()
-    scale(1,1)
     rotate(-45)
-    level.displayUpper()
+    scale(0.6,1)
+    rotate(60)
+    level.displayLeft()
 
   }else{
     stroke(0)
