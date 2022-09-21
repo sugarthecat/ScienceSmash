@@ -1,8 +1,9 @@
 let player 
 let camera
 let loaded = false
-let TO_LOAD = 8
+let TO_LOAD = 2
 const loadAmount = TO_LOAD
+const TILE_SCALE = 0.5
 let images = {}
 let level = new Level()
 function fileLoaded(){
@@ -14,26 +15,25 @@ function fileLoaded(){
 
 // Set's up the tiles?
 function setup(){
-  player = new Player(0,0)
+  player = new Player(500,500)
   camera = new Camera(player.x-windowWidth/2,player.y-windowHeight/2)
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
-  images.bananas = []
-  for(let i = 1; i<9; i++){
-    images.bananas.push(
-      loadImage('placeholders/test'+i+'.jpg',fileLoaded))
-  }
+  images.bananas = [loadImage('placeholders/test1.jpg',fileLoaded),
+  loadImage('sprites/floorTile.png',fileLoaded)
+]
   //nanner garage
-  for(let x = -5; x<6; x++){
-    for(let y = -5; y<5; y++){
-      if(x == -5 || x == 5 || y == -5 || y == 5){
-        level.addTile(new CollisionTile(x*100,y*100,100,100,images.bananas[0]))
+  for(let x = 0; x<21; x++){
+    for(let y = 0; y<21; y++){
+      if(abs(x+y)%5 >= 3 && (x!= 0 || y != 0)){
+        level.addTile(new CollisionTile(x*100,y*100,100,100,images.bananas[0]),x,y)
       }else{
-        level.addTile(new Tile(x*100,y*100,100,100,images.bananas[1]))
+        level.addTile(new Tile(x*100,y*100,100,100,images.bananas[1]),x,y)
       }
     }
   }
+  level.finishSetup()
 }
 
 // Draw's the tiles?
@@ -43,24 +43,40 @@ function draw(){
     background(0)
     player.runMoveTick(level)
     camera.target(player)
-    scale(1,0.8)
+    noStroke()
+    push()
+    scale(1,TILE_SCALE)
     rotate(45)
-    for(let i = 0; i<images.bananas.length; i++){
-      //image(images.bananas[i],i*100,0,100,100)
-    }
     level.displayGround()
     player.drawGround()
-    rotate(-45)
+    pop();
     player.draw()
-    
-    
+    push()
+    rotate(-45)
+    scale(0.6,1)
+    rotate(60)
+    level.displayLeft()
+    pop()
+    push()
+    rotate(-45)
+    scale(1,0.6)
+    rotate(30)
+    level.displayRight()
+    pop()
+
+
   }else{
+    stroke(0)
+    strokeWeight(10)
     // draw loading screen
     background(180,200,250)
     fill(0)
-    rect(20,windowHeight-80,windowWidth-40,50)
+    circle(width/4,height/2,min(width/3,height-200))
+    rect(20,height-80,width-40,50)
     fill(255)
-    rect(20,windowHeight-80,(windowWidth-40)*(loadAmount-TO_LOAD)/loadAmount,50)
+    rect(20,height-80,(width-40)*(loadAmount-TO_LOAD)/loadAmount,50)
+    fill(0,255,0)
+    arc(width/4,height/2,min(width/3,height-200),min(width/3,height-200),0,360*(loadAmount-TO_LOAD)/loadAmount)
   }
 }
 

@@ -5,6 +5,8 @@ class Tile{
         this.w = w
         this.h = h
         this.img = img
+        this.hasUpper = false
+        this.hasGround = true
     }
     displayGround(){
         if(dist(this.x,this.y,player.x,player.y) < sqrt(width * width + height * height)){
