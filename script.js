@@ -11,6 +11,8 @@ function fileLoaded(){
     loaded = true;
   }
 }
+
+// Set's up the tiles?
 function setup(){
   player = new Player(0,0)
   camera = new Camera(player.x-windowWidth/2,player.y-windowHeight/2)
@@ -33,6 +35,8 @@ function setup(){
     }
   }
 }
+
+// Draw's the tiles?
 function draw(){
   if(loaded){
     //not loading screen
@@ -59,6 +63,7 @@ function draw(){
     rect(20,windowHeight-80,(windowWidth-40)*(loadAmount-TO_LOAD)/loadAmount,50)
   }
 }
+
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
