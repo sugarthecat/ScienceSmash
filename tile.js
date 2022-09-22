@@ -1,9 +1,9 @@
 class Tile{
-    constructor(x,y,w,h,img){
-        this.x =x
-        this.y = y
-        this.w = w
-        this.h = h
+    constructor(img){
+        this.x = 0
+        this.y = 0
+        this.w = 100
+        this.h = 100
         this.img = img
         this.hasUpper = false
         this.hasGround = true

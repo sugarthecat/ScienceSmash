@@ -11,7 +11,10 @@ class Level{
             }
         }
     }
-    addTile(tile,x,y){
+    addTile(t,x,y){
+        let tile = t
+        tile.x = x * 100
+        tile.y = y * 100
         while(x >= this.tiles.length){
             this.tiles.push([])
         }
@@ -27,10 +30,10 @@ class Level{
         //remove any walls that would be behing others
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles[x].length; y++){
-                if(y+1<this.tiles[x].length && this.tiles[x][y].hasLeft && this.tiles[x][y+1].hasLeft){
+                if(y+1 == this.tiles[x].length || (this.tiles[x][y].hasLeft && this.tiles[x][y+1].hasLeft)){
                     this.tiles[x][y].hasLeft = false;
                 }
-                if(x+1<this.tiles.length && this.tiles[x][y].hasRight && this.tiles[x+1][y].hasRight){
+                if(x+1 == this.tiles.length || (this.tiles[x][y].hasRight && this.tiles[x+1][y].hasRight)){
                     this.tiles[x][y].hasRight = false;
                 }
             }
