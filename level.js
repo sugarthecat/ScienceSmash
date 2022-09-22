@@ -45,7 +45,7 @@ class Level{
             for(let p = 0; p<=d; p++){
                 let x = d - p
                 let y = p
-                if((x+y)*100< player.x+player.y){
+                if((x+y)*100< player.x+player.w/2+player.y){
                     player.draw()
                 }
                 if( x < this.tiles.length && y < this.tiles[x].length){
