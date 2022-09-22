@@ -21,7 +21,7 @@ function setup(){
   frameRate(60)
   angleMode(DEGREES)
   images.bananas = [loadImage('placeholders/test1.jpg',fileLoaded),
-  loadImage('sprites/floorTile.png',fileLoaded)
+  loadImage('sprites/floorTile2.png',fileLoaded)
 ]
   //nanner garage
   for(let x = 0; x<22; x++){
