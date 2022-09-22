@@ -38,6 +38,9 @@ class Level{
     }
     displayUpper(player){
         let playerDrawn = false
+        if((0+0)*100> player.x+player.y){
+            player.draw()
+        }
         for(let d = 0; d<this.tiles.length + this.tiles[0].length ; d++){
             for(let p = 0; p<=d; p++){
                 let x = d - p
