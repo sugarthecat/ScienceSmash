@@ -1,9 +1,13 @@
 class CollisionTile extends Tile{
     constructor(img){
         super(img)
-        this.hasLeft = true
-        this.hasRight = true
-        this.hasGround = false
+        this.x = 0
+        this.y = 0
+        this.w = 100
+        this.h = 100
+        this.hasLeft = false
+        this.hasRight = false
+        this.hasGround = true
         
     }
     collides(other){
@@ -57,6 +61,6 @@ class CollisionTile extends Tile{
         //Shift the wall into position
         disx = sin(dispDir)*dispDist 
         disy = cos(dispDir)*dispDist
-        image(images.bananas[0],disx-this.w*0.05,disy,this.w*0.95,this.h)
+        image(images.bananas[0],disx-this.w*0.1,disy,this.w*0.9,this.h)
     }
 }   

@@ -18,11 +18,13 @@ class Camera{
         desy -= height/2
         let diffx = (this.x-desx)/width; // difference x
         let diffy = (this.y - desy)/height; // difference x
-        // the further away, the fa
+        // the further away, the faster the camera moves
         if(diffx != 0){
+            //if X difference, move camera towards desx
             this.x -= (diffx* diffx * (diffx/abs(diffx)))*width/20 
         }
         if(diffy != 0){
+            //if Y difference, move camera towards desy
           this.y -= diffy* diffy * (diffy/abs(diffy))*height/20
         }
         //console.log(this.x + "," + desx + ",")

@@ -24,15 +24,15 @@ function setup(){
   frameRate(60)
   angleMode(DEGREES)
   images.bananas = [loadImage('placeholders/test1.jpg',fileLoaded),
-  loadImage('sprites/floorTile2.png',fileLoaded)
-]
+    loadImage('sprites/floorTile2.png',fileLoaded)
+    ]
   //nanner garage
   for(let x = 0; x<22; x++){
     for(let y = 0; y<22; y++){
       if(x == 0 || y == 0 || y == 10 || y == 9 || y == 11 || y == 21 || x == 21){
-        level.addTile(new CollisionTile(images.bananas[0]),x,y)
+        level.addTile(new CollisionTile(images.bananas[1]),x,y)
       }else{
-        level.addTile(new Tile(images.bananas[1]),x,y)
+        level.addTile(new Tile(images.bananas[0]),x,y)
       }
     }
   }
@@ -41,24 +41,8 @@ function setup(){
 
 // Draw's the tiles?
 function draw(){
-  if(loaded){
-    //not loading screen
-    background(0)
-    player.runMoveTick(level)
-    camera.target(player)
-    noStroke()
-
-    push()
-    scale(1,TILE_SCALE)
-    rotate(45)
-    level.displayGround()
-    player.drawGround()
-    pop();
-
-    level.displayUpper(player)
-
-
-  }else{
+  if(!loaded){
+    //Not loaded, loading screen
     stroke(0)
     strokeWeight(10)
     // draw loading screen
@@ -70,6 +54,24 @@ function draw(){
     rect(20,height-80,(width-40)*(loadAmount-TO_LOAD)/loadAmount,50)
     fill(0,255,0)
     arc(width/4,height/2,min(width/3,height-200),min(width/3,height-200),0,360*(loadAmount-TO_LOAD)/loadAmount)
+
+  }else{
+    //Game is active
+    background(0) // draws black background
+    player.runMoveTick(level)
+    camera.target(player)
+    noStroke()
+
+    push()
+    // vertically scale and rotate tiles in order to make isometric viewpoint
+    scale(1,TILE_SCALE)
+    rotate(45)
+
+    level.displayGround()
+    player.drawGround()
+    pop();
+
+    level.displayUpper(player)
   }
 }
 

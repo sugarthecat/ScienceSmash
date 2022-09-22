@@ -9,9 +9,7 @@ class Tile{
         this.hasGround = true
     }
     displayGround(){
-        if(dist(this.x,this.y,player.x,player.y) < sqrt(width * width + height * height)){
-            image(this.img,this.x,this.y,this.w,this.h)
-        }
+        image(this.img,this.x,this.y,this.w,this.h)
     }
     collides(a){
         return false
