@@ -36,7 +36,7 @@ class CollisionTile extends Tile{
         //Shift the wall into position
         disx = sin(dispDir)*dispDist - this.w 
         disy = cos(dispDir)*dispDist
-        image(images.bananas[0],disx+this.w*0.1,disy,this.w*0.9,this.h)
+        image(images.bananas[0],disx+this.w*0.12,disy,this.w*0.88,this.h)
     }
     displayRight(){
         // Rotate position 45 degrees backwards
@@ -61,6 +61,6 @@ class CollisionTile extends Tile{
         //Shift the wall into position
         disx = sin(dispDir)*dispDist 
         disy = cos(dispDir)*dispDist
-        image(images.bananas[0],disx,disy,this.w*0.9,this.h)
+        image(images.bananas[0],disx,disy,this.w*0.88,this.h)
     }
 }   
