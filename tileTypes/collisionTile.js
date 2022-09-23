@@ -13,7 +13,7 @@ class CollisionTile extends Tile{
     collides(other){
         return (this.x +this.w > other.x && other.x + other.w > this.x && this.y +this.h > other.y && other.y + other.h > this.y);
     }
-    displayLeft(){
+    displayRight(){
         // Rotate position 45 degrees backwards
         let dispDir = atan2(this.x,this.y)
         dispDir += -45
@@ -38,7 +38,7 @@ class CollisionTile extends Tile{
         disy = cos(dispDir)*dispDist
         image(images.bananas[0],disx+this.w*0.12,disy,this.w*0.88,this.h)
     }
-    displayRight(){
+    displayLeft(){
         // Rotate position 45 degrees backwards
         let dispDir = atan2(this.x,this.y)
         dispDir += -45

@@ -30,10 +30,10 @@ class Level{
         //remove any walls that would be behing others
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles[x].length; y++){
-                if(y+1 == this.tiles[x].length || (this.tiles[x][y].hasLeft && this.tiles[x][y+1].hasLeft)){
+                if(x+1 == this.tiles[x].length || (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)){
                     this.tiles[x][y].hasLeft = false;
                 }
-                if(x+1 == this.tiles.length || (this.tiles[x][y].hasRight && this.tiles[x+1][y].hasRight)){
+                if(y+1 == this.tiles.length || (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)){
                     this.tiles[x][y].hasRight = false;
                 }
             }
@@ -56,9 +56,9 @@ class Level{
                         push()
                         //transform to proper shape
                         rotate(-45)
-                        scale(0.6,1)
+                        scale(1,0.6)
                         //rotate to proper orientation
-                        rotate(60)
+                        rotate(30)
                         this.tiles[x][y].displayLeft()
                         pop()
                     }
@@ -66,9 +66,9 @@ class Level{
                         push()
                         //transform to proper shape
                         rotate(-45)
-                        scale(1,0.6)
+                        scale(0.6,1)
                         //rotate to proper orientation
-                        rotate(30)
+                        rotate(60)
                         this.tiles[x][y].displayRight()
                         pop()
                     }
