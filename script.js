@@ -23,7 +23,7 @@ function setup(){
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
-  images.bananas = [loadImage('sprites/walltile1.jpg',fileLoaded),
+  images.bananas = [loadImage('sprites/walltile1.png',fileLoaded),
     loadImage('sprites/floorTile2.png',fileLoaded)
     ]
   //nanner garage
