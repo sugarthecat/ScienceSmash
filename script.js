@@ -29,7 +29,7 @@ function setup(){
   //nanner garage
   for(let x = 0; x<22; x++){
     for(let y = 0; y<22; y++){
-      if(x == 0 || y == 0 || y == 10 || y == 9 || y == 11 || y == 21 || x == 21){
+      if(x == 0 || y == 0 || ((y == 10 || y == 9 || y == 11) && !(x == 9 || x == 10 || x == 11)) || y == 21 || x == 21){
         level.addTile(new CollisionTile(images.bananas[0]),x,y)
       }else{
         level.addTile(new Tile(images.bananas[1]),x,y)
