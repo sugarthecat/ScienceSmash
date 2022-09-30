@@ -23,7 +23,7 @@ function setup(){
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
-  images.bananas = [loadImage('sprites/walltile1.png',fileLoaded),
+  images.walls = [loadImage('sprites/walltile1.png',fileLoaded),
     loadImage('sprites/floorTile2.png',fileLoaded)
     ]
   images.floors = [
