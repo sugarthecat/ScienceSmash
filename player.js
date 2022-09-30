@@ -89,7 +89,7 @@ class Player{
     drawGround(){
         noStroke()
         fill(50,200,100)
-        circle(this.x+this.w/2,this.y+this.h/2,this.h)
+        image(images.aura,this.x,this.y,this.w,this.h)
     }
     draw(){
         //display after adjusting for isometric angle

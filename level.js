@@ -54,21 +54,11 @@ class Level{
                 if( x < this.tiles.length && y < this.tiles[x].length){
                     if(this.tiles[x][y].hasLeft){
                         push()
-                        //transform to proper shape
-                        rotate(-45)
-                        scale(1,0.6)
-                        //rotate to proper orientation
-                        rotate(30)
                         this.tiles[x][y].displayLeft()
                         pop()
                     }
                     if(this.tiles[x][y].hasRight){
                         push()
-                        //transform to proper shape
-                        rotate(-45)
-                        scale(0.6,1)
-                        //rotate to proper orientation
-                        rotate(60)
                         this.tiles[x][y].displayRight()
                         pop()
                     }
