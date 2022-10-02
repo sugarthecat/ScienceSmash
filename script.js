@@ -1,7 +1,7 @@
 let player 
 let camera
 let loaded = false
-let TO_LOAD = 3
+let TO_LOAD = 6
 const loadAmount = TO_LOAD
 const TILE_SCALE = 1/Math.sqrt(3)
 let images = {}
@@ -23,8 +23,8 @@ function setup(){
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
-  images.walls = [loadImage('sprites/walltile1.png',fileLoaded),
-    loadImage('sprites/floorTile2.png',fileLoaded)
+  images.walls = [loadImage('sprites/wallTile1.png',fileLoaded),
+    loadImage('sprites/wallTile2.png',fileLoaded)
     ]
   images.floors = [
     loadImage('sprites/floorTile1.png',fileLoaded),
@@ -34,9 +34,9 @@ function setup(){
   for(let x = 0; x<22; x++){
     for(let y = 0; y<22; y++){
       if(x == 0 || y == 0 || ((y == 10 || y == 9 || y == 11) && !(x == 9 || x == 10 || x == 11)) || y == 21 || x == 21){
-        level.addTile(new CollisionTile(images.walls[0]),x,y)
+        level.addTile(new CollisionTile(images.walls[1]),x,y)
       }else{
-        level.addTile(new Tile(images.floors[1]),x,y)
+        level.addTile(new Tile(images.floors[0]),x,y)
       }
     }
   }
