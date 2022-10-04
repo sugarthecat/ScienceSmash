@@ -97,7 +97,7 @@ class Player{
         dispDir -= 45
         let dispDist = dist(0,0,this.x,this.y)
         let disx = sin(dispDir)*dispDist - this.dispw/2
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph*1.2)
+        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph)
         fill(50,100,50)
         rect(disx,disy,this.dispw,this.disph)
     }

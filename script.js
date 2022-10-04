@@ -58,7 +58,6 @@ function draw(){
     rect(20,height-80,(width-40)*(loadAmount-TO_LOAD)/loadAmount,50)
     fill(0,255,0)
     arc(width/4,height/2,min(width/3,height-200),min(width/3,height-200),0,360*(loadAmount-TO_LOAD)/loadAmount)
-
   }else{
     //Game is active
     background(0) // draws black background
