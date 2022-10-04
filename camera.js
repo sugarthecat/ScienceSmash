@@ -21,11 +21,11 @@ class Camera{
         // the further away, the faster the camera moves
         if(diffx != 0){
             //if X difference, move camera towards desx
-            this.x -= (diffx* diffx * (diffx/abs(diffx)))*width/20 
+            this.x -= (diffx* diffx * (diffx/abs(diffx)))*width/10
         }
         if(diffy != 0){
             //if Y difference, move camera towards desy
-          this.y -= diffy* diffy * (diffy/abs(diffy))*height/20
+          this.y -= diffy* diffy * (diffy/abs(diffy))*height/10
         }
         //console.log(this.x + "," + desx + ",")
         translate(-this.x,-this.y)

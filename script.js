@@ -43,9 +43,15 @@ function setup(){
   level.finishSetup()
 }
 
+let loadTick = 0;
 // Draw's the tiles?
 function draw(){
-  if(!loaded){
+  if((!loaded) || loadTick < 1){
+    //Slow down loading if going too fast
+    let loadProgress = min((loadAmount-TO_LOAD)/loadAmount,loadTick)
+    if(loadTick == loadProgress){
+      loadTick+=0.015
+    }
     //Not loaded, loading screen
     stroke(0)
     strokeWeight(10)
@@ -55,9 +61,10 @@ function draw(){
     circle(width/4,height/2,min(width/3,height-200))
     rect(20,height-80,width-40,50)
     fill(255)
-    rect(20,height-80,(width-40)*(loadAmount-TO_LOAD)/loadAmount,50)
+    rect(20,height-80,(width-40)*loadProgress,50)
     fill(0,255,0)
-    arc(width/4,height/2,min(width/3,height-200),min(width/3,height-200),0,360*(loadAmount-TO_LOAD)/loadAmount)
+    arc(width/4,height/2,min(width/3,height-200),min(width/3,height-200),0,360*loadProgress)
+    
   }else{
     //Game is active
     background(0) // draws black background
