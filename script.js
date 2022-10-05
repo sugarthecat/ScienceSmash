@@ -49,22 +49,25 @@ function draw(){
   if((!loaded) || loadTick < 1){
     //Slow down loading if going too fast
     let loadProgress = min((loadAmount-TO_LOAD)/loadAmount,loadTick)
-    if(loadTick == loadProgress){
+    if(loadTick <= loadProgress){
       loadTick+=0.015
     }
-    //Not loaded, loading screen
-    stroke(0)
-    strokeWeight(10)
     // draw loading screen
     background(180,200,250)
     fill(0)
-    circle(width/4,height/2,min(width/3,height-200))
-    rect(20,height-80,width-40,50)
-    fill(255)
-    rect(20,height-80,(width-40)*loadProgress,50)
-    fill(0,255,0)
-    arc(width/4,height/2,min(width/3,height-200),min(width/3,height-200),0,360*loadProgress)
-    
+    rectMode(CORNER)
+    quad(width*0.1,height*0.9,
+        width*0.5,height*0.9,
+        width*0.3,height*0.3,
+        width*0.3,height*0.3)
+    rect(width*0.1,height*0.9,width*0.4,height*0.05)
+    rect(width*0.25,height*0.1,width*0.1,height*0.6)
+    fill (0,255,0)
+    // start 0.125 - 0.475, 
+    quad(width*0.125,height*0.9,
+      width*0.475,height*0.9,
+      width*(0.475-loadProgress*0.15),height*(0.9-loadProgress*0.45),
+      width*(0.125+loadProgress*0.15),height*(0.9-loadProgress*0.45))
   }else{
     //Game is active
     background(0) // draws black background
