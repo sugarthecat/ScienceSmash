@@ -88,7 +88,6 @@ function draw(){
     level.displayUpper(player)
   }
 }
-
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }

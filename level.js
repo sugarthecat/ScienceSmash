@@ -12,6 +12,7 @@ class Level{
                 }
             }
         }
+        this.displayTarget()
     }
     addTile(t,x,y){
         let tile = t
@@ -82,5 +83,16 @@ class Level{
             }
         }
         return false;
+    }
+
+    displayTarget(){
+        let disx = mouseX+camera.x
+        let disy = mouseY+camera.y
+        disy/=TILE_SCALE
+        let xydist = dist(disx,disy,0,0)
+        let targetAngle = atan2(disx,disy)+45
+        disx = sin(targetAngle)*xydist
+        disy = cos(targetAngle)*xydist
+        image(images.aura,disx-50,disy-50,100,100)
     }
 }
