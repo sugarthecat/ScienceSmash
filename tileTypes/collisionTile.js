@@ -10,6 +10,7 @@ class CollisionTile extends Tile{
         this.hasGround = false
         
     }
+    //different collision function for collisiontile subclass than default tile superclass
     collides(other){
         return (this.x +this.w > other.x && other.x + other.w > this.x && this.y +this.h > other.y && other.y + other.h > this.y);
     }
