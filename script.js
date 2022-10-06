@@ -1,7 +1,7 @@
 let player 
 let camera
 let loaded = false
-let TO_LOAD = 6
+let TO_LOAD = 7
 const loadAmount = TO_LOAD
 const TILE_SCALE = 1/Math.sqrt(3)
 let images = {}
@@ -29,7 +29,8 @@ function setup(){
   images.floors = [
     loadImage('sprites/floorTile1.png',fileLoaded),
     loadImage('sprites/floorTile2.png',fileLoaded)]
-  images.aura = loadImage('sprites/playerAura.png',fileLoaded)
+    images.aura = loadImage('sprites/playerAura.png',fileLoaded)
+    images.target = loadImage('sprites/target.png',fileLoaded)
   //nanner garage
   for(let x = 0; x<22; x++){
     for(let y = 0; y<22; y++){

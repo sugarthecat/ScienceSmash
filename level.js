@@ -1,5 +1,6 @@
 class Level{
     constructor(){
+        this.targetRotation = 0
         this.tiles = [[]]
         this.entities = []
     }
@@ -86,6 +87,8 @@ class Level{
     }
 
     displayTarget(){
+        this.targetRotation+=1.5
+        push()
         let disx = mouseX+camera.x
         let disy = mouseY+camera.y
         disy/=TILE_SCALE
@@ -93,6 +96,9 @@ class Level{
         let targetAngle = atan2(disx,disy)+45
         disx = sin(targetAngle)*xydist
         disy = cos(targetAngle)*xydist
-        image(images.aura,disx-50,disy-50,100,100)
+        translate (disx,disy)
+        rotate (this.targetRotation)
+        image(images.target,-100,-100,200,200)
+        pop()
     }
 }
