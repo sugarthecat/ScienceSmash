@@ -1,9 +1,9 @@
 class Enemy{
-    constructor(){
-        this.x
-        this.y
+    constructor(x,y){
+        this.x = x
+        this.y = y
     }
-    navigateToPlayer(){
+    moveTowardsPosition(){
         
     }
 }

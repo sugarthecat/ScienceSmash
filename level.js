@@ -1,8 +1,10 @@
 class Level{
     constructor(){
         this.tiles = [[]]
+        this.entities = []
     }
     displayGround(){
+        // call function "displayGround" for all items in 2d array tiles where hasGround is true
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles.length; y++){
                 if(this.tiles[x][y].hasGround){
@@ -72,6 +74,11 @@ class Level{
                 if(this.tiles[x][y] && this.tiles[x][y].collides(other)){
                     return true;
                 }
+            }
+        }
+        for(let i = 0; i<this.entities.length; i++){
+            if(this.entities[i] && this.entities.collides(other)){
+                return true;
             }
         }
         return false;

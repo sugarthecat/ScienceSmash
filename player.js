@@ -1,6 +1,7 @@
-class Player{
+class Player extends Entity{
     // Constructor.
     constructor(x,y){
+        super()
         this.x = x
         this.y = y
         this.w = 80 // width (constant)
@@ -9,6 +10,7 @@ class Player{
         this.diry = 0// 1,0, or -1, representing direction y
         this.dispw = 40
         this.disph = 90
+        this.moveSpeed = 10
     }
 
     // Ensures that dirx and diry are correct.
@@ -41,64 +43,5 @@ class Player{
         }
         
     }
-
-    // Updates the character's x and y positions.
-    runMoveTick(level){
-        this.fixDirections()
-        const moveSpeed = 8
-        let oldX = this.x
-        let oldY = this.y
-        let pythDir =  sqrt(this.dirx * this.dirx + this.diry * this.diry) //Distance of dirx and diry applied to a grid 
-        if(pythDir != 0){
-            this.x += this.dirx * moveSpeed/pythDir
-            this.y += this.diry * moveSpeed/pythDir
-            // Accounts for distance via pythagorean theorem if there is movement.
-        }
-        if(this.collidesWithAnyObjects(level)){
-            // decollide
-            let newX = this.x;
-            let newY = this.y;
-            this.x = oldX
-            this.y = oldY
-
-            let increment = 2;
-            for(let i = 0; i<6; i++){
-                // increments closer, seperated X and Y in smaller and smaller measurements
-                this.x += (newX-oldX)/increment
-                if(this.collidesWithAnyObjects(level)){
-                    this.x -=(newX-oldX)/increment
-                }
-                this.y += (newY-oldY)/increment
-                if(this.collidesWithAnyObjects(level)){
-                    this.y -=(newY-oldY)/increment
-                }
-                increment*=2
-            }
-        }
-    }
-    //Given the level object, returns true if this player is colliding with any objects.
-    collidesWithAnyObjects(level){
-        //check collision
-        if(level.collides(this)){
-            return true
-        }
-        
-        return false;
-    }
-    // Positions the character on the screen.
-    drawGround(){
-        noStroke()
-        fill(50,200,100)
-        image(images.aura,this.x,this.y,this.w,this.h)
-    }
-    draw(){
-        //display after adjusting for isometric angle
-        let dispDir = atan2(this.x,this.y)
-        dispDir -= 45
-        let dispDist = dist(0,0,this.x,this.y)
-        let disx = sin(dispDir)*dispDist - this.dispw/2
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph)
-        fill(50,100,50)
-        rect(disx,disy,this.dispw,this.disph)
-    }
+    
 }

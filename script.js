@@ -41,6 +41,7 @@ function setup(){
     }
   }
   level.finishSetup()
+  player.groundImage = images.aura
 }
 
 let loadTick = 0;
