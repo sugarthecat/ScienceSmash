@@ -7,7 +7,7 @@ class Level{
     displayGround(){
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
         for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles.length; y++){
+            for(let y = 0; y<this.tiles[x].length; y++){
                 if(this.tiles[x][y].hasGround){
                     this.tiles[x][y].displayGround()
                 }
@@ -15,7 +15,7 @@ class Level{
         }
         this.displayTarget()
         for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles.length; y++){
+            for(let y = 0; y<this.tiles[x].length; y++){
                 if(this.tiles[x][y].isCollisionTile){
                     this.tiles[x][y].displayGround()
                 }
@@ -41,10 +41,10 @@ class Level{
         //remove any walls that would be behing others
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles[x].length; y++){
-                if(x+1 == this.tiles[x].length || (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)){
+                if(x+1 == this.tiles.length || (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)){
                     this.tiles[x][y].hasLeft = false;
                 }
-                if(y+1 == this.tiles.length || (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)){
+                if(y+1 == this.tiles[x].length || (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)){
                     this.tiles[x][y].hasRight = false;
                 }
             }
@@ -78,6 +78,9 @@ class Level{
         }
     }
     collides(other){
+        if(other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100){
+            return true
+        }
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles.length; y++){
                 if(this.tiles[x][y] && this.tiles[x][y].collides(other)){
@@ -102,18 +105,13 @@ class Level{
         let targetAngle = atan2(disx,disy)+45
         disx = sin(targetAngle)*xydist
         disy = cos(targetAngle)*xydist
-        push()
-        if(!this.oldX){
-            this.oldY = disy
-            this.oldX = disx
+        if(!this.collides({x:disx, y:disy, w:0, h:0})){
+            push()
+        
+            translate (disx,disy)
+            rotate (this.targetRotation)
+            image(images.target,-100,-100,200,200)
+            pop()
         }
-        if(disy > 0 && disx > 0 && !this.collides({x:disx, y:disy, w:0, h:0})){
-            this.oldY = disy
-            this.oldX = disx
-        }
-        translate (this.oldX,this.oldY)
-        rotate (this.targetRotation)
-        image(images.target,-100,-100,200,200)
-        pop()
     }
 }

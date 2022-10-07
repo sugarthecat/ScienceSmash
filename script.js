@@ -32,7 +32,7 @@ function setup(){
     images.aura = loadImage('sprites/playerAura.png',fileLoaded)
     images.target = loadImage('sprites/target.png',fileLoaded)
   //nanner garage
-  for(let x = 0; x<22; x++){
+  for(let x = 0; x<32; x++){
     for(let y = 0; y<22; y++){
       if(x == 0 || y == 0 || ((y == 10 || y == 9 || y == 11) && !(x == 9 || x == 10 || x == 11)) || y == 21 || x == 21){
         level.addTile(new CollisionTile(images.walls[1]),x,y)
