@@ -17,7 +17,6 @@ class Entity{
         if(level.collides(this)){
             return true
         }
-        
         return false;
     }
     //returns if it collides with another object
