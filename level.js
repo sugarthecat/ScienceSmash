@@ -14,6 +14,13 @@ class Level{
             }
         }
         this.displayTarget()
+        for(let x = 0; x<this.tiles.length; x++){
+            for(let y = 0; y<this.tiles.length; y++){
+                if(this.tiles[x][y].isCollisionTile){
+                    this.tiles[x][y].displayGround()
+                }
+            }
+        }
     }
     addTile(t,x,y){
         let tile = t
@@ -88,7 +95,6 @@ class Level{
 
     displayTarget(){
         this.targetRotation+=1.5
-        push()
         let disx = mouseX+camera.x
         let disy = mouseY+camera.y
         disy/=TILE_SCALE
@@ -96,7 +102,16 @@ class Level{
         let targetAngle = atan2(disx,disy)+45
         disx = sin(targetAngle)*xydist
         disy = cos(targetAngle)*xydist
-        translate (disx,disy)
+        push()
+        if(!this.oldX){
+            this.oldY = disy
+            this.oldX = disx
+        }
+        if(disy > 0 && disx > 0 && !this.collides({x:disx, y:disy, w:0, h:0})){
+            this.oldY = disy
+            this.oldX = disx
+        }
+        translate (this.oldX,this.oldY)
         rotate (this.targetRotation)
         image(images.target,-100,-100,200,200)
         pop()
