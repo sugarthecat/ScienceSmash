@@ -2,7 +2,15 @@ class Level{
     constructor(){
         this.targetRotation = 0
         this.tiles = [[]]
-        this.entities = []
+        //temp code
+        let k = new Entity()
+        k.x = 300
+        k.y = 300
+        k.w = 100
+        k.h = 100
+        k.disph = 150
+        k.dispw = 50
+        this.entities = [k]
     }
     displayGround(){
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
@@ -14,11 +22,9 @@ class Level{
             }
         }
         this.displayTarget()
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles[x].length; y++){
-                if(this.tiles[x][y].isCollisionTile){
-                    this.tiles[x][y].displayGround()
-                }
+        for(let i = 0; i< this.entities.length; i++){
+            if(this.entities[i].groundImage){
+                this.entities[i].displayGround()
             }
         }
     }
@@ -52,6 +58,10 @@ class Level{
     }
     displayUpper(player){
         let playerDrawn = false
+        let entityDrawn = []
+        for(let i = 0; i< this.entities.length; i++){
+            entityDrawn.push(false)
+        }
         if((0+0)*100> player.x+player.y){
             player.draw()
         }
@@ -59,8 +69,13 @@ class Level{
             for(let p = 0; p<=d; p++){
                 let x = d - p
                 let y = p
-                if((x+y)*100< player.x+player.w/2+player.y){
+                if(!playerDrawn && (x+y)*100< player.x+player.w/2+player.y){
                     player.draw()
+                }
+                for(let i = 0; i< this.entities.length; i++){
+                    if(!entityDrawn[i] && (x+y)*100< this.entities[i].x+this.entities[i].w/2+this.entities[i].y){
+                    this.entities[i].draw()
+                    }
                 }
                 if( x < this.tiles.length && y < this.tiles[x].length){
                     if(this.tiles[x][y].hasLeft){
@@ -89,7 +104,7 @@ class Level{
             }
         }
         for(let i = 0; i<this.entities.length; i++){
-            if(this.entities[i] && this.entities.collides(other)){
+            if(this.entities[i] && this.entities[i].collides(other)){
                 return true;
             }
         }
