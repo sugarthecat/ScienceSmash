@@ -153,12 +153,11 @@ class Level{
         let targetAngle = atan2(disx,disy)+45
         disx = sin(targetAngle)*xydist
         disy = cos(targetAngle)*xydist
-            push()
-        
-            translate (disx,disy)
-            rotate (this.targetRotation)
-            image(images.target,-100,-100,200,200)
-            pop()
+        push()
+        translate (disx,disy)
+        rotate (this.targetRotation)
+        image(images.target,-100,-100,200,200)
+        pop()
         
     }
 }

@@ -8,5 +8,3 @@ class NavigationEntity extends Entity{
         
     }
 }
-
-// comment

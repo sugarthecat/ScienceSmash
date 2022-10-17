@@ -23,14 +23,16 @@ function setup(){
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
-  images.walls = [loadImage('sprites/wallTile1.png',fileLoaded),
+  images.walls = [
+    loadImage('sprites/wallTile1.png',fileLoaded),
     loadImage('sprites/wallTile2.png',fileLoaded)
     ]
   images.floors = [
     loadImage('sprites/floorTile1.png',fileLoaded),
-    loadImage('sprites/floorTile2.png',fileLoaded)]
-    images.aura = loadImage('sprites/playerAura.png',fileLoaded)
-    images.target = loadImage('sprites/target.png',fileLoaded)
+    loadImage('sprites/floorTile2.png',fileLoaded)
+  ]
+  images.aura = loadImage('sprites/playerAura.png',fileLoaded)
+  images.target = loadImage('sprites/target.png',fileLoaded)
   //nanner garage
   for(let x = 0; x<32; x++){
     for(let y = 0; y<22; y++){
