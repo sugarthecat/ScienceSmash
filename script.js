@@ -1,7 +1,7 @@
 let player 
 let camera
 let loaded = false
-let TO_LOAD = 7
+let TO_LOAD = 7 // Count of items to be loaded before game is ready
 const loadAmount = TO_LOAD
 const TILE_SCALE = 1/Math.sqrt(3)
 let images = {}
@@ -74,6 +74,7 @@ function draw(){
     //Game is active
     background(0) // draws black background
     player.runMoveTick(level)
+    player.fixDirections()
     camera.target(player)
     noStroke()
 

@@ -22,6 +22,18 @@ class Level{
             }
         }
         this.displayTarget()
+        fill(0)
+        rect(-1000,-1000,1000,100000)
+        rect(-1000,-1000,100000,1000)
+        rect(this.tiles.length*100,0,1000,100000)
+        rect(0,this.tiles[0].length*100,100000,1000)
+        for(let x = 0; x<this.tiles.length; x++){
+            for(let y = 0; y<this.tiles[x].length; y++){
+                if(this.tiles[x][y].isCollisionTile){
+                    this.tiles[x][y].displayGround()
+                }
+            }
+        }
         for(let i = 0; i< this.entities.length; i++){
             if(this.entities[i].groundImage){
                 this.entities[i].displayGround()
@@ -92,7 +104,11 @@ class Level{
             }
         }
     }
+    //returns if an object collides with anything on the level, given it has an x, y, w, and h property
     collides(other){
+        if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
+            console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h")
+        }
         if(other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100){
             return true
         }
@@ -110,7 +126,11 @@ class Level{
         }
         return false;
     }
-    collidesGround(other){
+    //returns if an object collides with the tiles on the level, given it has an x, y, w, and h property
+    collidesWithTiles(other){
+        if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
+            console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h")
+        }
         if(other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100){
             return true
         }
@@ -133,13 +153,12 @@ class Level{
         let targetAngle = atan2(disx,disy)+45
         disx = sin(targetAngle)*xydist
         disy = cos(targetAngle)*xydist
-        if(!this.collidesGround({x:disx, y:disy, w:0, h:0})){
             push()
         
             translate (disx,disy)
             rotate (this.targetRotation)
             image(images.target,-100,-100,200,200)
             pop()
-        }
+        
     }
 }

@@ -12,20 +12,13 @@ class Entity{
         this.moveSpeed = 0
     }
     //Given the level object, returns true if this player is colliding with any objects.
-    collidesWithAnyObjects(level){
-        //check collision
-        if(level.collides(this)){
-            return true
-        }
-        return false;
-    }
+    
     //returns if it collides with another object
     collides(other){
         return (this.x +this.w > other.x && other.x + other.w > this.x && this.y +this.h > other.y && other.y + other.h > this.y);
     }
     // Updates the entity's x and y positions.
     runMoveTick(level){
-        this.fixDirections()
         let oldX = this.x
         let oldY = this.y
         let pythDir =  sqrt(this.dirx * this.dirx + this.diry * this.diry) //Distance of dirx and diry applied to a grid 
@@ -34,7 +27,7 @@ class Entity{
             this.y += this.diry * this.moveSpeed/pythDir
             // Accounts for distance via pythagorean theorem if there is movement.
         }
-        if(this.collidesWithAnyObjects(level)){
+        if(level.collides(this)){
             // decollide
             let newX = this.x;
             let newY = this.y;
@@ -45,11 +38,11 @@ class Entity{
             for(let i = 0; i<6; i++){
                 // increments closer, seperated X and Y in smaller and smaller measurements
                 this.x += (newX-oldX)/increment
-                if(this.collidesWithAnyObjects(level)){
+                if(level.collides(this)){
                     this.x -=(newX-oldX)/increment
                 }
                 this.y += (newY-oldY)/increment
-                if(this.collidesWithAnyObjects(level)){
+                if(level.collides(this)){
                     this.y -=(newY-oldY)/increment
                 }
                 increment*=2
