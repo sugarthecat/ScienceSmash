@@ -3,13 +3,9 @@ class Level{
         this.targetRotation = 0
         this.tiles = [[]]
         //temp code
-        let k = new Entity()
+        let k = new NavigationEntity()
         k.x = 300
         k.y = 300
-        k.w = 100
-        k.h = 100
-        k.disph = 150
-        k.dispw = 50
         this.entities = [k]
     }
     displayGround(){
@@ -104,23 +100,32 @@ class Level{
             }
         }
     }
+    runEntityMovement(player){
+        for(let i = 0; i<this.entities.length; i++){
+            this.entities[i].moveTowardsPosition(this,player)
+            this.entities[i].runMoveTick(this)
+        }
+    }
     //returns if an object collides with anything on the level, given it has an x, y, w, and h property
     collides(other){
+        //If improper object properties, pass an error.
         if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
             console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h")
         }
         if(other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100){
             return true
         }
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles.length; y++){
+        //If colliding with any tiles, return true
+        for(let x = floor(other.x/100); x<=floor((other.x+other.w)/100); x++){
+            for(let y = floor(other.y/100); y<=floor((other.y+other.h)/100); y++){
                 if(this.tiles[x][y] && this.tiles[x][y].collides(other)){
                     return true;
                 }
             }
         }
+        //If colliding with any entities, return ture
         for(let i = 0; i<this.entities.length; i++){
-            if(this.entities[i] && this.entities[i].collides(other)){
+            if(this.entities[i] != other && this.entities[i].collides(other)){
                 return true;
             }
         }

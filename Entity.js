@@ -3,13 +3,13 @@ class Entity{
     constructor(){
         this.x = 0
         this.y = 0
-        this.w = 0 // width (constant)
-        this.h = 0 // height (constant)
-        this.dirx = 0 // 1, 0, or -1, representing direction x
-        this.diry = 0// 1,0, or -1, representing direction y
-        this.dispw = 0 //display width
-        this.disph = 0 //display height
-        this.moveSpeed = 0
+        this.w = 50 // width (constant)
+        this.h = 50 // height (constant)
+        this.dirx = 50 // 1, 0, or -1, representing direction x
+        this.diry = 50// 1,0, or -1, representing direction y
+        this.dispw = 50 //display width
+        this.disph = 50 //display height
+        this.moveSpeed = 5
     }
     //Given the level object, returns true if this player is colliding with any objects.
     
@@ -28,6 +28,7 @@ class Entity{
             // Accounts for distance via pythagorean theorem if there is movement.
         }
         if(level.collides(this)){
+            
             // decollide
             let newX = this.x;
             let newY = this.y;

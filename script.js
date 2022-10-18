@@ -90,6 +90,7 @@ function draw(){
     pop();
 
     level.displayUpper(player)
+    level.runEntityMovement(player)
   }
 }
 function windowResized() {
