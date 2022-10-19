@@ -3,10 +3,19 @@ class Level{
         this.targetRotation = 0
         this.tiles = [[]]
         //temp code
-        let k = new NavigationEntity()
-        k.x = 300
-        k.y = 300
-        this.entities = [k]
+        let a = new NavigationEntity()
+        a.x = 900
+        a.y = 300
+        let b = new NavigationEntity()
+        b.x = 900
+        b.y = 100
+        let c = new NavigationEntity()
+        c.x = 100
+        c.y = 600
+        let d = new NavigationEntity()
+        d.x = 900
+        d.y = 600
+        this.entities = [a,b,c,d]
     }
     displayGround(){
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
