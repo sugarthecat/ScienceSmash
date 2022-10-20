@@ -5,16 +5,16 @@ class Level{
         //temp code
         let a = new NavigationEntity(5)
         a.x = 900
-        a.y = 300
+        a.y = 1300
         let b = new NavigationEntity(5)
         b.x = 600
-        b.y = 600
+        b.y = 1600
         let c = new NavigationEntity(5)
         c.x = 100
-        c.y = 200
+        c.y = 1200
         let d = new NavigationEntity(5)
         d.x = 1100
-        d.y = 600
+        d.y = 1600
         this.entities = [a,b,c,d]
     }
     displayGround(){
