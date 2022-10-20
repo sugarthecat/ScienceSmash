@@ -15,7 +15,28 @@ class Level{
         let d = new NavigationEntity(5)
         d.x = 1100
         d.y = 1600
-        this.entities = [a,b,c,d]
+        this.entities = []
+        for(let x =100; x<1600; x+=100){
+            for(let y=1200; y<1600; y+=100){
+                let newEnemy = new NavigationEntity(Math.floor(Math.random()*3+1))
+                newEnemy.x = x
+                newEnemy.y = y
+                this.entities.push(newEnemy)
+            }
+        }
+    }
+    //used in entity navigation
+    generateNavCollideArray(){
+        this.navigationTiles = []
+        for(let x = 0; x<this.tiles.length; x++){
+            this.navigationTiles[x] = []
+            for(let y = 0; y<this.tiles[x].length; y++){
+                this.navigationTiles[x][y] = []
+            }
+        }
+        for(let i = 0; i<this.entities.length; i++){
+
+        }
     }
     displayGround(){
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
@@ -108,6 +129,7 @@ class Level{
         }
     }
     runEntityMovement(player){
+        this.generateNavCollideArray()
         for(let i = 0; i<this.entities.length; i++){
             if(this.entities[i].isNavigationEntity && this.entities[i].destination === undefined){
                 this.entities[i].moveTowardsPosition(this,player)
