@@ -1,8 +1,8 @@
 class NavigationEntity extends Entity{
-    constructor(x,y){
+    constructor(health){
         super()
-        this.x = x
-        this.y = y
+        this.maxHealth = health
+        this.health = health
         this.isNavigationEntity = true
     }
     moveTowardsPosition(level,position){
@@ -67,5 +67,23 @@ class NavigationEntity extends Entity{
             this.dirx = position.x-this.x
             this.diry = position.y-this.y
         }
+    }
+    takeDamage(damage){
+        this.health -= damage
+    }
+    draw(){
+        //display after adjusting for isometric angle
+        let dispDir = atan2(this.x,this.y)
+        dispDir -= 45
+        let dispDist = dist(0,0,this.x,this.y)
+        let disx = sin(dispDir)*dispDist - this.dispw/2
+        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph)
+        fill(255,100,50)
+        rect(disx,disy,this.dispw,this.disph)
+        //display health bars
+        fill(0,255,0)
+        rect(disx-5,disy-15,(this.dispw+10)*this.health/this.maxHealth,10)
+        fill(255,0,0)
+        rect(disx-5+(this.dispw+10)*this.health/this.maxHealth,disy-15,(this.dispw+10)*(1-this.health/this.maxHealth),10)
     }
 }

@@ -3,16 +3,16 @@ class Level{
         this.targetRotation = 0
         this.tiles = [[]]
         //temp code
-        let a = new NavigationEntity()
+        let a = new NavigationEntity(5)
         a.x = 900
         a.y = 300
-        let b = new NavigationEntity()
+        let b = new NavigationEntity(5)
         b.x = 600
         b.y = 600
-        let c = new NavigationEntity()
+        let c = new NavigationEntity(5)
         c.x = 100
         c.y = 200
-        let d = new NavigationEntity()
+        let d = new NavigationEntity(5)
         d.x = 1100
         d.y = 600
         this.entities = [a,b,c,d]
@@ -183,8 +183,10 @@ class Level{
         disy = cos(targetAngle)*xydist
         for(let i =0; i<this.entities.length; i++){
             if(this.entities[i].x < disx && this.entities[i].y < disy && this.entities[i].x + this.entities[i].w > disx && this.entities[i].y + this.entities[i].h > disy){
-                this.entities.splice(i,1)
-                i--;
+                this.entities[i].takeDamage(1)
+                if(this.entities[i].health <= 0){
+                    this.entities.splice(i,1)
+                }
             }
         }
     }
