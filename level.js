@@ -7,13 +7,13 @@ class Level{
         a.x = 900
         a.y = 300
         let b = new NavigationEntity()
-        b.x = 900
-        b.y = 100
+        b.x = 600
+        b.y = 600
         let c = new NavigationEntity()
         c.x = 100
-        c.y = 600
+        c.y = 200
         let d = new NavigationEntity()
-        d.x = 900
+        d.x = 1100
         d.y = 600
         this.entities = [a,b,c,d]
     }
@@ -40,9 +40,7 @@ class Level{
             }
         }
         for(let i = 0; i< this.entities.length; i++){
-            if(this.entities[i].groundImage){
-                this.entities[i].displayGround()
-            }
+            this.entities[i].drawGround()
         }
     }
     addTile(t,x,y){
@@ -111,22 +109,24 @@ class Level{
     }
     runEntityMovement(player){
         for(let i = 0; i<this.entities.length; i++){
-            this.entities[i].moveTowardsPosition(this,player)
+            if(this.entities[i].isNavigationEntity && this.entities[i].destination === undefined){
+                this.entities[i].moveTowardsPosition(this,player)
+            }
             this.entities[i].runMoveTick(this)
         }
     }
     //returns if an object collides with anything on the level, given it has an x, y, w, and h property
-    collides(other){
+    collides(other,ignore="default"){
         //If improper object properties, pass an error.
         if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
             console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h")
         }
-        if(other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100){
+        if(other.x < 0 || other.y < 0 || other.x+ other.w> this.tiles.length*100 || other.h+ other.y > this.tiles[0].length*100){
             return true
         }
         //If colliding with any tiles, return true
-        for(let x = floor(other.x/100); x<=floor((other.x+other.w)/100); x++){
-            for(let y = floor(other.y/100); y<=floor((other.y+other.h)/100); y++){
+        for(let x = floor(other.x/100); x<=min(floor((other.x+other.w)/100),this.tiles.length-1); x++){
+            for(let y = floor(other.y/100); y<=min(floor((other.y+other.h)/100),this.tiles[x].length-1); y++){
                 if(this.tiles[x][y] && this.tiles[x][y].collides(other)){
                     return true;
                 }
@@ -134,7 +134,7 @@ class Level{
         }
         //If colliding with any entities, return ture
         for(let i = 0; i<this.entities.length; i++){
-            if(this.entities[i] != other && this.entities[i].collides(other)){
+            if(this.entities[i] != other && this.entities[i] != ignore && this.entities[i].collides(other)){
                 return true;
             }
         }
@@ -172,6 +172,20 @@ class Level{
         rotate (this.targetRotation)
         image(images.target,-100,-100,200,200)
         pop()
-        
+    }
+    fireAbility(){
+        let disx = mouseX+camera.x
+        let disy = mouseY+camera.y
+        disy/=TILE_SCALE
+        let xydist = dist(disx,disy,0,0)
+        let targetAngle = atan2(disx,disy)+45
+        disx = sin(targetAngle)*xydist
+        disy = cos(targetAngle)*xydist
+        for(let i =0; i<this.entities.length; i++){
+            if(this.entities[i].x < disx && this.entities[i].y < disy && this.entities[i].x + this.entities[i].w > disx && this.entities[i].y + this.entities[i].h > disy){
+                this.entities.splice(i,1)
+                i--;
+            }
+        }
     }
 }

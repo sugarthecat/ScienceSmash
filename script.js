@@ -46,9 +46,10 @@ function setup(){
   level.finishSetup()
   player.groundImage = images.aura
 }
-
+function mouseClicked(){
+  level.fireAbility()
+}
 let loadTick = 0;
-// Draw's the tiles?
 function draw(){
   if((!loaded) || loadTick < 1){
     //Slow down loading if going too fast

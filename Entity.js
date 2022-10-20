@@ -3,8 +3,8 @@ class Entity{
     constructor(){
         this.x = 0
         this.y = 0
-        this.w = 50 // width (constant)
-        this.h = 50 // height (constant)
+        this.w = 100 // width (constant)
+        this.h = 100 // height (constant)
         this.dirx = 50 // 1, 0, or -1, representing direction x
         this.diry = 50// 1,0, or -1, representing direction y
         this.dispw = 50 //display width
@@ -21,6 +21,17 @@ class Entity{
     runMoveTick(level){
         let oldX = this.x
         let oldY = this.y
+        if(this.destination){
+            this.dirx = this.destination.x - this.x
+            this.diry = this.destination.y - this.y
+            if( dist(this.destination.x,this.destination.y,this.x,this.y)<this.moveSpeed*1.5){
+                this.x = this.destination.x
+                this.y = this.destination.y
+                this.dirx = 0
+                this.diry = 0
+                this.destination = undefined
+            }
+        }
         let pythDir =  sqrt(this.dirx * this.dirx + this.diry * this.diry) //Distance of dirx and diry applied to a grid 
         if(pythDir != 0){
             this.x += this.dirx * this.moveSpeed/pythDir
@@ -56,6 +67,8 @@ class Entity{
         fill(50,200,100)
         if(this.groundImage){
             image(this.groundImage,this.x,this.y,this.w,this.h)
+        }else{
+            rect(this.x,this.y,this.w,this.h)
         }
     }
     //draw upright section of character
