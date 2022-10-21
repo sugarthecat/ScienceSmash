@@ -1,7 +1,7 @@
 let player 
 let camera
 let loaded = false
-let TO_LOAD = 7 // Count of items to be loaded before game is ready
+let TO_LOAD = 15 // Count of items to be loaded before game is ready
 const loadAmount = TO_LOAD
 const TILE_SCALE = 1/Math.sqrt(3)
 let images = {}
@@ -33,6 +33,13 @@ function setup(){
   ]
   images.aura = loadImage('sprites/playerAura.png',fileLoaded)
   images.target = loadImage('sprites/target.png',fileLoaded)
+  images.player = {}
+  images.player.idle = []
+  images.player.run = []
+  for(let i = 0; i<4; i++){
+    images.player.idle.push(loadImage('sprites/player/knight_idle_anim_f'+i+'.png', fileLoaded))
+    images.player.run.push(loadImage('sprites/player/knight_run_anim_f'+i+'.png', fileLoaded))
+  }
   //nanner garage
   for(let x = 0; x<32; x++){
     for(let y = 0; y<22; y++){
