@@ -106,12 +106,14 @@ class Level{
             for(let p = 0; p<=d; p++){
                 let x = d - p
                 let y = p
-                if(!playerDrawn && (x+y)*100< player.x+player.w/2+player.y){
+                if(!playerDrawn && (x+y+1)*100 > player.x+player.w+player.y){
                     player.draw()
+                    playerDrawn = true
                 }
                 for(let i = 0; i< this.entities.length; i++){
-                    if(!entityDrawn[i] && (x+y)*100< this.entities[i].x+this.entities[i].w/2+this.entities[i].y){
-                    this.entities[i].draw()
+                    if(!entityDrawn[i] && (x+y+1)*100 > this.entities[i].x+this.entities[i].w+this.entities[i].y){
+                        this.entities[i].draw()
+                        entityDrawn[i] = true
                     }
                 }
                 if( x < this.tiles.length && y < this.tiles[x].length){
