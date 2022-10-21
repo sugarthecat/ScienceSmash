@@ -27,7 +27,6 @@ class Level{
         for(let i = 0; i<this.entities.length; i++){
             for(let x = floor(this.entities[i].x/100); x<(this.entities[i].x+this.entities[i].w)/100; x++){
                 for(let y = floor(this.entities[i].y/100); y<(this.entities[i].y+this.entities[i].h)/100; y++){
-                    //console.log(x +','+y)
                     this.navigationTiles[x][y].push(this.entities[i])
                 }
             }
@@ -81,7 +80,7 @@ class Level{
         return this.tiles
     }
     finishSetup(){
-        //remove any walls that would be behing others
+        // Remove any walls that would be behind others
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles[x].length; y++){
                 if(x+1 == this.tiles.length || (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)){
@@ -140,7 +139,7 @@ class Level{
             this.entities[i].runMoveTick(this)
         }
     }
-    //returns if an object collides with anything on the level, given it has an x, y, w, and h property
+    // Returns whether an object collides with anything on the level, given it has an x, y, w, and h property
     collides(other,ignore="default"){
         //If improper object properties, pass an error.
         if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
@@ -165,7 +164,7 @@ class Level{
         }
         return false;
     }
-    //returns if an object collides with the tiles on the level, given it has an x, y, w, and h property
+    // Returns whether an object collides with the tiles on the level, given it has an x, y, w, and h property
     collidesWithTiles(other){
         if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
             console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h")
