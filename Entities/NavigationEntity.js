@@ -22,11 +22,14 @@ class NavigationEntity extends Entity{
             }
             tfArray[floor(position.x/100)][floor(position.y/100)] = 0;
             let change = true;
+            //While things are chaing on the t/f board
             while(change){
                 change = false
+                //check every tile 
                 for(let x = 0; x<tfArray.length;x++){
                     for(let y = 0; y<tfArray[x].length; y++){
                         if(tfArray[x][y] === true){
+                            //check if each 
                             for(let x2 = x-1; x2<x+2; x2++){
                                 for(let y2 = y-1; y2<y+2; y2++){
                                     if((x2 == x || y2 == y) && x2 > 0 && y2 > 0 
