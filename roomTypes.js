@@ -20,4 +20,4 @@ class RoomTypes {
 // Shop
 // Progression
 // Boss
-// Empty
+// Empty (no room)
