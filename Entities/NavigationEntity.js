@@ -4,6 +4,8 @@ class NavigationEntity extends Entity{
         this.maxHealth = health
         this.health = health
         this.isNavigationEntity = true
+        this.w = 100
+        this.h = 100
     }
     moveTowardsPosition(level,position){
         let tfArray = []
@@ -15,7 +17,7 @@ class NavigationEntity extends Entity{
                 tfArray.push([])
                 for(let j = 0; j<level.tiles[i].length; j++){
                     
-                    tfArray[i].push(!(level.collides({x:i*100+50-this.w/2,y:j*100+50-this.h/2, w:this.w,h:this.h},this)));
+                    tfArray[i].push(!(level.sharedNavCollide(i,j,this)|| level.tiles[i][j].isCollisionTile));
                 }
             }
             tfArray[floor(position.x/100)][floor(position.y/100)] = 0;

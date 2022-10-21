@@ -74,6 +74,7 @@ function draw(){
       width*(0.475-loadProgress*0.15),height*(0.9-loadProgress*0.45),
       width*(0.125+loadProgress*0.15),height*(0.9-loadProgress*0.45))
   }else{
+    level.fireAbility()
     //Game is active
     background(0) // draws black background
     player.runMoveTick(level)

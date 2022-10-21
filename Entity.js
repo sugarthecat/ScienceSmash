@@ -59,6 +59,9 @@ class Entity{
                 }
                 increment*=2
             }
+            if(this.isNavigationEntity){
+                this.destination = undefined
+            }
         }
     }
     //draw ground segment of character

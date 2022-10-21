@@ -3,18 +3,6 @@ class Level{
         this.targetRotation = 0
         this.tiles = [[]]
         //temp code
-        let a = new NavigationEntity(5)
-        a.x = 900
-        a.y = 1300
-        let b = new NavigationEntity(5)
-        b.x = 600
-        b.y = 1600
-        let c = new NavigationEntity(5)
-        c.x = 100
-        c.y = 1200
-        let d = new NavigationEntity(5)
-        d.x = 1100
-        d.y = 1600
         this.entities = []
         for(let x =100; x<1600; x+=100){
             for(let y=1200; y<1600; y+=100){
@@ -29,14 +17,27 @@ class Level{
     generateNavCollideArray(){
         this.navigationTiles = []
         for(let x = 0; x<this.tiles.length; x++){
-            this.navigationTiles[x] = []
+            this.navigationTiles.push([])
             for(let y = 0; y<this.tiles[x].length; y++){
-                this.navigationTiles[x][y] = []
+                this.navigationTiles[x].push([])
+                if(this.navigationTiles[x][y].isCollisionTile){
+                }
             }
         }
         for(let i = 0; i<this.entities.length; i++){
-
+            for(let x = floor(this.entities[i].x/100); x<(this.entities[i].x+this.entities[i].w)/100; x++){
+                for(let y = floor(this.entities[i].y/100); y<(this.entities[i].y+this.entities[i].h)/100; y++){
+                    //console.log(x +','+y)
+                    this.navigationTiles[x][y].push(this.entities[i])
+                }
+            }
         }
+    }
+    sharedNavCollide(x,y,entity){
+        if(this.navigationTiles[x][y].length > 0){
+            return !(this.navigationTiles[x][y][0] == entity && this.navigationTiles[x][y].length == 1)
+        }
+        return false;
     }
     displayGround(){
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
@@ -170,8 +171,8 @@ class Level{
         if(other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100){
             return true
         }
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles.length; y++){
+        for(let x = floor(other.x/100); x<=min(floor((other.x+other.w)/100),this.tiles.length-1); x++){
+            for(let y = floor(other.y/100); y<=min(floor((other.y+other.h)/100),this.tiles[x].length-1); y++){
                 if(this.tiles[x][y] && this.tiles[x][y].collides(other)){
                     return true;
                 }
