@@ -33,7 +33,7 @@ class Camera{
     }
     circ(){
         fill (255,0,0)
-        circle (-this.x,-this.y,50)
+        circle (-this.x/worldScale,-this.y/worldScale,50)
         
     }
 }

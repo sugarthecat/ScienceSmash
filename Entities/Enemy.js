@@ -1,4 +1,4 @@
-class NavigationEntity extends Entity{
+class Enemy extends Entity{
     constructor(health){
         super()
         this.maxHealth = health;

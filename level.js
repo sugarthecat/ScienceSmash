@@ -6,10 +6,10 @@ class Level{
         this.entities = [];
         for(let x =300; x<1600; x+=100){
             for(let y=1200; y<1600; y+=100){
-                let newEnemy = new NavigationEntity(Math.floor(Math.random()*3+1));
+                let newEnemy = new Enemy(Math.floor(Math.random()*3+1));
                 newEnemy.x = x;
                 newEnemy.y = y;
-                this.entities.push(newEnemy);
+                //this.entities.push(newEnemy);
             }
         }
     }
