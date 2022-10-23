@@ -1,26 +1,27 @@
 class Level{
-    constructor(){
-        this.targetRotation = 0
-        this.tiles = [[]]
+    constructor() {
+        this.targetRotation = 0;
+        this.tiles = [[]];
         //temp code
-        this.entities = []
+        this.entities = [];
         for(let x =100; x<2000; x+=100){
             for(let y=1200; y<1800; y+=100){
-                let newEnemy = new NavigationEntity(Math.floor(Math.random()*3+1))
-                newEnemy.x = x
-                newEnemy.y = y
-                this.entities.push(newEnemy)
+                let newEnemy = new NavigationEntity(Math.floor(Math.random()*3+1));
+                newEnemy.x = x;
+                newEnemy.y = y;
+                this.entities.push(newEnemy);
             }
         }
     }
     //used in entity navigation
     generateNavCollideArray(){
-        this.navigationTiles = []
+        this.navigationTiles = [];
         for(let x = 0; x<this.tiles.length; x++){
-            this.navigationTiles.push([])
+            this.navigationTiles.push([]);
             for(let y = 0; y<this.tiles[x].length; y++){
-                this.navigationTiles[x].push([])
+                this.navigationTiles[x].push([]);
                 if(this.navigationTiles[x][y].isCollisionTile){
+                    // temp
                 }
             }
         }
