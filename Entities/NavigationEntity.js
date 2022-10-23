@@ -17,7 +17,7 @@ class NavigationEntity extends Entity{
                 tfArray.push([])
                 for(let j = 0; j<level.tiles[i].length; j++){
                     
-                    tfArray[i].push(!(level.sharedNavCollide(i,j,this)|| level.tiles[i][j].isCollisionTile));
+                    tfArray[i].push(!(level.tiles[i][j].isCollisionTile));
                 }
             }
             tfArray[floor(position.x/100)][floor(position.y/100)] = 0;
@@ -28,15 +28,15 @@ class NavigationEntity extends Entity{
                 //check every tile 
                 for(let x = 0; x<tfArray.length;x++){
                     for(let y = 0; y<tfArray[x].length; y++){
-                        if(tfArray[x][y] === true){
+                        if(tfArray[x][y] !== false){
                             //check if each 
                             for(let x2 = x-1; x2<x+2; x2++){
                                 for(let y2 = y-1; y2<y+2; y2++){
                                     if((x2 == x || y2 == y) && x2 > 0 && y2 > 0 
                                     && x2 < tfArray.length && y2 < tfArray[x2].length 
                                     && typeof tfArray[x2][y2] != "boolean" 
-                                    && (tfArray[x][y] === true || sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2))+tfArray[x2][y2] < tfArray[x][y])){
-                                        tfArray[x][y] = tfArray[x2][y2] + dist(x,y,x2,y2)
+                                    && (tfArray[x][y] === true || sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2))+level.sharedNavCollide(x2,y2,this)*50+tfArray[x2][y2] < tfArray[x][y])){
+                                        tfArray[x][y] = tfArray[x2][y2] + dist(x,y,x2,y2)+level.sharedNavCollide(x2,y2,this)*50
                                         change = true;
                                     }
                                 }
@@ -79,16 +79,7 @@ class NavigationEntity extends Entity{
     takeDamage(damage){
         this.health -= damage
     }
-    draw(){
-        //display after adjusting for isometric angle
-        let dispDir = atan2(this.x,this.y)
-        dispDir -= 45
-        let dispDist = dist(0,0,this.x,this.y)
-        let disx = sin(dispDir)*dispDist - this.dispw/2
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph)
-        fill(255,100,50)
-        rect(disx,disy,this.dispw,this.disph)
-        //display health bars
+    drawHealthBar(disx,disy){
         fill(0,255,0)
         rect(disx-5,disy-15,(this.dispw+10)*this.health/this.maxHealth,10)
         fill(255,0,0)

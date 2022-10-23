@@ -29,7 +29,9 @@ function setup(){
     ]
   images.floors = [
     loadImage('sprites/floorTile1.png',fileLoaded),
-    loadImage('sprites/floorTile2.png',fileLoaded)
+    loadImage('sprites/floorTile2.png',fileLoaded),
+    loadImage('sprites/floorTile3.png',fileLoaded),
+    loadImage('sprites/floorTile4.png',fileLoaded),
   ]
   images.aura = loadImage('sprites/playerAura.png',fileLoaded)
   images.target = loadImage('sprites/target.png',fileLoaded)
@@ -46,7 +48,7 @@ function setup(){
       if(x == 0 || y == 0 || ((y == 10 || y == 9 || y == 11) && !(x == 9 || x == 10 || x == 11)) || y == 21 || x == 21){
         level.addTile(new CollisionTile(images.walls[1]),x,y)
       }else{
-        level.addTile(new Tile(images.floors[0]),x,y)
+        level.addTile(new Tile(images.floors[3]),x,y)
       }
     }
   }

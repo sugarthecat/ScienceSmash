@@ -8,7 +8,7 @@ class Entity{
         this.dirx = 50 // 1, 0, or -1, representing direction x
         this.diry = 50// 1,0, or -1, representing direction y
         this.dispw = 50 //display width
-        this.disph = 50 //display height
+        this.disph = 100 //display height
         this.moveSpeed = 5
     }
     //Given the level object, returns true if this player is colliding with any objects.
@@ -81,8 +81,11 @@ class Entity{
         dispDir -= 45
         let dispDist = dist(0,0,this.x,this.y)
         let disx = sin(dispDir)*dispDist - this.dispw/2
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph)
+        let disy = TILE_SCALE*(cos(dispDir)*dispDist)-this.disph+ dist(0,0,this.w,this.h)/3
         fill(255,100,50)
         rect(disx,disy,this.dispw,this.disph)
+        if(this.isNavigationEntity){
+            this.drawHealthBar(disx,disy)
+        }
     }
 }
