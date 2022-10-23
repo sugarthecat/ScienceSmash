@@ -1,11 +1,12 @@
 class NavigationEntity extends Entity{
     constructor(health){
         super()
-        this.maxHealth = health
-        this.health = health
-        this.isNavigationEntity = true
-        this.w = 100
-        this.h = 100
+        this.maxHealth = health;
+        this.health = health;
+        this.isNavigationEntity = true;
+        this.entSize = 50;
+        this.w = 100;
+        this.h = 100;
     }
     moveTowardsPosition(level,position){
         let tfArray = []

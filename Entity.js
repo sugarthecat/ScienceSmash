@@ -1,4 +1,4 @@
-class Entity{
+class Entity {
     // Constructor.
     constructor(){
         this.x = 0
@@ -19,17 +19,17 @@ class Entity{
     }
     // Updates the entity's x and y positions.
     runMoveTick(level){
-        let oldX = this.x
-        let oldY = this.y
+        let oldX = this.x;
+        let oldY = this.y;
         if(this.destination){
-            this.dirx = this.destination.x - this.x
-            this.diry = this.destination.y - this.y
+            this.dirx = this.destination.x - this.x;
+            this.diry = this.destination.y - this.y;
             if( dist(this.destination.x,this.destination.y,this.x,this.y)<this.moveSpeed*1.5){
-                this.x = this.destination.x
-                this.y = this.destination.y
-                this.dirx = 0
-                this.diry = 0
-                this.destination = undefined
+                this.x = this.destination.x;
+                this.y = this.destination.y;
+                this.dirx = 0;
+                this.diry = 0;
+                this.destination = undefined;
             }
         }
         let pythDir =  sqrt(this.dirx * this.dirx + this.diry * this.diry) //Distance of dirx and diry applied to a grid 
