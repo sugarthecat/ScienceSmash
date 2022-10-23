@@ -56,7 +56,7 @@ class Player extends Entity{
         dispDir -= 45
         let dispDist = dist(0,0,this.x,this.y)
         let disx = sin(dispDir)*dispDist - this.dispw/2
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist - this.disph)
+        let disy = TILE_SCALE*(cos(dispDir)*dispDist)-this.disph*2+ dist(0,0,this.w,this.h)
         fill(255,100,50)
         push()
         if(this.facingLeft){

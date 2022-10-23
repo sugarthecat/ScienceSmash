@@ -4,7 +4,7 @@ class Entity {
         this.x = 0
         this.y = 0
         this.w = 100 // width (constant)
-        this.h = 100 // height (constant)
+        this.h = 10 // height (constant)
         this.dirx = 50 // 1, 0, or -1, representing direction x
         this.diry = 50// 1,0, or -1, representing direction y
         this.dispw = 50 //display width
@@ -81,7 +81,7 @@ class Entity {
         dispDir -= 45
         let dispDist = dist(0,0,this.x,this.y)
         let disx = sin(dispDir)*dispDist - this.dispw/2
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist)-this.disph+ dist(0,0,this.w,this.h)/3
+        let disy = TILE_SCALE*(cos(dispDir)*dispDist+ dist(0,0,this.w,this.h))-this.disph
         fill(255,100,50)
         rect(disx,disy,this.dispw,this.disph)
         if(this.isNavigationEntity){

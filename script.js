@@ -1,12 +1,13 @@
 let player;
 let camera;
 let loaded = false;
-let TO_LOAD = 15; // Count of items to be loaded before game is ready
+let TO_LOAD = 19; // Count of items to be loaded before game is ready
 const loadAmount = TO_LOAD;
 const TILE_SCALE = 1/Math.sqrt(3);
 let images = {};
 let level = new Level();
 let song;
+let worldScale = 1
 function fileLoaded(){
   TO_LOAD--;
   if(TO_LOAD == 0){
@@ -29,7 +30,9 @@ function setup(){
   angleMode(DEGREES)
   images.walls = [
     loadImage('sprites/wallTile1.png',fileLoaded),
-    loadImage('sprites/wallTile2.png',fileLoaded)
+    loadImage('sprites/wallTile2.png',fileLoaded),
+    loadImage('sprites/wallTile3.png',fileLoaded),
+    loadImage('sprites/wallTile4.png',fileLoaded),
     ]
   images.floors = [
     loadImage('sprites/floorTile1.png',fileLoaded),
@@ -50,7 +53,7 @@ function setup(){
   for (let x = 0; x<32; x++) {
     for (let y = 0; y<22; y++) {
       if (x == 0 || y == 0 || ((y == 10 || y == 9 || y == 11) && !(x == 9 || x == 10 || x == 11)) || y == 21 || x == 21) {
-        level.addTile(new CollisionTile(images.walls[1]),x,y)
+        level.addTile(new CollisionTile(images.walls[3]),x,y)
       }else{
         level.addTile(new Tile(images.floors[3]),x,y)
       }
@@ -63,7 +66,14 @@ function setup(){
 function mouseClicked(){
   level.fireAbility()
 }
-
+function mouseWheel(e){
+  if(e.delta < 0){
+    worldScale *=1.1
+  }else{
+    worldScale/=1.1
+  }
+  console.log(worldScale)
+}
 let loadTick = 0;
 function draw(){
   if((!loaded) || loadTick < 1){
@@ -94,6 +104,7 @@ function draw(){
     background(0) // draws black background
     player.runMoveTick(level)
     player.fixDirections()
+    push()
     camera.target(player)
     noStroke()
 
@@ -108,6 +119,10 @@ function draw(){
 
     level.displayUpper(player)
     level.runEntityMovement(player)
+    pop()
+    fill(255)
+    circle(width/2,height/2,20)
+    camera.circ(player)
   }
 }
 function windowResized() {

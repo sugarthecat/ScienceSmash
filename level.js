@@ -4,8 +4,8 @@ class Level{
         this.tiles = [[]];
         //temp code
         this.entities = [];
-        for(let x =100; x<2000; x+=100){
-            for(let y=1200; y<1800; y+=100){
+        for(let x =300; x<1600; x+=100){
+            for(let y=1200; y<1600; y+=100){
                 let newEnemy = new NavigationEntity(Math.floor(Math.random()*3+1));
                 newEnemy.x = x;
                 newEnemy.y = y;
@@ -182,16 +182,19 @@ class Level{
         }
         return false;
     }
-
-    displayTarget(){
-        this.targetRotation+=1.5
-        let disx = mouseX+camera.x
-        let disy = mouseY+camera.y
+    getProjectedMouseXY(){
+        let disx = mouseX/worldScale+camera.x/worldScale
+        let disy = mouseY/worldScale+camera.y/worldScale
         disy/=TILE_SCALE
         let xydist = dist(disx,disy,0,0)
         let targetAngle = atan2(disx,disy)+45
         disx = sin(targetAngle)*xydist
         disy = cos(targetAngle)*xydist
+        return [disx,disy];
+    }
+    displayTarget(){
+        this.targetRotation+=1.5
+        let [disx,disy] = this.getProjectedMouseXY();
         push()
         translate (disx,disy)
         rotate (this.targetRotation)
@@ -199,13 +202,7 @@ class Level{
         pop()
     }
     fireAbility(){
-        let disx = mouseX+camera.x
-        let disy = mouseY+camera.y
-        disy/=TILE_SCALE
-        let xydist = dist(disx,disy,0,0)
-        let targetAngle = atan2(disx,disy)+45
-        disx = sin(targetAngle)*xydist
-        disy = cos(targetAngle)*xydist
+        let [disx,disy] = this.getProjectedMouseXY();
         for(let i =0; i<this.entities.length; i++){
             if(this.entities[i].x < disx && this.entities[i].y < disy && this.entities[i].x + this.entities[i].w > disx && this.entities[i].y + this.entities[i].h > disy){
                 this.entities[i].takeDamage(1)
