@@ -183,8 +183,8 @@ class Level{
         return false;
     }
     getProjectedMouseXY(){
-        let disx = mouseX/worldScale+camera.x/worldScale
-        let disy = mouseY/worldScale+camera.y/worldScale
+        let disx = (mouseX/worldScale+camera.x)
+        let disy = (mouseY/worldScale+camera.y)
         disy/=TILE_SCALE
         let xydist = dist(disx,disy,0,0)
         let targetAngle = atan2(disx,disy)+45

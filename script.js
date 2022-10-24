@@ -69,10 +69,13 @@ function mouseClicked(){
 function mouseWheel(e){
   if(e.delta < 0){
     worldScale *=1.1
+    camera.x/=1.1
+    camera.y/=1.1
   }else{
     worldScale/=1.1
+    camera.x*=1.1
+    camera.y*=1.1
   }
-  console.log(worldScale)
 }
 let loadTick = 0;
 function draw(){
@@ -120,9 +123,6 @@ function draw(){
     level.displayUpper(player)
     level.runEntityMovement(player)
     pop()
-    fill(255)
-    circle(width/2,height/2,20)
-    camera.circ(player)
   }
 }
 function windowResized() {
