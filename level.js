@@ -21,9 +21,6 @@ class Level{
             this.navigationTiles.push([]);
             for(let y = 0; y<this.tiles[x].length; y++){
                 this.navigationTiles[x].push([]);
-                if(this.navigationTiles[x][y].isCollisionTile){
-                    // temp
-                }
             }
         }
         for(let i = 0; i<this.entities.length; i++){
@@ -41,10 +38,14 @@ class Level{
         return false;
     }
     runPlayerMovement(){
-        this.player.runMoveTick(level)
+        this.player.runMoveTick(this)
         this.player.fixDirections()
     }
     displayGround(){
+        push()
+        // Vertically scale and rotate tiles in order to make isometric viewpoint
+        scale(1,TILE_SCALE)
+        rotate(45)
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles[x].length; y++){
@@ -60,16 +61,10 @@ class Level{
         rect(-1000,-1000,100000,1000)
         rect(this.tiles.length*100,0,1000,100000)
         rect(0,this.tiles[0].length*100,100000,1000)
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles[x].length; y++){
-                if(this.tiles[x][y].isCollisionTile){
-                    this.tiles[x][y].displayGround()
-                }
-            }
-        }
         for(let i = 0; i< this.entities.length; i++){
             this.entities[i].drawGround()
         }
+        pop();
     }
     addTile(t,x,y){
         let tile = t
@@ -88,12 +83,12 @@ class Level{
     }
     finishSetup(){
         // Remove any walls that would be behind others
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles[x].length; y++){
-                if(x+1 == this.tiles.length || (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)){
+        for(let x = 0; x<this.tiles.length-1; x++){
+            for(let y = 0; y<this.tiles[x].length-1; y++){
+                if( (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)){
                     this.tiles[x][y].hasLeft = false;
                 }
-                if(y+1 == this.tiles[x].length || (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)){
+                if( (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)){
                     this.tiles[x][y].hasRight = false;
                 }
             }
@@ -137,11 +132,25 @@ class Level{
             }
         }
     }
+    displayRoof(){
+        push()
+        scale(1,TILE_SCALE)
+        rotate(45)
+        //
+        for(let x = 0; x<this.tiles.length; x++){
+            for(let y = 0; y<this.tiles[x].length; y++){
+                if(this.tiles[x][y].isCollisionTile){
+                    this.tiles[x][y].displayGround()
+                }
+            }
+        }
+        pop()
+    }
     runEntityMovement(){
         this.generateNavCollideArray()
         for(let i = 0; i<this.entities.length; i++){
             if(this.entities[i].isNavigationEntity && this.entities[i].destination === undefined){
-                this.entities[i].moveTowardsPosition(this,this.player)
+                this.entities[i].navTowardsPosition(this,this.player)
             }
             this.entities[i].runMoveTick(this)
         }
@@ -209,8 +218,8 @@ class Level{
     }
     fireAbility(){
         let [disx,disy] = this.getProjectedMouseXY();
-        for(let i =0; i<this.entities.length; i++){
-            if(this.entities[i].x < disx && this.entities[i].y < disy && this.entities[i].x + this.entities[i].w > disx && this.entities[i].y + this.entities[i].h > disy){
+        for(let i = 0; i < this.entities.length; i++){
+            if(this.entities[i].collides({x:disx,y:disy,w:0,h:0})){
                 this.entities[i].takeDamage(1)
                 if(this.entities[i].health <= 0){
                     this.entities.splice(i,1)

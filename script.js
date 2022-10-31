@@ -48,11 +48,11 @@ function setup(){
   }
   //nanner garage
   for (let x = 0; x<32; x++) {
-    for (let y = 0; y<22; y++) {
-      if (x == 0 || y == 0 || ((y == 10 || y == 9 || y == 11) && !(x == 9 || x == 10 || x == 11)) || y == 21 || x == 21) {
-        level.addTile(new CollisionTile(images.walls[3]),x,y)
+    for (let y = 0; y<32; y++) {
+      if (x == 0 || y == 0 || ((y == 10 || y == 9 || y == 11) && !(x == 9 || x == 10 || x == 11)) || y == 31 || x == 31) {
+        level.addTile(new CollisionTile(images.walls[1],images.floors[0]),x,y)
       }else{
-        level.addTile(new Tile(images.floors[3]),x,y)
+        level.addTile(new Tile(images.floors[1]),x,y)
       }
     }
   }
@@ -88,15 +88,9 @@ function draw(){
     camera.adjust()
     noStroke()
 
-    push()
-    // Vertically scale and rotate tiles in order to make isometric viewpoint
-    scale(1,TILE_SCALE)
-    rotate(45)
-
     level.displayGround()
-    pop();
-
     level.displayUpper()
+    level.displayRoof()
     if(!gamemenu.active){
       level.runEntityMovement()
       level.runPlayerMovement()

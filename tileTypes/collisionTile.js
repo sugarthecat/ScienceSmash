@@ -1,6 +1,7 @@
 class CollisionTile extends Tile{
-    constructor(img){
+    constructor(img,roofImg){
         super(img)
+        this.roofImg = roofImg
         this.x = 0
         this.y = 0
         this.w = 100
@@ -15,7 +16,7 @@ class CollisionTile extends Tile{
         return (this.x +this.w > other.x && other.x + other.w > this.x && this.y +this.h > other.y && other.y + other.h > this.y);
     }
     displayGround(){
-        fill(0)
-        rect(this.x,this.y,this.w,this.h)
+        fill(255,0,0)
+        image(this.roofImg,this.x-100,this.y-100,this.w,this.h)
     }
 }  
