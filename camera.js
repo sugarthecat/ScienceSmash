@@ -2,6 +2,7 @@ class Camera{
     constructor(x,y){
         this.x = x
         this.y = y
+        this.worldScale = 1
     }
     target(target){
         // target is player
@@ -14,8 +15,8 @@ class Camera{
         desx = sin(desdir)*desdist
         desy = cos(desdir)*desdist*TILE_SCALE
         //center in middle of screen
-        desx-=width/2/worldScale
-        desy-=height/2/worldScale
+        desx-=width/2/this.worldScale
+        desy-=height/2/this.worldScale
         this.x = desx
         this.y = desy
         let diffx = (this.x - desx)/width; // difference x
@@ -30,7 +31,7 @@ class Camera{
           this.y -= diffy*diffy * (diffy/abs(diffy))*height
         }
         //console.log(this.x + "," + desx + ",")
-        scale(worldScale,worldScale)
+        scale(this.worldScale,this.worldScale)
         translate(-this.x,-this.y)
     }
 }

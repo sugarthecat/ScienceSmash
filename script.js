@@ -1,30 +1,29 @@
 let player;
 let camera;
 let loaded = false;
-let TO_LOAD = 19; // Count of items to be loaded before game is ready
+let TO_LOAD = 18; // Count of items to be loaded before game is ready
 const loadAmount = TO_LOAD;
 const TILE_SCALE = 1/Math.sqrt(3);
 let images = {};
 let level = new Level();
-let song;
-let worldScale = 1
+let paused = false
 function fileLoaded(){
   TO_LOAD--;
   if(TO_LOAD == 0){
     loaded = true;
-    song.play();
   }
 }
 setInterval( function checkWindowFocus() {
-  if (!window.hasFocus) { // When the window isn't in focus, pause the game
+  if (!window.hasFocus && !paused) { // When the window isn't in focus, pause the game
     // Throw pause function
+  }else if (paused && window.hasFocus){
+    //a
   }
 }, 200 );
 
 function setup(){
   player = new Player(500,500)
   camera = new Camera(player.x-windowWidth/2,player.y-windowHeight/2)
-  song = loadSound('music/sneaky_snitch.mp3',fileLoaded)
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
@@ -67,12 +66,12 @@ function mouseClicked(){
   level.fireAbility()
 }
 function mouseWheel(e){
-  if(e.delta < 0){
-    worldScale *=1.1
+  if(e.delta < 0 && camera.worldScale < 2){
+    camera.worldScale *=1.1
     camera.x/=1.1
     camera.y/=1.1
-  }else{
-    worldScale/=1.1
+  }else if(e.delta > 0 && camera.worldScale > 0.3){
+    camera.worldScale/=1.1
     camera.x*=1.1
     camera.y*=1.1
   }
