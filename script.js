@@ -1,4 +1,3 @@
-let player;
 let camera;
 let loaded = false;
 let TO_LOAD = 18; // Count of items to be loaded before game is ready
@@ -22,8 +21,8 @@ setInterval( function checkWindowFocus() {
 }, 200 );
 
 function setup(){
-  player = new Player(500,500)
-  camera = new Camera(player.x-windowWidth/2,player.y-windowHeight/2)
+  level.player = new Player(500,500)
+  camera = new Camera(500-windowWidth/2,500-windowHeight/2)
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
   angleMode(DEGREES)
@@ -59,7 +58,7 @@ function setup(){
     }
   }
   level.finishSetup()
-  player.groundImage = images.aura
+  level.player.groundImage = images.aura
 }
 
 function mouseClicked(){
@@ -104,10 +103,9 @@ function draw(){
     level.fireAbility()
     // Game is active
     background(0) // draws black background
-    player.runMoveTick(level)
-    player.fixDirections()
+    level.runPlayerMovement()
     push()
-    camera.target(player)
+    camera.target(level.player)
     noStroke()
 
     push()
@@ -116,11 +114,10 @@ function draw(){
     rotate(45)
 
     level.displayGround()
-    player.drawGround()
     pop();
 
-    level.displayUpper(player)
-    level.runEntityMovement(player)
+    level.displayUpper()
+    level.runEntityMovement()
     pop()
   }
 }

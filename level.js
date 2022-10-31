@@ -9,7 +9,7 @@ class Level{
                 let newEnemy = new Enemy(Math.floor(Math.random()*3+1));
                 newEnemy.x = x;
                 newEnemy.y = y;
-                //this.entities.push(newEnemy);
+                this.entities.push(newEnemy);
             }
         }
     }
@@ -39,6 +39,10 @@ class Level{
         }
         return false;
     }
+    runPlayerMovement(){
+        this.player.runMoveTick(level)
+        this.player.fixDirections()
+    }
     displayGround(){
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
         for(let x = 0; x<this.tiles.length; x++){
@@ -48,6 +52,7 @@ class Level{
                 }
             }
         }
+        this.player.drawGround()
         this.displayTarget()
         fill(0)
         rect(-1000,-1000,1000,100000)
@@ -93,21 +98,21 @@ class Level{
             }
         }
     }
-    displayUpper(player){
+    displayUpper(){
         let playerDrawn = false
         let entityDrawn = []
         for(let i = 0; i< this.entities.length; i++){
             entityDrawn.push(false)
         }
-        if((0+0)*100> player.x+player.y){
-            player.draw()
+        if((0+0)*100> this.player.x+this.player.y){
+            this.player.draw()
         }
         for(let d = 0; d<this.tiles.length + this.tiles[0].length ; d++){
             for(let p = 0; p<=d; p++){
                 let x = d - p
                 let y = p
-                if(!playerDrawn && (x+y+1)*100 > player.x+player.w+player.y){
-                    player.draw()
+                if(!playerDrawn && (x+y+1)*100 > this.player.x+this.player.w+this.player.y){
+                    this.player.draw()
                     playerDrawn = true
                 }
                 for(let i = 0; i< this.entities.length; i++){
@@ -135,7 +140,7 @@ class Level{
         this.generateNavCollideArray()
         for(let i = 0; i<this.entities.length; i++){
             if(this.entities[i].isNavigationEntity && this.entities[i].destination === undefined){
-                this.entities[i].moveTowardsPosition(this,player)
+                this.entities[i].moveTowardsPosition(this,this.player)
             }
             this.entities[i].runMoveTick(this)
         }
