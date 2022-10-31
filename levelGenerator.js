@@ -1,20 +1,22 @@
-class Level{
-    constructor() {
+class LevelGenerator {
+    constructor(lvl) {
+        this.lvl = lvl;
         this.targetRotation = 0;
-        this.tiles = [[]];
-        this.player = new Player(500,500)
-        //temp code
+        this.player = new Player(500,500);
         this.entities = [];
-        for(let x = 300; x < 1600; x += 100){
-            for(let y = 1200; y < 1600; y += 100){
-                let newEnemy = new Enemy((Math.floor(Math.random() * 3) + 1));
-                newEnemy.x = x;
-                newEnemy.y = y;
-                //this.entities.push(newEnemy);
-            }
+        this.rooms = [];
+        mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
+        this.rooms.push(new Room(0));
+        for (let i = 0; i < lvl; lvl++) {
+            this.rooms.push(new Room(mainRooms(Math.floor(Math.random() * 10)))); // Randomly grab a room from the main rooms tab
+        }
+        if (lvl % 10) {
+            this.rooms.push(new Room(5)); // if its a tenth level, grab a boss room
+        } else {
+            this.rooms.push(new Room(4)); // else, grab a normal progression room
         }
     }
-    //used in entity navigation
+    // used in entity navigation
     generateNavCollideArray(){
         this.navigationTiles = [];
         for(let x = 0; x<this.tiles.length; x++){
