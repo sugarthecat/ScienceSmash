@@ -2,6 +2,7 @@ class Level{
     constructor() {
         this.targetRotation = 0;
         this.tiles = [[]];
+        this.player = new Player(500,500)
         //temp code
         this.entities = [];
         for(let x =300; x<1600; x+=100){

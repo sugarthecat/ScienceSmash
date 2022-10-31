@@ -4,6 +4,7 @@ let loadscreen = new LoadingScreen(18)
 let images = {};
 let level = new Level();
 let paused = false
+let gamemenu = new GameMenu()
 function fileLoaded(){
   loadscreen.itemLoaded()
 }
@@ -14,9 +15,12 @@ setInterval( function checkWindowFocus() {
     //a
   }
 }, 200 );
-
+function keyPressed(){
+  if(key == 'Escape'){
+    gamemenu.invertActive()
+  }
+}
 function setup(){
-  level.player = new Player(500,500)
   camera = new Camera(500-windowWidth/2,500-windowHeight/2)
   createCanvas(windowWidth,windowHeight)
   frameRate(60)
@@ -55,7 +59,6 @@ function setup(){
   level.finishSetup()
   level.player.groundImage = images.aura
 }
-
 function mouseClicked(){
   level.fireAbility()
 }
@@ -78,9 +81,11 @@ function draw(){
     level.fireAbility()
     // Game is active
     background(0) // draws black background
-    level.runPlayerMovement()
     push()
-    camera.target(level.player)
+    if(!gamemenu.active){
+      camera.moveTowards(level.player)
+    }
+    camera.adjust()
     noStroke()
 
     push()
@@ -92,8 +97,12 @@ function draw(){
     pop();
 
     level.displayUpper()
-    level.runEntityMovement()
+    if(!gamemenu.active){
+      level.runEntityMovement()
+      level.runPlayerMovement()
+    }
     pop()
+    gamemenu.display()
   }
 }
 function windowResized() {

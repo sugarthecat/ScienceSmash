@@ -4,7 +4,7 @@ class Camera{
         this.y = y
         this.worldScale = 1
     }
-    target(target){
+    moveTowards(target){
         // target is player
         let desx = target.x + target.w/2  // destination x
         let desy = target.y + target.h/2  // destination y
@@ -17,8 +17,6 @@ class Camera{
         //center in middle of screen
         desx-=width/2/this.worldScale
         desy-=height/2/this.worldScale
-        this.x = desx
-        this.y = desy
         let diffx = (this.x - desx)/width; // difference x
         let diffy = (this.y - desy)/height; // difference y
         // the further away, the faster the camera moves
@@ -30,7 +28,8 @@ class Camera{
             //if Y difference, move camera towards desy
           this.y -= diffy*diffy * (diffy/abs(diffy))*height
         }
-        //console.log(this.x + "," + desx + ",")
+    }
+    adjust(){
         scale(this.worldScale,this.worldScale)
         translate(-this.x,-this.y)
     }
