@@ -209,6 +209,12 @@ class Level{
     displayTarget(){
         this.targetRotation += 1.5
         let [disx,disy] = this.getProjectedMouseXY();
+        
+        let currentDist = min(dist(disx,disy,this.player.x,this.player.y),500)
+        let currentAngle = atan2(disx-this.player.x,disy-this.player.y)
+
+        disx = sin(currentAngle)*currentDist+this.player.x
+        disy = cos(currentAngle)*currentDist+this.player.y
         push()
         translate (disx,disy)
         rotate (this.targetRotation)
