@@ -136,7 +136,6 @@ class Level{
         push()
         scale(1,TILE_SCALE)
         rotate(45)
-        //
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles[x].length; y++){
                 if(this.tiles[x][y].isCollisionTile){
@@ -198,17 +197,17 @@ class Level{
         return false;
     }
     getProjectedMouseXY(){
-        let disx = (mouseX/camera.worldScale+camera.x)
-        let disy = (mouseY/camera.worldScale+camera.y)
-        disy/=TILE_SCALE
+        let disx = (mouseX / camera.worldScale + camera.x)
+        let disy = (mouseY / camera.worldScale + camera.y)
+        disy /= TILE_SCALE
         let xydist = dist(disx,disy,0,0)
-        let targetAngle = atan2(disx,disy)+45
-        disx = sin(targetAngle)*xydist
-        disy = cos(targetAngle)*xydist
+        let targetAngle = atan2(disx,disy) + 45
+        disx = sin(targetAngle) * xydist
+        disy = cos(targetAngle) * xydist
         return [disx,disy];
     }
     displayTarget(){
-        this.targetRotation+=1.5
+        this.targetRotation += 1.5
         let [disx,disy] = this.getProjectedMouseXY();
         push()
         translate (disx,disy)
