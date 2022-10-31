@@ -1,16 +1,11 @@
 let camera;
-let loaded = false;
-let TO_LOAD = 18; // Count of items to be loaded before game is ready
-const loadAmount = TO_LOAD;
 const TILE_SCALE = 1/Math.sqrt(3);
+let loadscreen = new LoadingScreen(18)
 let images = {};
 let level = new Level();
 let paused = false
 function fileLoaded(){
-  TO_LOAD--;
-  if(TO_LOAD == 0){
-    loaded = true;
-  }
+  loadscreen.itemLoaded()
 }
 setInterval( function checkWindowFocus() {
   if (!window.hasFocus && !paused) { // When the window isn't in focus, pause the game
@@ -77,28 +72,8 @@ function mouseWheel(e){
 }
 let loadTick = 0;
 function draw(){
-  if((!loaded) || loadTick < 1){
-    // Slow down loading if going too fast
-    let loadProgress = min((loadAmount-TO_LOAD)/loadAmount,loadTick)
-    if(loadTick <= loadProgress){
-      loadTick+=0.015
-    }
-    // Draw loading screen
-    background(180,200,250)
-    fill(0)
-    rectMode(CORNER)
-    quad(width*0.1,height*0.9,
-        width*0.5,height*0.9,
-        width*0.3,height*0.3,
-        width*0.3,height*0.3)
-    rect(width*0.1,height*0.9,width*0.4,height*0.05)
-    rect(width*0.25,height*0.1,width*0.1,height*0.6)
-    fill (0,255,0)
-    // Start 0.125 - 0.475, 
-    quad(width*0.125,height*0.9,
-      width*0.475,height*0.9,
-      width*(0.475-loadProgress*0.15),height*(0.9-loadProgress*0.45),
-      width*(0.125+loadProgress*0.15),height*(0.9-loadProgress*0.45))
+  if(!loadscreen.loaded()){
+    loadscreen.draw()
   }else{
     level.fireAbility()
     // Game is active

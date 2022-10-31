@@ -9,7 +9,7 @@ class Level{
                 let newEnemy = new Enemy(Math.floor(Math.random()*3+1));
                 newEnemy.x = x;
                 newEnemy.y = y;
-                this.entities.push(newEnemy);
+                //this.entities.push(newEnemy);
             }
         }
     }
@@ -136,7 +136,7 @@ class Level{
             }
         }
     }
-    runEntityMovement(player){
+    runEntityMovement(){
         this.generateNavCollideArray()
         for(let i = 0; i<this.entities.length; i++){
             if(this.entities[i].isNavigationEntity && this.entities[i].destination === undefined){
