@@ -61,14 +61,16 @@ function mouseClicked(){
   level.fireAbility()
 }
 function mouseWheel(e){
-  if(e.delta < 0 && camera.worldScale < 2){
-    camera.worldScale *=1.1
-    camera.x/=1.1
-    camera.y/=1.1
-  }else if(e.delta > 0 && camera.worldScale > 0.3){
-    camera.worldScale/=1.1
-    camera.x*=1.1
-    camera.y*=1.1
+  if(!gamemenu.active){
+    if(e.delta < 0 && camera.worldScale < 2){
+      camera.worldScale *=1.1
+      camera.x/=1.1
+      camera.y/=1.1
+    }else if(e.delta > 0 && camera.worldScale > 0.3){
+      camera.worldScale/=1.1
+      camera.x*=1.1
+      camera.y*=1.1
+    }
   }
 }
 let loadTick = 0;

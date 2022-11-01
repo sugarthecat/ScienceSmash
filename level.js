@@ -216,7 +216,7 @@ class Level {
         return [disx,disy];
     }
     updateTargetPosition(){
-        this.targetRotation = 0.15
+        this.targetRotation += 1.5
         let [dx,dy] = this.getProjectedMouseXY();
         this.targetx = dx
         this.targety = dy
