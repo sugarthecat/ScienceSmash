@@ -147,30 +147,30 @@ class Level {
                 }
             }
         }
-        pop();
+        pop()
     }
-    runEntityMovement() {
-        this.generateNavCollideArray();
-        for (let i = 0; i<this.entities.length; i++) {
-            if (this.entities[i].isNavigationEntity && this.entities[i].destination === undefined) {
-                this.entities[i].navTowardsPosition(this,this.player);
+    runEntityMovement(){
+        this.generateNavCollideArray()
+        for(let i = 0; i<this.entities.length; i++){
+            if(this.entities[i].isNavigationEntity && this.entities[i].destination === undefined){
+                this.entities[i].navTowardsPosition(this,this.player)
             }
-            this.entities[i].runMoveTick(this);
+            this.entities[i].runMoveTick(this)
         }
     }
     // Returns whether an object collides with anything on the level, given it has an x, y, w, and h property
-    collides(other,ignore="default") {
+    collides(other,ignore="default"){
         //If improper object properties, pass an error.
-        if (typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
-            console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h");
+        if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
+            console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h")
         }
-        if (other.x < 0 || other.y < 0 || other.x+ other.w> this.tiles.length*100 || other.h+ other.y > this.tiles[0].length*100) {
-            return true;
+        if(other.x < 0 || other.y < 0 || other.x+ other.w> this.tiles.length*100 || other.h+ other.y > this.tiles[0].length*100){
+            return true
         }
         //If colliding with any tiles, return true
-        for (let x = floor(other.x/100); x<=min(floor((other.x+other.w)/100),this.tiles.length-1); x++) {
-            for (let y = floor(other.y/100); y<=min(floor((other.y+other.h)/100),this.tiles[x].length-1); y++) {
-                if (this.tiles[x][y] && this.tiles[x][y].collides(other)) {
+        for(let x = floor(other.x/100); x<=min(floor((other.x+other.w)/100),this.tiles.length-1); x++){
+            for(let y = floor(other.y/100); y<=min(floor((other.y+other.h)/100),this.tiles[x].length-1); y++){
+                if(this.tiles[x][y] && this.tiles[x][y].collides(other)){
                     return true;
                 }
             }
@@ -184,46 +184,51 @@ class Level {
         return false;
     }
     // Returns whether an object collides with the tiles on the level, given it has an x, y, w, and h property
-    collidesWithTiles(other) {
-        if (typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number") {
-            console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h");
+    collidesWithTiles(other){
+        if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
+            console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h")
         }
-        if (other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100){
-            return true;
+        if(other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100){
+            return true
         }
-        for (let x = floor(other.x/100); x<=min(floor((other.x+other.w)/100),this.tiles.length-1); x++) {
-            for (let y = floor(other.y/100); y<=min(floor((other.y+other.h)/100),this.tiles[x].length-1); y++) {
-                if (this.tiles[x][y] && this.tiles[x][y].collides(other)) {
+        for(let x = floor(other.x/100); x<=min(floor((other.x+other.w)/100),this.tiles.length-1); x++){
+            for(let y = floor(other.y/100); y<=min(floor((other.y+other.h)/100),this.tiles[x].length-1); y++){
+                if(this.tiles[x][y] && this.tiles[x][y].collides(other)){
                     return true;
                 }
             }
         }
         return false;
     }
-    getProjectedMouseXY() {
-        let disx = (mouseX / camera.worldScale + camera.x);
-        let disy = (mouseY / camera.worldScale + camera.y);
-        disy /= TILE_SCALE;
-        let xydist = dist(disx,disy,0,0);
-        let targetAngle = atan2(disx,disy) + 45;
-        disx = sin(targetAngle) * xydist;
-        disy = cos(targetAngle) * xydist;
-        return [disx,disy];
-    }
-    displayTarget() {
-        if (gamemenu.active) {
-            this.targetRotation += 1.5;
-        }
-        let [disx,disy] = this.getProjectedMouseXY(); 
-        let currentDist = min(dist(disx,disy,this.player.x,this.player.y),500);
-        let currentAngle = atan2(disx-this.player.x,disy-this.player.y);
+    getProjectedMouseXY(){
+        let disx = (mouseX / camera.worldScale + camera.x)
+        let disy = (mouseY / camera.worldScale + camera.y)
+        disy /= TILE_SCALE
+        let xydist = dist(disx,disy,0,0)
+        let targetAngle = atan2(disx,disy) + 45
+        disx = sin(targetAngle) * xydist
+        disy = cos(targetAngle) * xydist
+        let currentDist = min(dist(disx,disy,this.player.x,this.player.y),500)
+        let currentAngle = atan2(disx-this.player.x,disy-this.player.y)
+
         disx = sin(currentAngle)*currentDist+this.player.x
         disy = cos(currentAngle)*currentDist+this.player.y
-        push();
-        translate (disx,disy);
-        rotate (this.targetRotation);
-        image(images.target,-100,-100,200,200);
-        pop();
+        return [disx,disy];
+    }
+    updateTargetPosition(){
+        this.targetRotation += 1.5
+        let [dx,dy] = this.getProjectedMouseXY();
+        this.targetx = dx
+        this.targety = dy
+    }
+    displayTarget(){
+        let [disx,disy] = this.getProjectedMouseXY();
+        
+        push()
+        translate (this.targetx,this.targety)
+        rotate (this.targetRotation)
+        image(images.target,-100,-100,200,200)
+        pop()
     }
     fireAbility(){
         let [disx,disy] = this.getProjectedMouseXY();
