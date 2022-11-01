@@ -1,55 +1,59 @@
-class Level{
-    constructor() {
+
+class Level {
+    constructor(lvl) {
+        this.tiles = [[]]; // temporary
+        this.lvl = lvl; // integer representation of what level the player is on
         this.targetRotation = 0;
-        this.tiles = [[]];
-        this.player = new Player(500,500)
-        //temp code
+        this.player = new Player(500,500);
         this.entities = [];
-        for(let x =300; x<1600; x+=100){
-            for(let y=1200; y<1600; y+=100){
-                let newEnemy = new Enemy(Math.floor(Math.random()*3+1));
-                newEnemy.x = x;
-                newEnemy.y = y;
-                //this.entities.push(newEnemy);
-            }
+        this.rooms = [];
+        let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
+        this.rooms.push(new Room(0)); // Add initial room
+        for (let i = 0; i < lvl; i++) { // For every level
+            this.rooms.push(new Room(mainRooms[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
+        }
+        if (lvl % 10) {
+            this.rooms.push(new Room(5)); // If its a tenth level, grab a boss room
+        } else {
+            this.rooms.push(new Room(4)); // Else, grab a normal progression room
         }
     }
-    //used in entity navigation
-    generateNavCollideArray(){
+    // This function is used in entity navigation
+    generateNavCollideArray() {
         this.navigationTiles = [];
-        for(let x = 0; x<this.tiles.length; x++){
+        for (let x = 0; x < this.tiles.length; x++) {
             this.navigationTiles.push([]);
-            for(let y = 0; y<this.tiles[x].length; y++){
+            for (let y = 0; y < this.tiles[x].length; y++) {
                 this.navigationTiles[x].push([]);
             }
         }
-        for(let i = 0; i<this.entities.length; i++){
-            for(let x = floor(this.entities[i].x/100); x<(this.entities[i].x+this.entities[i].w)/100; x++){
-                for(let y = floor(this.entities[i].y/100); y<(this.entities[i].y+this.entities[i].h)/100; y++){
+        for (let i = 0; i < this.entities.length; i++) {
+            for (let x = floor(this.entities[i].x / 100); x < (this.entities[i].x + this.entities[i].w) / 100; x++) {
+                for (let y = floor(this.entities[i].y / 100); y < (this.entities[i].y + this.entities[i].h) / 100; y++) {
                     this.navigationTiles[x][y].push(this.entities[i])
                 }
             }
         }
     }
-    sharedNavCollide(x,y,entity){
+    sharedNavCollide(x,y,entity) {
         if(this.navigationTiles[x][y].length > 0){
             return !(this.navigationTiles[x][y][0] == entity && this.navigationTiles[x][y].length == 1)
         }
         return false;
     }
-    runPlayerMovement(){
+    runPlayerMovement() {
         this.player.runMoveTick(this)
         this.player.fixDirections()
     }
-    displayGround(){
+    displayGround() {
         push()
         // Vertically scale and rotate tiles in order to make isometric viewpoint
         scale(1,TILE_SCALE)
         rotate(45)
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles[x].length; y++){
-                if(this.tiles[x][y].hasGround){
+        for (let x = 0; x < this.tiles.length; x++) {
+            for (let y = 0; y < this.tiles[x].length; y++) {
+                if (this.tiles[x][y].hasGround) {
                     this.tiles[x][y].displayGround()
                 }
             }
@@ -61,25 +65,25 @@ class Level{
         rect(-1000,-1000,100000,1000)
         rect(this.tiles.length*100,0,1000,100000)
         rect(0,this.tiles[0].length*100,100000,1000)
-        for(let i = 0; i< this.entities.length; i++){
+        for(let i = 0; i< this.entities.length; i++) {
             this.entities[i].drawGround()
         }
         pop();
     }
-    addTile(t,x,y){
-        let tile = t
-        tile.x = x * 100
-        tile.y = y * 100
-        while(x >= this.tiles.length){
-            this.tiles.push([])
+    addTile(t,x,y) {
+        let tile = t;
+        tile.x = x * 100;
+        tile.y = y * 100;
+        while(x >= this.tiles.length) {
+            this.tiles.push([]);
         }
-        while(y >= this.tiles[x].length){
-            this.tiles[x].push(null)
+        while(y >= this.tiles[x].length) {
+            this.tiles[x].push(null);
         }
-        this.tiles[x][y] = tile
+        this.tiles[x][y] = tile;
     }
-    getTiles(){
-        return this.tiles
+    getTiles() {
+        return this.tiles;
     }
     finishSetup(){
         // Remove any walls that would be behind others
@@ -136,7 +140,6 @@ class Level{
         push()
         scale(1,TILE_SCALE)
         rotate(45)
-        //
         for(let x = 0; x<this.tiles.length; x++){
             for(let y = 0; y<this.tiles[x].length; y++){
                 if(this.tiles[x][y].isCollisionTile){
@@ -198,13 +201,13 @@ class Level{
         return false;
     }
     getProjectedMouseXY(){
-        let disx = (mouseX/camera.worldScale+camera.x)
-        let disy = (mouseY/camera.worldScale+camera.y)
-        disy/=TILE_SCALE
+        let disx = (mouseX / camera.worldScale + camera.x)
+        let disy = (mouseY / camera.worldScale + camera.y)
+        disy /= TILE_SCALE
         let xydist = dist(disx,disy,0,0)
-        let targetAngle = atan2(disx,disy)+45
-        disx = sin(targetAngle)*xydist
-        disy = cos(targetAngle)*xydist
+        let targetAngle = atan2(disx,disy) + 45
+        disx = sin(targetAngle) * xydist
+        disy = cos(targetAngle) * xydist
         let currentDist = min(dist(disx,disy,this.player.x,this.player.y),500)
         let currentAngle = atan2(disx-this.player.x,disy-this.player.y)
 
@@ -212,12 +215,17 @@ class Level{
         disy = cos(currentAngle)*currentDist+this.player.y
         return [disx,disy];
     }
+    updateTargetPosition(){
+        this.targetRotation = 0.15
+        let [dx,dy] = this.getProjectedMouseXY();
+        this.targetx = dx
+        this.targety = dy
+    }
     displayTarget(){
-        this.targetRotation+=1.5
         let [disx,disy] = this.getProjectedMouseXY();
         
         push()
-        translate (disx,disy)
+        translate (this.targetx,this.targety)
         rotate (this.targetRotation)
         image(images.target,-100,-100,200,200)
         pop()

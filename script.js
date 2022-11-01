@@ -2,17 +2,15 @@ let camera;
 const TILE_SCALE = 1/Math.sqrt(3);
 let loadscreen = new LoadingScreen(18)
 let images = {};
-let level = new Level();
-let paused = false
+let level = new Level(1);
 let gamemenu = new GameMenu()
 function fileLoaded(){
   loadscreen.itemLoaded()
 }
 setInterval( function checkWindowFocus() {
-  if (!window.hasFocus && !paused) { // When the window isn't in focus, pause the game
+  if (!document.hasFocus()) { // When the window isn't in focus, pause the game
     // Throw pause function
-  }else if (paused && window.hasFocus){
-    //a
+    gamemenu.active = true;
   }
 }, 200 );
 function keyPressed(){
@@ -92,6 +90,7 @@ function draw(){
     level.displayUpper()
     level.displayRoof()
     if(!gamemenu.active){
+      level.updateTargetPosition()
       level.runEntityMovement()
       level.runPlayerMovement()
     }
