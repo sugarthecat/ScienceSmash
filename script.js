@@ -2,17 +2,14 @@ let camera;
 const TILE_SCALE = 1/Math.sqrt(3);
 let loadscreen = new LoadingScreen(18)
 let images = {};
-let level = new Level();
-let paused = false
-let gamemenu = new GameMenu()
+let level = new Level(1);
+let gamemenu = new Menu()
 function fileLoaded(){
   loadscreen.itemLoaded()
 }
 setInterval( function checkWindowFocus() {
   if (!window.hasFocus && !paused) { // When the window isn't in focus, pause the game
     // Throw pause function
-  }else if (paused && window.hasFocus){
-    //a
   }
 }, 200 );
 function keyPressed(){
