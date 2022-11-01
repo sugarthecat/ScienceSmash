@@ -8,7 +8,7 @@ function fileLoaded(){
   loadscreen.itemLoaded()
 }
 setInterval( function checkWindowFocus() {
-  if (!window.hasFocus) { // When the window isn't in focus, pause the game
+  if (!document.hasFocus()) { // When the window isn't in focus, pause the game
     // Throw pause function
     gamemenu.active = true;
   }
