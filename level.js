@@ -205,17 +205,17 @@ class Level{
         let targetAngle = atan2(disx,disy)+45
         disx = sin(targetAngle)*xydist
         disy = cos(targetAngle)*xydist
+        let currentDist = min(dist(disx,disy,this.player.x,this.player.y),500)
+        let currentAngle = atan2(disx-this.player.x,disy-this.player.y)
+
+        disx = sin(currentAngle)*currentDist+this.player.x
+        disy = cos(currentAngle)*currentDist+this.player.y
         return [disx,disy];
     }
     displayTarget(){
         this.targetRotation+=1.5
         let [disx,disy] = this.getProjectedMouseXY();
         
-        let currentDist = min(dist(disx,disy,this.player.x,this.player.y),500)
-        let currentAngle = atan2(disx-this.player.x,disy-this.player.y)
-
-        disx = sin(currentAngle)*currentDist+this.player.x
-        disy = cos(currentAngle)*currentDist+this.player.y
         push()
         translate (disx,disy)
         rotate (this.targetRotation)
