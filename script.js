@@ -90,6 +90,7 @@ function draw(){
     level.displayUpper()
     level.displayRoof()
     if(!gamemenu.active){
+      level.updateTargetPosition()
       level.runEntityMovement()
       level.runPlayerMovement()
     }
