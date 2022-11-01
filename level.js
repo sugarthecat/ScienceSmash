@@ -1,4 +1,4 @@
-class LevelGenerator {
+class Level {
     constructor(lvl) {
         this.tiles = [[]]; // temporary
         this.lvl = lvl; // integer representation of what level the player is on
