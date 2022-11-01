@@ -1,5 +1,5 @@
 #! C:\Users\TJ\AppData\Local\Microsoft\WindowsApps\python.exe
-print("Content-type: text\n\n");
+print("Content-type: text\n\n")
 print('you got it')
 from datetime import datetime
 now = datetime.now()
