@@ -1,6 +1,6 @@
 class Room {
     constructor(type) {
-        this.tiles = [[]]
+        this.tiles = [[]];
         if (type = 0) { // Initial
             this.type = "initial";
         }
@@ -24,11 +24,3 @@ class Room {
         return this.type;
     }
 }
-
-// Room Types:
-// standard
-// initial
-// loot
-// shop
-// progression
-// boss
