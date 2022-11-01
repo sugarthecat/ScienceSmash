@@ -1,4 +1,4 @@
-class Menu {
+class GameMenu {
     constructor() {
         this.active = false;
     }

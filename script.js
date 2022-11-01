@@ -3,13 +3,14 @@ const TILE_SCALE = 1/Math.sqrt(3);
 let loadscreen = new LoadingScreen(18)
 let images = {};
 let level = new Level(1);
-let gamemenu = new Menu()
+let gamemenu = new GameMenu()
 function fileLoaded(){
   loadscreen.itemLoaded()
 }
 setInterval( function checkWindowFocus() {
-  if (!window.hasFocus && !paused) { // When the window isn't in focus, pause the game
+  if (!window.hasFocus) { // When the window isn't in focus, pause the game
     // Throw pause function
+    gamemenu.active = true;
   }
 }, 200 );
 function keyPressed(){

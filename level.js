@@ -7,10 +7,10 @@ class Level {
         this.player = new Player(500,500);
         this.entities = [];
         this.rooms = [];
-        mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
+        let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
         this.rooms.push(new Room(0)); // Add initial room
-        for (let i = 0; i < lvl; lvl++) { // For every level
-            this.rooms.push(new Room(mainRooms(Math.floor(Math.random() * 10)))); // Randomly push one of the main room types
+        for (let i = 0; i < lvl; i++) { // For every level
+            this.rooms.push(new Room(mainRooms[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
         }
         if (lvl % 10) {
             this.rooms.push(new Room(5)); // If its a tenth level, grab a boss room
@@ -211,7 +211,9 @@ class Level {
         return [disx,disy];
     }
     displayTarget(){
-        this.targetRotation += 1.5
+        if(gamemenu.active){
+            this.targetRotation += 1.5
+        }
         let [disx,disy] = this.getProjectedMouseXY();
         push()
         translate (disx,disy)
