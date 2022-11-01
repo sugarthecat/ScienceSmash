@@ -1,6 +1,7 @@
 class LevelGenerator {
     constructor(lvl) {
-        this.lvl = lvl;
+        this.tiles = [[]]; // temporary
+        this.lvl = lvl; // integer representation of what level the player is on
         this.targetRotation = 0;
         this.player = new Player(500,500);
         this.entities = [];
