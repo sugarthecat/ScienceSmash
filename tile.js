@@ -13,7 +13,7 @@ class Tile {
     displayGround() {
         image(this.img,this.x,this.y,this.w,this.h);
     }
-    collides(a) {
+    collides(other) {
         return false;
     }
     displayRight() {
