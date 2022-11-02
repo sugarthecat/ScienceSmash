@@ -8,7 +8,7 @@ mydb = mysql.connector.connect(
   database="sci_smash"
 )
 myCursor = mydb.cursor()
-myCursor.execute('SELECT score, username FROM scores ORDER BY score desc LIMIT 5')
+myCursor.execute('SELECT score, username FROM scores ORDER BY score desc LIMIT 50')
 result = myCursor.fetchall()
 
 endstring = ""
