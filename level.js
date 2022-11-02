@@ -9,13 +9,19 @@ class Level {
         this.rooms = [];
         let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
         this.rooms.push(new Room(0)); // Add initial room
-        for (let i = 0; i < lvl; i++) { // For every level
-            this.rooms.push(new Room(mainRooms[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
-        }
-        if (lvl % 10) {
-            this.rooms.push(new Room(5)); // If its a tenth level, grab a boss room
+        if (this.lvl == 0) { // lvl 0 is the tutorial
+            for (let i = 1; i < 5; i++) {
+                this.rooms.push(new Room(i)); // Push a standard, loot, shop, and progression room
+            }
         } else {
-            this.rooms.push(new Room(4)); // Else, grab a normal progression room
+            for (let i = 0; i < this.lvl; i++) { // For every level
+                this.rooms.push(new Room(mainRooms[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
+            }
+            if (this.lvl % 10) {
+                this.rooms.push(new Room(5)); // If its a tenth level, push a boss room
+            } else {
+                this.rooms.push(new Room(4)); // Else, push a normal progression room
+            }
         }
     }
     // This function is used in entity navigation
@@ -30,43 +36,43 @@ class Level {
         for (let i = 0; i < this.entities.length; i++) {
             for (let x = floor(this.entities[i].x / 100); x < (this.entities[i].x + this.entities[i].w) / 100; x++) {
                 for (let y = floor(this.entities[i].y / 100); y < (this.entities[i].y + this.entities[i].h) / 100; y++) {
-                    this.navigationTiles[x][y].push(this.entities[i])
+                    this.navigationTiles[x][y].push(this.entities[i]);
                 }
             }
         }
     }
     sharedNavCollide(x,y,entity) {
-        if(this.navigationTiles[x][y].length > 0){
-            return !(this.navigationTiles[x][y][0] == entity && this.navigationTiles[x][y].length == 1)
+        if (this.navigationTiles[x][y].length > 0) {
+            return !(this.navigationTiles[x][y][0] == entity && this.navigationTiles[x][y].length == 1);
         }
         return false;
     }
     runPlayerMovement() {
-        this.player.runMoveTick(this)
-        this.player.fixDirections()
+        this.player.runMoveTick(this);
+        this.player.fixDirections();
     }
     displayGround() {
-        push()
+        push();
         // Vertically scale and rotate tiles in order to make isometric viewpoint
-        scale(1,TILE_SCALE)
-        rotate(45)
+        scale(1,TILE_SCALE);
+        rotate(45);
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
         for (let x = 0; x < this.tiles.length; x++) {
             for (let y = 0; y < this.tiles[x].length; y++) {
                 if (this.tiles[x][y].hasGround) {
-                    this.tiles[x][y].displayGround()
+                    this.tiles[x][y].displayGround();
                 }
             }
         }
-        this.player.drawGround()
-        this.displayTarget()
-        fill(0)
-        rect(-1000,-1000,1000,100000)
-        rect(-1000,-1000,100000,1000)
-        rect(this.tiles.length*100,0,1000,100000)
-        rect(0,this.tiles[0].length*100,100000,1000)
-        for(let i = 0; i< this.entities.length; i++) {
-            this.entities[i].drawGround()
+        this.player.drawGround();
+        this.displayTarget();
+        fill(0);
+        rect(-1000,-1000,1000,100000);
+        rect(-1000,-1000,100000,1000);
+        rect(this.tiles.length*100,0,1000,100000);
+        rect(0,this.tiles[0].length*100,100000,1000);
+        for (let i = 0; i< this.entities.length; i++) {
+            this.entities[i].drawGround();
         }
         pop();
     }
@@ -74,10 +80,10 @@ class Level {
         let tile = t;
         tile.x = x * 100;
         tile.y = y * 100;
-        while(x >= this.tiles.length) {
+        while (x >= this.tiles.length) {
             this.tiles.push([]);
         }
-        while(y >= this.tiles[x].length) {
+        while (y >= this.tiles[x].length) {
             this.tiles[x].push(null);
         }
         this.tiles[x][y] = tile;
@@ -85,65 +91,65 @@ class Level {
     getTiles() {
         return this.tiles;
     }
-    finishSetup(){
+    finishSetup() {
         // Remove any walls that would be behind others
-        for(let x = 0; x<this.tiles.length-1; x++){
-            for(let y = 0; y<this.tiles[x].length-1; y++){
-                if( (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)){
+        for (let x = 0; x<this.tiles.length-1; x++) {
+            for (let y = 0; y<this.tiles[x].length-1; y++) {
+                if ( (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)) {
                     this.tiles[x][y].hasLeft = false;
                 }
-                if( (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)){
+                if ( (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)) {
                     this.tiles[x][y].hasRight = false;
                 }
             }
         }
     }
-    displayUpper(){
-        let playerDrawn = false
-        let entityDrawn = []
-        for(let i = 0; i< this.entities.length; i++){
+    displayUpper() {
+        let playerDrawn = false;
+        let entityDrawn = [];
+        for (let i = 0; i< this.entities.length; i++) {
             entityDrawn.push(false)
         }
-        if((0+0)*100> this.player.x+this.player.y){
-            this.player.draw()
+        if ((0+0)*100> this.player.x+this.player.y) {
+            this.player.draw();
         }
-        for(let d = 0; d<this.tiles.length + this.tiles[0].length ; d++){
-            for(let p = 0; p<=d; p++){
-                let x = d - p
-                let y = p
-                if(!playerDrawn && (x+y+1)*100 > this.player.x+this.player.w+this.player.y){
-                    this.player.draw()
-                    playerDrawn = true
+        for (let d = 0; d<this.tiles.length + this.tiles[0].length; d++) {
+            for (let p = 0; p<=d; p++) {
+                let x = d - p;
+                let y = p;
+                if (!playerDrawn && (x+y+1)*100 > this.player.x+this.player.w+this.player.y) {
+                    this.player.draw();
+                    playerDrawn = true;
                 }
-                for(let i = 0; i< this.entities.length; i++){
-                    if(!entityDrawn[i] && (x+y+1)*100 > this.entities[i].x+this.entities[i].w+this.entities[i].y){
-                        this.entities[i].draw()
-                        entityDrawn[i] = true
+                for (let i = 0; i< this.entities.length; i++) {
+                    if (!entityDrawn[i] && (x+y+1)*100 > this.entities[i].x+this.entities[i].w+this.entities[i].y) {
+                        this.entities[i].draw();
+                        entityDrawn[i] = true;
                     }
                 }
-                if( x < this.tiles.length && y < this.tiles[x].length){
-                    if(this.tiles[x][y].hasLeft){
-                        push()
+                if ( x < this.tiles.length && y < this.tiles[x].length) {
+                    if (this.tiles[x][y].hasLeft) {
+                        push();
                         this.tiles[x][y].displayLeft()
-                        pop()
+                        pop();
                     }
-                    if(this.tiles[x][y].hasRight){
-                        push()
-                        this.tiles[x][y].displayRight()
-                        pop()
+                    if (this.tiles[x][y].hasRight) {
+                        push();
+                        this.tiles[x][y].displayRight();
+                        pop();
                     }
                 }
             }
         }
     }
-    displayRoof(){
-        push()
-        scale(1,TILE_SCALE)
-        rotate(45)
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles[x].length; y++){
-                if(this.tiles[x][y].isCollisionTile){
-                    this.tiles[x][y].displayGround()
+    displayRoof() {
+        push();
+        scale(1,TILE_SCALE);
+        rotate(45);
+        for (let x = 0; x<this.tiles.length; x++) {
+            for (let y = 0; y<this.tiles[x].length; y++) {
+                if (this.tiles[x][y].isCollisionTile) {
+                    this.tiles[x][y].displayGround();
                 }
             }
         }
@@ -230,13 +236,13 @@ class Level {
         image(images.target,-100,-100,200,200)
         pop()
     }
-    fireAbility(){
+    basicChemistry(){
         let [disx,disy] = this.getProjectedMouseXY();
-        for(let i = 0; i < this.entities.length; i++){
-            if(this.entities[i].collides({x:disx,y:disy,w:0,h:0})){
-                this.entities[i].takeDamage(1)
-                if(this.entities[i].health <= 0){
-                    this.entities.splice(i,1)
+        for (let i = 0; i < this.entities.length; i++) {
+            if (this.entities[i].collides({x:disx,y:disy,w:0,h:0})) {
+                this.entities[i].takeDamage(1);
+                if (this.entities[i].health <= 0) {
+                    this.entities.splice(i,1);
                 }
             }
         }
