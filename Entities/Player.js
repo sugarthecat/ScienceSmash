@@ -10,7 +10,7 @@ class Player extends Entity{
         this.diry = 0; // 1,0, or -1, representing direction y
         this.dispw = 40;
         this.disph = 90;
-        this.moveSpeed = 10;
+        this.moveSpeed = 15;
         this.phase = 0;
         this.facingLeft = false;
     }
@@ -56,7 +56,7 @@ class Player extends Entity{
         dispDir -= 45;
         let dispDist = dist(0,0,this.x,this.y);
         let disx = sin(dispDir)*dispDist - this.dispw/2;
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist)-this.disph*2 + dist(0,0,this.w,this.h);
+        let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph * 2 + dist(0,0,this.w,this.h);
         fill(255,100,50);
         push();
         if (this.facingLeft) {
