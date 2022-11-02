@@ -13,7 +13,7 @@ class CollisionTile extends Tile {
     }
     //different collision function for collisiontile subclass than default tile superclass
     collides(other) {
-        return (this.x +this.w > other.x && other.x + other.w > this.x && this.y +this.h > other.y && other.y + other.h > this.y);
+        return (this.x + this.w > other.x && other.x + other.w > this.x && this.y +this.h > other.y && other.y + other.h > this.y);
     }
     displayGround() {
         fill(255,0,0);

@@ -45,12 +45,12 @@ function setup() {
     images.player.run.push(loadImage('sprites/player/knight_run_anim_f'+i+'.png', fileLoaded));
   }
   //nanner garage (TEMPORARY)
-  for (let x = 0; x<32; x++) {
-    for (let y = 0; y<32; y++) {
-      if (x == 0 || y == 0 || ((y == 10 || y == 9 || y == 11) && !(x == 9 || x == 10 || x == 11)) || y == 31 || x == 31) {
-        level.addTile(new CollisionTile(images.walls[1],images.floors[0]),x,y)
-      }else{
-        level.addTile(new Tile(images.floors[1]),x,y)
+  for (let x = 0; x < 25; x++) {
+    for (let y = 0; y < 25; y++) {
+      if (x == 0 || y == 0 || y == 24 || x == 24) {
+        level.addTile(new CollisionTile(images.walls[1],images.floors[0]),x,y);
+      } else {
+        level.addTile(new Tile(images.floors[1]),x,y);
       }
     }
   }
@@ -58,7 +58,7 @@ function setup() {
   level.player.groundImage = images.aura;
 }
 function mouseClicked() {
-  level.fireAbility();
+  level.basicChemistry();
 }
 function mouseWheel(e){
   if(!gamemenu.active){
@@ -78,7 +78,7 @@ function draw() {
   if (!loadscreen.loaded()) {
     loadscreen.draw();
   } else {
-    level.fireAbility();
+    level.basicChemistry();
     // Game is active
     background(0); // draws black background
     push();

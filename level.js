@@ -9,13 +9,19 @@ class Level {
         this.rooms = [];
         let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
         this.rooms.push(new Room(0)); // Add initial room
-        for (let i = 0; i < lvl; i++) { // For every level
-            this.rooms.push(new Room(mainRooms[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
-        }
-        if (lvl % 10) {
-            this.rooms.push(new Room(5)); // If its a tenth level, grab a boss room
+        if (this.lvl == 0) { // lvl 0 is the tutorial
+            for (let i = 1; i < 5; i++) {
+                this.rooms.push(new Room(i)); // Push a standard, loot, shop, and progression room
+            }
         } else {
-            this.rooms.push(new Room(4)); // Else, grab a normal progression room
+            for (let i = 0; i < this.lvl; i++) { // For every level
+                this.rooms.push(new Room(mainRooms[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
+            }
+            if (this.lvl % 10) {
+                this.rooms.push(new Room(5)); // If its a tenth level, push a boss room
+            } else {
+                this.rooms.push(new Room(4)); // Else, push a normal progression room
+            }
         }
     }
     // This function is used in entity navigation
@@ -230,7 +236,7 @@ class Level {
         image(images.target,-100,-100,200,200)
         pop()
     }
-    fireAbility(){
+    basicChemistry(){
         let [disx,disy] = this.getProjectedMouseXY();
         for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i].collides({x:disx,y:disy,w:0,h:0})) {
