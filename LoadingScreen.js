@@ -3,12 +3,10 @@ class LoadingScreen {
         this.maxload = maxload;
         this.loadTick = 0;
         this.loadsLeft = maxload;
+        this.continue = false;
     }
-    itemLoaded() {
+    fileLoaded() {
         this.loadsLeft-= 1;
-    }
-    loaded() {
-        return this.loadsLeft == 0 && this.loadTick > 1;
     }
     draw() {
         let loadProgress = min((this.maxload - this.loadsLeft) / this.maxload, this.loadTick);
@@ -56,7 +54,11 @@ class LoadingScreen {
         stroke(0)
         strokeWeight(0.003)
         textAlign(CENTER)
-        text("Loading...",0.7,0.4)
+        if (!this.loadsLeft == 0) {
+            text("Loading...",0.7,0.4)
+        } else {
+            text("Click to continue",0.7,0.4)
+        }
         text((this.maxload-this.loadsLeft)+"/"+this.maxload,0.7,0.7)
         pop()
     }

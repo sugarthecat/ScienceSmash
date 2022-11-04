@@ -1,21 +1,40 @@
-let camera;
+let camera; // Initialize the camera
 const TILE_SCALE = 1/Math.sqrt(3);
-let loadscreen = new LoadingScreen(18);
-let images = {};
-let level = new Level(1);
-let gamemenu = new GameMenu();
-function fileLoaded() {
-  loadscreen.itemLoaded();
+let images = {}; // Initialize sprite arrays
+images.floors = [];
+images.walls = [];
+images.aura = [];
+images.target = [];
+images.player = {};
+images.player.idle = [];
+images.player.run = [];
+let music = []; // Initialize music array
+let level = new Level(1); // Initialize the first level
+let gamemenu = new GameMenu(); // Initialize the game menu
+let loadscreen = new LoadingScreen(37); // Initialize the loading screen with how many files need to be loaded
+function loaded() {
+  loadscreen.fileLoaded(); // Increment the loading screen
 }
 setInterval( function checkWindowFocus() {
-  if (!document.hasFocus()) {
-    // Throw pause function
-    gamemenu.active = true;
+  if (!document.hasFocus()) { // When the game isn't in focus,
+    gamemenu.active = true; // Pause the game
   }
 }, 200 );
 function keyPressed() {
-  if (key == 'Escape') {
-    gamemenu.invertActive()
+  if (keyCode == ESCAPE) {
+    gamemenu.invertActive(); // Pause the game
+  }
+  if (keyCode == 81) { // Q
+    // activate first ability
+  }
+  if (keyCode == 69) { // E
+    // activate second ability
+  }
+  if (keyCode == 82) { // R
+    // activate third ability
+  }
+  if (keyCode == SHIFT) {
+    // activate dash
   }
 }
 function setup() {
@@ -23,26 +42,42 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   frameRate(60);
   angleMode(DEGREES);
+  // Load Files
+  music = [
+    loadSound('music/a-robust-crew.mp3',loaded),
+    loadSound('music/a-time-forgotten-MP3.mp3',loaded),
+    loadSound('music/ale-and-anecdotes-MP3.mp3',loaded),
+    loadSound('music/crystal-caverns-MP3.mp3',loaded),
+    loadSound('music/i-am-not-what-i-thought.mp3',loaded),
+    loadSound('music/dusty-memories.mp3',loaded),
+    loadSound('music/eternal-sleep.mp3',loaded),
+    loadSound('music/fireside-tales-MP3.mp3',loaded),
+    loadSound('music/highland-castle-MP3.mp3',loaded),
+    loadSound('music/i-was-always-right-here.mp3',loaded),
+    loadSound('music/illusory-realm-MP3.mp3',loaded),
+    loadSound('music/into-oblivion.mp3',loaded),
+    loadSound('music/labyrinth-of-lost-dreams-MP3.mp3',loaded),
+    loadSound('music/lake-of-destiny.mp3',loaded),
+    loadSound('music/lord-mcdeath.mp3',loaded),
+    loadSound('music/lurking-evil.mp3',loaded),
+    loadSound('music/over-the-plains-of-snow-MP3.mp3',loaded),
+    loadSound('music/the-phantoms-castle-midi.mp3',loaded),
+    loadSound('music/to-the-horizon-MP3.mp3',loaded)];
   images.walls = [
-    loadImage('sprites/wallTile1.png',fileLoaded),
-    loadImage('sprites/wallTile2.png',fileLoaded),
-    loadImage('sprites/wallTile3.png',fileLoaded),
-    loadImage('sprites/wallTile4.png',fileLoaded),
-  ];
+    loadImage('sprites/wallTile1.png',loaded),
+    loadImage('sprites/wallTile2.png',loaded),
+    loadImage('sprites/wallTile3.png',loaded),
+    loadImage('sprites/wallTile4.png',loaded)];
   images.floors = [
-    loadImage('sprites/floorTile1.png',fileLoaded),
-    loadImage('sprites/floorTile2.png',fileLoaded),
-    loadImage('sprites/floorTile3.png',fileLoaded),
-    loadImage('sprites/floorTile4.png',fileLoaded),
-  ];
-  images.aura = loadImage('sprites/playerAura.png',fileLoaded);
-  images.target = loadImage('sprites/target.png',fileLoaded);
-  images.player = {};
-  images.player.idle = [];
-  images.player.run = [];
-  for (let i = 0; i<4; i++) {
-    images.player.idle.push(loadImage('sprites/player/knight_idle_anim_f'+i+'.png', fileLoaded));
-    images.player.run.push(loadImage('sprites/player/knight_run_anim_f'+i+'.png', fileLoaded));
+    loadImage('sprites/floorTile1.png',loaded),
+    loadImage('sprites/floorTile2.png',loaded),
+    loadImage('sprites/floorTile3.png',loaded),
+    loadImage('sprites/floorTile4.png',loaded)];
+  images.aura = loadImage('sprites/playerAura.png',loaded);
+  images.target = loadImage('sprites/target.png',loaded);
+  for (let i = 0; i < 4; i++) {
+    images.player.idle.push(loadImage('sprites/player/knight_idle_anim_f'+i+'.png', loaded));
+    images.player.run.push(loadImage('sprites/player/knight_run_anim_f'+i+'.png', loaded));
   }
   //nanner garage (TEMPORARY)
   for (let x = 0; x < 25; x++) {
@@ -61,11 +96,29 @@ function setup() {
       }
     }
   }
+
   level.finishSetup();
   level.player.groundImage = images.aura;
 }
+let place = 0;
+function playPlaylist(playlist) {
+  if (place == playlist.length) {
+    place = 0; // loop the playlist
+  }
+  playlist[place].play();
+  setTimeout( function playSong() {
+    place++;
+    playPlaylist(playlist)
+  }, playlist[place].duration() * 1000);
+}
+let executed = false; // Ensure playPlaylist() can only be called once
 function mouseClicked() {
   level.basicChemistry();
+  if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
+    executed = true;
+    playPlaylist(music);
+    loadscreen.continue = true;
+  }
 }
 function mouseWheel(e) {
   if (!gamemenu.active) {
@@ -80,7 +133,7 @@ function mouseWheel(e) {
 }
 let loadTick = 0;
 function draw() {
-  if (!loadscreen.loaded()) {
+  if (loadscreen.continue == false) {
     loadscreen.draw();
   } else {
     level.basicChemistry();
