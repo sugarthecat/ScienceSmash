@@ -11,6 +11,7 @@ class Player extends Entity{
         this.dispw = 40;
         this.disph = 90;
         this.moveSpeed = 0.5;
+        this.dashTimer = 0
         this.phase = 0;
         this.facingLeft = false;
     }
@@ -23,30 +24,41 @@ class Player extends Entity{
         let up = keyIsDown(UP_ARROW) || keyIsDown(87); // W key
         let down = keyIsDown(DOWN_ARROW) || keyIsDown(83); // S key
         // Resolves key conflicts to ensure that if two opposite directions are attempted at the same time, nothing happens.
-        this.dirx = 0;
-        this.diry = 0;
-        if (right && !left) {
-            this.dirx = 1;
-            this.diry = -1;
-            // moving right and not left, convert to actual grid.
-        } else if (left && !right) {
-            this.dirx = -1;
-            this.diry = 1;
-            // moving left and not right, convert to actual grid.
-        }
-        if (down && !up) {
-            this.diry += 1;
-            this.dirx += 1;
-            // moving down and not up, convert to actual grid.
-        } else if (up && !down) {
-            this.diry += -1;
-            this.dirx += -1;
-            // moving up and not down, convert to actual grid.
-        }
-        if (this.facingLeft && right && !left) {
-            this.facingLeft = false;
-        } else if (!this.facingLeft && !right && left) {
-            this.facingLeft = true;
+        if(this.dashTimer <= 0){
+            this.dirx = 0;
+            this.diry = 0;
+            if (right && !left) {
+                this.dirx = 1;
+                this.diry = -1;
+                // moving right and not left, convert to actual grid.
+            } else if (left && !right) {
+                this.dirx = -1;
+                this.diry = 1;
+                // moving left and not right, convert to actual grid.
+            }
+            if (down && !up) {
+                this.diry += 1;
+                this.dirx += 1;
+                // moving down and not up, convert to actual grid.
+            } else if (up && !down) {
+                this.diry += -1;
+                this.dirx += -1;
+                // moving up and not down, convert to actual grid.
+            }
+            if (this.facingLeft && right && !left) {
+                this.facingLeft = false;
+            } else if (!this.facingLeft && !right && left) {
+                this.facingLeft = true;
+            }
+        }else{
+            if(this.facingLeft){
+                this.dirx = -1
+                this.diry = 1
+            }else{
+
+                this.dirx = 1
+                this.diry = -1
+            }
         }
     }
     // draw upright display of character
@@ -72,5 +84,11 @@ class Player extends Entity{
         pop()
         this.phase += 0.1;
         this.phase = this.phase % 4;
+    }
+    activateDash(){
+        if(this.dashTimer <= 0){
+            this.dashTimer = 0.2
+            this.moveSpeed*=2
+        }
     }
 }

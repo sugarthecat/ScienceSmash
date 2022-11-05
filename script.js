@@ -40,6 +40,7 @@ function keyPressed() {
   }
   if (keyCode == SHIFT) {
     // activate dash
+    level.player.activateDash()
   }
 }
 function setup() {

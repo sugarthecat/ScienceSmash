@@ -17,6 +17,12 @@ class Entity {
     }
     // Updates the entity's x and y positions.
     runMoveTick(level) {
+        if(this.dashTimer && this.dashTimer >= 0){
+            this.dashTimer -= deltaTime/1000
+            if(this.dashTimer <= 0){
+                this.moveSpeed /= 2
+            }
+        }
         let oldX = this.x;
         let oldY = this.y;
         if (this.destination) {
