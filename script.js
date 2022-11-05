@@ -43,7 +43,7 @@ function keyPressed() {
   }
 }
 function setup() {
-  camera = new Camera(500-windowWidth / 2,500-windowHeight / 2);
+  camera = new Camera(-windowWidth / 2,-windowHeight / 2);
   createCanvas(windowWidth,windowHeight);
   frameRate(60);
   angleMode(DEGREES);

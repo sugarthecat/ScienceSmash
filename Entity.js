@@ -8,7 +8,7 @@ class Entity {
         this.diry = 50; // 1,0, or -1, representing direction y
         this.dispw = 50; //display width
         this.disph = 100; //display height
-        this.moveSpeed = 5;
+        this.moveSpeed = 0.5;
     }
     //Given the level object, returns true if this player is colliding with any objects.
     //returns if it collides with another object
@@ -32,8 +32,8 @@ class Entity {
         }
         let pythDir =  sqrt(this.dirx * this.dirx + this.diry * this.diry); //Distance of dirx and diry applied to a grid 
         if (pythDir != 0) {
-            this.x += this.dirx * this.moveSpeed/pythDir;
-            this.y += this.diry * this.moveSpeed/pythDir;
+            this.x += this.dirx * this.moveSpeed/pythDir*deltaTime;
+            this.y += this.diry * this.moveSpeed/pythDir*deltaTime;
             // Accounts for distance via pythagorean theorem if there is movement.
         }
         if (level.collides(this)) {

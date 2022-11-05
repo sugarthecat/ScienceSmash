@@ -10,7 +10,7 @@ class Player extends Entity{
         this.diry = 0; // 1,0, or -1, representing direction y
         this.dispw = 40;
         this.disph = 90;
-        this.moveSpeed = 15;
+        this.moveSpeed = 0.5;
         this.phase = 0;
         this.facingLeft = false;
     }
