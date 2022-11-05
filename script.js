@@ -1,4 +1,5 @@
 let camera; // Initialize the camera
+const reader = new FileReader();
 const TILE_SCALE = 1/Math.sqrt(3);
 let images = {}; // Initialize sprite arrays
 images.floors = [];
@@ -12,6 +13,10 @@ let music = []; // Initialize music array
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(37); // Initialize the loading screen with how many files need to be loaded
+var tileTable;
+function preload() {
+  tileTable = loadTable('rooms/room-initial.csv', 'csv');
+}
 function loaded() {
   loadscreen.fileLoaded(); // Increment the loading screen
 }
@@ -79,24 +84,16 @@ function setup() {
     images.player.idle.push(loadImage('sprites/player/knight_idle_anim_f'+i+'.png', loaded));
     images.player.run.push(loadImage('sprites/player/knight_run_anim_f'+i+'.png', loaded));
   }
-  //nanner garage (TEMPORARY)
-  for (let x = 0; x < 25; x++) {
-    for (let y = 0; y < 25; y++) {
-      if((x== 4 && !((y>=11 && y<=13) || y>=21 || y<=3)) 
-      || (x==20 && !((y>=11 && y<=13) || y>=21 || y<=3)) 
-      || (y== 4 && !((x>=11 && x<=13) || x>=21 || x<=3))
-      || (y==20 && !((x>=11 && x<=13) || x>=21 || x<=3)) 
-      || (x==10 && (y<=3 || y>=21))
-      || (x==14 && (y<=3 || y>=21))
-      || (y==10 && (x<=3 || x>=21))
-      || (y==14 && (x<=3 || x>=21))) {
+  // generate the room based on the tiletable
+  for (var x = 0; x < tileTable.getRowCount(); x++){
+    for (var y = 0; y < tileTable.getColumnCount(); y++) {
+      if (tileTable.getString(x,y) == "w") {
         level.addTile(new CollisionTile(images.walls[1],images.floors[0]),x,y);
-      } else {
+      } else { // eventually, we need to add individual else statements for void tiles (v), trap tiles (t), and explosive tiles (e).
         level.addTile(new Tile(images.floors[1]),x,y);
       }
     }
   }
-
   level.finishSetup();
   level.player.groundImage = images.aura;
 }
