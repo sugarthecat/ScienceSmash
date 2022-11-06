@@ -50,15 +50,6 @@ class Player extends Entity{
             } else if (!this.facingLeft && !right && left) {
                 this.facingLeft = true;
             }
-        }else{
-            if(this.facingLeft){
-                this.dirx = -1
-                this.diry = 1
-            }else{
-
-                this.dirx = 1
-                this.diry = -1
-            }
         }
     }
     // draw upright display of character
@@ -86,7 +77,7 @@ class Player extends Entity{
         this.phase = this.phase % 4;
     }
     activateDash(){
-        if(this.dashTimer <= 0){
+        if(this.dashTimer <= 0 && (this.dirx != 0 || this.diry != 0)){
             this.dashTimer = 0.2
             this.moveSpeed*=2
         }
