@@ -10,7 +10,7 @@ class Player extends Entity{
         this.diry = 0; // 1,0, or -1, representing direction y
         this.dispw = 40;
         this.disph = 90;
-        this.moveSpeed = 0.5;
+        this.maxMoveSpeed = 0.5;
         this.dashTimer = 0
         this.phase = 0;
         this.facingLeft = false;
@@ -25,6 +25,7 @@ class Player extends Entity{
         let down = keyIsDown(DOWN_ARROW) || keyIsDown(83); // S key
         // Resolves key conflicts to ensure that if two opposite directions are attempted at the same time, nothing happens.
         if(this.dashTimer <= 0){
+            this.moveSpeed = this.maxMoveSpeed
             this.dirx = 0;
             this.diry = 0;
             if (right && !left) {
@@ -50,6 +51,8 @@ class Player extends Entity{
             } else if (!this.facingLeft && !right && left) {
                 this.facingLeft = true;
             }
+        }else{
+            this.moveSpeed = this.maxMoveSpeed*3
         }
     }
     // draw upright display of character
@@ -79,7 +82,6 @@ class Player extends Entity{
     activateDash(){
         if(this.dashTimer <= 0 && (this.dirx != 0 || this.diry != 0)){
             this.dashTimer = 0.2
-            this.moveSpeed*=2
         }
     }
 }
