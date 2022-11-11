@@ -12,7 +12,7 @@ images.player.run = [];
 let music = []; // Initialize music array
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(37); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(32); // Initialize the loading screen with how many files need to be loaded
 var tileTable;
 function preload() {
   tileTable = loadTable('rooms/room-initial.csv', 'csv');
@@ -81,10 +81,8 @@ function setup() {
     loadImage('sprites/floorTile4.png',loaded)];
   images.aura = loadImage('sprites/playerAura.png',loaded);
   images.target = loadImage('sprites/target.png',loaded);
-  for (let i = 0; i < 4; i++) {
-    images.player.idle.push(loadImage('sprites/player/knight_idle_anim_f'+i+'.png', loaded));
-    images.player.run.push(loadImage('sprites/player/knight_run_anim_f'+i+'.png', loaded));
-  }
+  images.player.idle = [loadImage('sprites/idle.png', loaded)];
+  images.player.run = [loadImage('sprites/p1.png', loaded), loadImage('sprites/p2.png', loaded)];
   // generate the room based on the tiletable
   for (var x = 0; x < tileTable.getRowCount(); x++){
     for (var y = 0; y < tileTable.getColumnCount(); y++) {

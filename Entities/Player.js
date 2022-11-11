@@ -8,7 +8,7 @@ class Player extends Entity{
         this.h = 80;
         this.dirx = 0; // 1, 0, or -1, representing direction x
         this.diry = 0; // 1,0, or -1, representing direction y
-        this.dispw = 40;
+        this.dispw = 70;
         this.disph = 90;
         this.maxMoveSpeed = 0.5;
         this.dashTimer = 0
@@ -70,14 +70,15 @@ class Player extends Entity{
             disx *= -1;
             disx -= this.dispw;
         }
+        this.phase += 0.1;
         if (this.dirx == 0 && this.diry == 0) {
+            this.phase = this.phase % images.player.idle.length;
             image(images.player.idle[floor(this.phase)], disx, disy, this.dispw, this.disph)
         } else {
+            this.phase = this.phase % images.player.run.length;
             image(images.player.run[floor(this.phase)], disx, disy, this.dispw, this.disph)
         }
         pop()
-        this.phase += 0.1;
-        this.phase = this.phase % 4;
     }
     activateDash(){
         if(this.dashTimer <= 0 && (this.dirx != 0 || this.diry != 0)){
