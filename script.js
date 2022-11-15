@@ -12,10 +12,11 @@ images.player.run = [];
 let music = []; // Initialize music array
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(32); // Initialize the loading screen with how many files need to be loaded
-var tileTable;
+let loadscreen = new LoadingScreen(28); // Initialize the loading screen with how many files need to be loaded
+let tileTable; // Initialize the tiletable for the level generation
+let placeInPL = 0; // Place in playlist of music
 function preload() {
-  tileTable = loadTable('rooms/room-initial.csv', 'csv');
+  tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
 }
 function loaded() {
   loadscreen.fileLoaded(); // Increment the loading screen
@@ -71,18 +72,14 @@ function setup() {
     loadSound('music/to-the-horizon.mp3',loaded)];
   images.walls = [
     loadImage('sprites/wallTile1.png',loaded),
-    loadImage('sprites/wallTile2.png',loaded),
-    loadImage('sprites/wallTile3.png',loaded),
-    loadImage('sprites/wallTile4.png',loaded)];
+    loadImage('sprites/wallTile2.png',loaded)];
   images.floors = [
     loadImage('sprites/floorTile1.png',loaded),
-    loadImage('sprites/floorTile2.png',loaded),
-    loadImage('sprites/floorTile3.png',loaded),
-    loadImage('sprites/floorTile4.png',loaded)];
+    loadImage('sprites/floorTile2.png',loaded)];
   images.aura = loadImage('sprites/playerAura.png',loaded);
   images.target = loadImage('sprites/target.png',loaded);
   images.player.idle = [loadImage('sprites/idle.png', loaded)];
-  images.player.run = [loadImage('sprites/p1.png', loaded), loadImage('sprites/p2.png', loaded)];
+  images.player.run = [loadImage('sprites/walk1.png', loaded), loadImage('sprites/walk2.png', loaded)];
   // generate the room based on the tiletable
   for (var x = 0; x < tileTable.getRowCount(); x++){
     for (var y = 0; y < tileTable.getColumnCount(); y++) {
@@ -96,7 +93,6 @@ function setup() {
   level.finishSetup();
   level.player.groundImage = images.aura;
 }
-let place = 0;
 function playPlaylist(playlist) {
   if (place == playlist.length) {
     place = 0; // loop the playlist
