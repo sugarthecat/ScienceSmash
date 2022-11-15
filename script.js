@@ -1,6 +1,6 @@
 let camera; // Initialize the camera
 const reader = new FileReader();
-const TILE_SCALE = 1/Math.sqrt(3);
+const TILE_SCALE = 1 / Math.sqrt(3);
 let images = {}; // Initialize sprite arrays
 images.floors = [];
 images.walls = [];
@@ -18,32 +18,35 @@ let placeInPL = 0; // Place in playlist of music
 function preload() {
   tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
 }
+
 function loaded() {
-  loadscreen.fileLoaded(); // Increment the loading screen
+	loadscreen.fileLoaded(); // Increment the loading screen
 }
-setInterval( function checkWindowFocus() {
-  if (!document.hasFocus()) { // When the game isn't in focus,
-    gamemenu.active = true; // Pause the game
-  }
-}, 200 );
+setInterval(function checkWindowFocus() {
+	if (!document.hasFocus()) { // When the game isn't in focus,
+		gamemenu.active = true; // Pause the game
+	}
+}, 200);
+
 function keyPressed() {
-  if (keyCode == ESCAPE) {
-    gamemenu.invertActive(); // Pause the game
-  }
-  if (keyCode == 81) { // Q
-    // activate first ability
-  }
-  if (keyCode == 69) { // E
-    // activate second ability
-  }
-  if (keyCode == 82) { // R
-    // activate third ability
-  }
-  if (keyCode == SHIFT) {
-    // activate dash
-    level.player.activateDash()
-  }
+	if (keyCode == ESCAPE) {
+		gamemenu.invertActive(); // Pause the game
+	}
+	if (keyCode == 81) { // Q
+		// activate first ability
+	}
+	if (keyCode == 69) { // E
+		// activate second ability
+	}
+	if (keyCode == 82) { // R
+		// activate third ability
+	}
+	if (keyCode == SHIFT) {
+		// activate dash
+		level.player.activateDash()
+	}
 }
+
 function setup() {
   camera = new Camera(-windowWidth / 2,-windowHeight / 2);
   createCanvas(windowWidth,windowHeight);
@@ -94,61 +97,62 @@ function setup() {
   level.player.groundImage = images.aura;
 }
 function playPlaylist(playlist) {
-  if (place == playlist.length) {
-    place = 0; // loop the playlist
-  }
-  playlist[place].play();
-  setTimeout( function playSong() {
-    place++;
-    playPlaylist(playlist)
-  }, playlist[place].duration() * 1000);
+	if (place == playlist.length) {
+		place = 0; // loop the playlist
+	}
+	playlist[place].play();
+	setTimeout(function playSong() {
+		place++;
+		playPlaylist(playlist)
+	}, playlist[place].duration() * 1000);
 }
 let executed = false; // Ensure playPlaylist() can only be called once
 function mouseClicked() {
-  level.basicChemistry();
-  if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
-    executed = true;
-    playPlaylist(music);
-    loadscreen.continue = true;
-  }
+	level.basicChemistry();
+	if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
+		executed = true;
+		playPlaylist(music);
+		loadscreen.continue = true;
+	}
 }
+
 function mouseWheel(e) {
-  if (!gamemenu.active) {
-    if (e.delta < 0 && camera.worldScale < 2) {
-      camera.worldScale *= 1.1;
-      camera.x /= 1.1;
-    } else if (e.delta > 0 && camera.worldScale > 0.3) {
-      camera.worldScale /= 1.1;
-      camera.x *= 1.1;
-    }
-  }
+	if (!gamemenu.active) {
+		if (e.delta < 0) {
+			camera.scaleUp(1.1, level.player);
+		} else if (e.delta > 0) {
+			camera.scaleDown(1.1, level.player)
+		}
+	}
 }
 let loadTick = 0;
+
 function draw() {
-  if (loadscreen.continue == false) {
-    loadscreen.draw();
-  } else {
-    level.basicChemistry();
-    // Game is active
-    background(0); // draws black background
-    push();
-    if (!gamemenu.active) {
-      camera.moveTowards(level.player);
-    }
-    camera.adjust();
-    noStroke();
-    level.displayGround();
-    level.displayUpper();
-    level.displayRoof();
-    if (!gamemenu.active) {
-      level.updateTargetPosition();
-      level.runEntityMovement();
-      level.runPlayerMovement();
-    }
-    pop();
-    gamemenu.display();
-  }
+	if (loadscreen.continue == false) {
+		loadscreen.draw();
+	} else {
+		level.basicChemistry();
+		// Game is active
+		background(0); // draws black background
+		push();
+		if (!gamemenu.active) {
+			camera.moveTowards(level.player);
+		}
+		camera.adjust();
+		noStroke();
+		level.displayGround();
+		level.displayUpper();
+		level.displayRoof();
+		if (!gamemenu.active) {
+			level.updateTargetPosition();
+			level.runEntityMovement();
+			level.runPlayerMovement();
+		}
+		pop();
+		gamemenu.display();
+	}
 }
+
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+	resizeCanvas(windowWidth, windowHeight);
 }
