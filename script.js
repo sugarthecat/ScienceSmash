@@ -10,7 +10,7 @@ var tileTable;
 let place = 0;
 
 function preload() {
-	tileTable = loadTable('rooms/room-initial.csv', 'csv');
+  tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
 }
 
 function loaded() {
@@ -61,7 +61,6 @@ function setup() {
 	level.player.groundImage = assets.images.aura;
 	camera.setPositionAs(level.player)
 }
-
 function playPlaylist(playlist) {
 	if (place == playlist.length) {
 		place = 0; // loop the playlist
