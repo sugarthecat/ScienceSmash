@@ -4,7 +4,7 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets();
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(28); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(29); // Initialize the loading screen with how many files need to be loaded
 var tileTable;
 let placeInPL = 0;
 
@@ -49,10 +49,16 @@ function setup() {
 	// generate the room based on the tiletable
 	for (var x = 0; x < tileTable.getRowCount(); x++) {
 		for (var y = 0; y < tileTable.getColumnCount(); y++) {
-			if (tileTable.getString(x, y) == "w") {
-				level.addTile(new CollisionTile(assets.images.walls[0], assets.images.floors[1]), x, y);
-			} else { // eventually, we need to add individual else statements for void tiles (v), trap tiles (t), and explosive tiles (e).
-				level.addTile(new Tile(assets.images.floors[1]), x, y);
+			if (tileTable.getString(x, y) == "w") { // wall
+				level.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y);
+			} else if (tileTable.getString(x, y) == "g") { // ground
+				level.addTile(new Tile(assets.images.floors[0]), x, y);
+			} else if (tileTable.getString(x, y) == "v") { // void
+				level.addTile(new VoidTile(assets.images.void[0]), x, y);
+			} else if (tileTable.getString(x, y) == "t") { // trap
+				// add trap tile
+			} else if (tileTable.getString(x, y) == "e") { // explosive
+				// add explosive tile
 			}
 		}
 	}

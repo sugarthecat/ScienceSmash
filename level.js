@@ -1,7 +1,7 @@
 
 class Level {
     constructor(lvl) {
-        this.tiles = [[]]; // temporary
+        this.tiles = [[]];
         this.lvl = lvl; // integer representation of what level the player is on
         this.targetRotation = 0;
         this.player = new Player(500,500);

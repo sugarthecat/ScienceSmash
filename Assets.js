@@ -37,11 +37,13 @@ class Assets {
         this.images.floors = [
             loadImage('sprites/floorTile1.png', loaded),
             loadImage('sprites/floorTile2.png', loaded)];
+        this.images.void = [
+            loadImage('sprites/voidTile.png', loaded)];
         this.images.aura = loadImage('sprites/playerAura.png', loaded);
         this.images.target = loadImage('sprites/target.png', loaded);
         this.images.player.idle = [loadImage('sprites/idle.png', loaded)];
         this.images.player.run = [
-            loadImage('sprites/p1.png', loaded),
-            loadImage('sprites/p2.png', loaded)];
+            loadImage('sprites/run1.png', loaded),
+            loadImage('sprites/run2.png', loaded)];
     }
 }
