@@ -2,7 +2,6 @@ let camera; // Initialize the camera
 const reader = new FileReader();
 const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets();
-let music = []; // Initialize music array
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(32); // Initialize the loading screen with how many files need to be loaded
