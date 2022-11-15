@@ -6,18 +6,8 @@ class Room {
     }
     buildRoom() {
         let images = {};
-        images.walls = [
-            loadImage('sprites/wallTile1.png'),
-            loadImage('sprites/wallTile2.png'),
-            loadImage('sprites/wallTile3.png'),
-            loadImage('sprites/wallTile4.png'),
-        ];
-        images.floors = [
-            loadImage('sprites/floorTile1.png'),
-            loadImage('sprites/floorTile2.png'),
-            loadImage('sprites/floorTile3.png'),
-            loadImage('sprites/floorTile4.png'),
-        ];
+        images.walls = assets.images.walls
+        images.floors = assets.images.floors
         if (this.type = 0) { // Initial
             this.type = "initial";
             for (let x = 0; x < 25; x++) {
