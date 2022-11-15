@@ -87,7 +87,7 @@ function setup() {
   for (var x = 0; x < tileTable.getRowCount(); x++){
     for (var y = 0; y < tileTable.getColumnCount(); y++) {
       if (tileTable.getString(x,y) == "w") {
-        level.addTile(new CollisionTile(images.walls[1],images.floors[0]),x,y);
+        level.addTile(new CollisionTile(images.walls[0],images.floors[1]),x,y);
       } else { // eventually, we need to add individual else statements for void tiles (v), trap tiles (t), and explosive tiles (e).
         level.addTile(new Tile(images.floors[1]),x,y);
       }
@@ -97,14 +97,14 @@ function setup() {
   level.player.groundImage = images.aura;
 }
 function playPlaylist(playlist) {
-	if (place == playlist.length) {
-		place = 0; // loop the playlist
+	if (placeInPL == playlist.length) {
+		placeInPL = 0; // loop the playlist
 	}
-	playlist[place].play();
+	playlist[placeInPL].play();
 	setTimeout(function playSong() {
-		place++;
+		placeInPL++;
 		playPlaylist(playlist)
-	}, playlist[place].duration() * 1000);
+	}, playlist[placeInPL].duration() * 1000);
 }
 let executed = false; // Ensure playPlaylist() can only be called once
 function mouseClicked() {
