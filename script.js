@@ -1,20 +1,13 @@
 let camera; // Initialize the camera
 const reader = new FileReader();
 const TILE_SCALE = 1 / Math.sqrt(3);
-let images = {}; // Initialize sprite arrays
-images.floors = [];
-images.walls = [];
-images.aura = [];
-images.target = [];
-images.player = {};
-images.player.idle = [];
-images.player.run = [];
-let music = []; // Initialize music array
+let assets = new Assets();
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(28); // Initialize the loading screen with how many files need to be loaded
-let tileTable; // Initialize the tiletable for the level generation
-let placeInPL = 0; // Place in playlist of music
+var tileTable;
+let placeInPL = 0;
+
 function preload() {
   tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
 }
@@ -48,53 +41,24 @@ function keyPressed() {
 }
 
 function setup() {
-  camera = new Camera(-windowWidth / 2,-windowHeight / 2);
-  createCanvas(windowWidth,windowHeight);
-  frameRate(60);
-  angleMode(DEGREES);
-  // Load Files
-  music = [
-    loadSound('music/a-robust-crew.mp3',loaded),
-    loadSound('music/a-time-forgotten.mp3',loaded),
-    loadSound('music/ale-and-anecdotes.mp3',loaded),
-    loadSound('music/crystal-caverns.mp3',loaded),
-    loadSound('music/i-am-not-what-i-thought.mp3',loaded),
-    loadSound('music/dusty-memories.mp3',loaded),
-    loadSound('music/eternal-sleep.mp3',loaded),
-    loadSound('music/fireside-tales.mp3',loaded),
-    loadSound('music/highland-castle.mp3',loaded),
-    loadSound('music/i-was-always-right-here.mp3',loaded),
-    loadSound('music/illusory-realm.mp3',loaded),
-    loadSound('music/into-oblivion.mp3',loaded),
-    loadSound('music/labyrinth-of-lost-dreams.mp3',loaded),
-    loadSound('music/lake-of-destiny.mp3',loaded),
-    loadSound('music/lord-mcdeath.mp3',loaded),
-    loadSound('music/lurking-evil.mp3',loaded),
-    loadSound('music/over-the-plains-of-snow.mp3',loaded),
-    loadSound('music/the-phantoms-castle.mp3',loaded),
-    loadSound('music/to-the-horizon.mp3',loaded)];
-  images.walls = [
-    loadImage('sprites/wallTile1.png',loaded),
-    loadImage('sprites/wallTile2.png',loaded)];
-  images.floors = [
-    loadImage('sprites/floorTile1.png',loaded),
-    loadImage('sprites/floorTile2.png',loaded)];
-  images.aura = loadImage('sprites/playerAura.png',loaded);
-  images.target = loadImage('sprites/target.png',loaded);
-  images.player.idle = [loadImage('sprites/idle.png', loaded)];
-  images.player.run = [loadImage('sprites/walk1.png', loaded), loadImage('sprites/walk2.png', loaded)];
-  // generate the room based on the tiletable
-  for (var x = 0; x < tileTable.getRowCount(); x++){
-    for (var y = 0; y < tileTable.getColumnCount(); y++) {
-      if (tileTable.getString(x,y) == "w") {
-        level.addTile(new CollisionTile(images.walls[0],images.floors[1]),x,y);
-      } else { // eventually, we need to add individual else statements for void tiles (v), trap tiles (t), and explosive tiles (e).
-        level.addTile(new Tile(images.floors[1]),x,y);
-      }
-    }
-  }
-  level.finishSetup();
-  level.player.groundImage = images.aura;
+	assets.loadFiles()
+	camera = new Camera(-windowWidth / 2, -windowHeight / 2);
+	createCanvas(windowWidth, windowHeight);
+	frameRate(60);
+	angleMode(DEGREES);
+	// generate the room based on the tiletable
+	for (var x = 0; x < tileTable.getRowCount(); x++) {
+		for (var y = 0; y < tileTable.getColumnCount(); y++) {
+			if (tileTable.getString(x, y) == "w") {
+				level.addTile(new CollisionTile(assets.images.walls[0], assets.images.floors[1]), x, y);
+			} else { // eventually, we need to add individual else statements for void tiles (v), trap tiles (t), and explosive tiles (e).
+				level.addTile(new Tile(assets.images.floors[1]), x, y);
+			}
+		}
+	}
+	level.finishSetup();
+	level.player.groundImage = assets.images.aura;
+	camera.setPositionAs(level.player)
 }
 function playPlaylist(playlist) {
 	if (placeInPL == playlist.length) {
@@ -111,7 +75,7 @@ function mouseClicked() {
 	level.basicChemistry();
 	if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
 		executed = true;
-		playPlaylist(music);
+		playPlaylist(assets.music);
 		loadscreen.continue = true;
 	}
 }

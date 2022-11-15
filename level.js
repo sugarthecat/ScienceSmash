@@ -233,7 +233,7 @@ class Level {
         push()
         translate (this.targetx,this.targety)
         rotate (this.targetRotation)
-        image(images.target,-100,-100,200,200)
+        image(assets.images.target,-100,-100,200,200)
         pop()
     }
     basicChemistry(){
