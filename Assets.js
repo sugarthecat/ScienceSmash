@@ -39,7 +39,7 @@ class Assets {
             loadImage('sprites/floorTile2.png', loaded)];
         this.images.aura = loadImage('sprites/playerAura.png', loaded);
         this.images.target = loadImage('sprites/target.png', loaded);
-        this.images.player.idle = loadImage('sprites/idle.png', loaded);
+        this.images.player.idle = [loadImage('sprites/idle.png', loaded)];
         this.images.player.run = [
             loadImage('sprites/run1.png', loaded),
             loadImage('sprites/run2.png', loaded)];
