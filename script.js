@@ -7,6 +7,8 @@ let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(28); // Initialize the loading screen with how many files need to be loaded
 var tileTable;
 let placeInPL = 0;
+let executed = false; // Ensure playPlaylist() can only be called once
+let loadTick = 0;
 
 function preload() {
   tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
@@ -70,7 +72,6 @@ function playPlaylist(playlist) {
 		playPlaylist(playlist)
 	}, playlist[placeInPL].duration() * 1000);
 }
-let executed = false; // Ensure playPlaylist() can only be called once
 function mouseClicked() {
 	level.basicChemistry();
 	if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
@@ -89,8 +90,13 @@ function mouseWheel(e) {
 		}
 	}
 }
-let loadTick = 0;
 
+let t = new TextBox([{content: "Press the", color: {r:0, g:0, b:0}},
+	{content: "W, A, S, ", color: {r:255, g:0, b:0}},
+	{content: "or", color: {r:0, g:0, b:0}},
+	{content: "D", color: {r:255, g:0, b:0}},
+	{content: "keys to move", color: {r:0, g:0, b:0}},
+	],1.5);
 function draw() {
 	if (loadscreen.continue == false) {
 		loadscreen.draw();
@@ -111,8 +117,10 @@ function draw() {
 			level.updateTargetPosition();
 			level.runEntityMovement();
 			level.runPlayerMovement();
+			t.advanceText()
 		}
 		pop();
+		t.display()
 		gamemenu.display();
 	}
 }
