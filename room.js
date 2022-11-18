@@ -1,46 +1,48 @@
 class Room {
     constructor(typeInt) {
-        this.tiles = [[]];
-        this.typeInt = typeInt
-        this.type = "";
+        this.tileTable;
+        this.type = typeInt;
+        this.tileTableLoaded = false;
     }
-    buildRoom() {
-        let images = {};
-        images.walls = assets.images.walls
-        images.floors = assets.images.floors
+    getCSV() {
         if (this.type = 0) { // Initial
-            this.type = "initial";
-            for (let x = 0; x < 25; x++) {
-                for (let y = 0; y < 25; y++) {
-                    if((x== 4 && !((y>=11 && y<=13) || y>=21 || y<=3)) 
-                    || (x==20 && !((y>=11 && y<=13) || y>=21 || y<=3)) 
-                    || (y== 4 && !((x>=11 && x<=13) || x>=21 || x<=3))
-                    || (y==20 && !((x>=11 && x<=13) || x>=21 || x<=3)) 
-                    || (x==10 && (y<=3 || y>=21))
-                    || (x==14 && (y<=3 || y>=21))
-                    || (y==10 && (x<=3 || x>=21))
-                    || (y==14 && (x<=3 || x>=21))) {
-                        this.tiles.push(new CollisionTile(images.walls[1],images.floors[0]),x,y);
-                    } else {
-                        this.tiles.push(new Tile(images.floors[1]),x,y);
-                    }
-                }
-            }
+            let x = Math.floor(Math.random() * 1) // needs to be equal to the amount of room files in the initial room directory
+            this.tileTable = loadTable('rooms/initial/i'+x, 'csv', 'noheader', loaded);
+            while (this.tileTableLoaded == false) { console.log("waiting for tileTable to load"); } // prevent the caller from receiving an empty tileTable
+            return this.tileTable;
         }
-        if (this.typeInt = 1) { // Standard
-            this.type = "standard";
+        if (this.type = 1) { // Standard
+            let x = Math.floor(Math.random() * 8) // needs to be equal to the amount of room files in the standard room directory
+            this.tileTable = loadTable('rooms/standard/s'+x, 'csv', 'noheader', loaded);
+            while (this.tileTableLoaded == false) { console.log("waiting for tileTable to load"); } // prevent the caller from receiving an empty tileTable
+            return this.tileTable;
         }
-        if (this.typeInt = 2) { // Loot
-            this.type = "loot";
+        if (this.type = 2) { // Loot
+            let x = Math.floor(Math.random() * 1) // needs to be equal to the amount of room files in the loot room directory
+            this.tileTable = loadTable('rooms/loot/l'+x, 'csv', 'noheader', loaded);
+            while (this.tileTableLoaded == false) { console.log("waiting for tileTable to load"); } // prevent the caller from receiving an empty tileTable
+            return this.tileTable;
         }
-        if (this.typeInt = 3) { // Shop
-            this.type = "shop";
+        if (this.type = 3) { // Shop
+            let x = Math.floor(Math.random() * 1) // needs to be equal to the amount of room files in the shop room directory
+            this.tileTable = loadTable('rooms/shop/sh'+x, 'csv', 'noheader', loaded);
+            while (this.tileTableLoaded == false) { console.log("waiting for tileTable to load"); } // prevent the caller from receiving an empty tileTable
+            return this.tileTable;
         }
-        if (this.typeInt = 4) { // Progression
-            this.type = "progression";
+        if (this.type = 4) { // Progression
+            let x = Math.floor(Math.random() * 1) // needs to be equal to the amount of room files in the progression room directory
+            this.tileTable = loadTable('rooms/progression/p'+x, 'csv', 'noheader', loaded);
+            while (this.tileTableLoaded == false) { console.log("waiting for tileTable to load"); } // prevent the caller from receiving an empty tileTable
+            return this.tileTable;
         }
-        if (this.typeInt = 5) { // Boss
-            this.type = "boss";
+        if (this.type = 5) { // Boss
+            let x = Math.floor(Math.random() * 1) // needs to be equal to the amount of room files in the boss room directory
+            this.tileTable = loadTable('rooms/boss/b'+x, 'csv', 'noheader', loaded);
+            while (this.tileTableLoaded == false) { console.log("waiting for tileTable to load"); } // prevent the caller from receiving an empty tileTable
+            return this.tileTable;
         }
+    }
+    loaded() {
+        this.tileTableLoaded = true;
     }
 }

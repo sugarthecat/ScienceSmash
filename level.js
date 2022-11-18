@@ -7,20 +7,43 @@ class Level {
         this.player = new Player(500,500);
         this.entities = [];
         this.rooms = [];
-        let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
-        this.rooms.push(new Room(0)); // Add initial room
+        // let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; (commented out until loot and shop rooms are implemented)// 80% chance for standard, 10% chance for loot, 10% chance for shop
+        let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        this.rooms.push(new Room(0)); // Push an initial room
         if (this.lvl == 0) { // lvl 0 is the tutorial
             for (let i = 1; i < 5; i++) {
                 this.rooms.push(new Room(i)); // Push a standard, loot, shop, and progression room
             }
         } else {
             for (let i = 0; i < this.lvl; i++) { // For every level
-                this.rooms.push(new Room(mainRooms[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
+                this.rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
             }
-            if (this.lvl % 10) {
-                this.rooms.push(new Room(5)); // If its a tenth level, push a boss room
-            } else {
-                this.rooms.push(new Room(4)); // Else, push a normal progression room
+            if (this.lvl % 10) { // If its a tenth level, push a boss room
+                this.rooms.push(new Room(5));
+            } else { // Otherwise, push a normal progression room
+                this.rooms.push(new Room(4));
+            }
+        }
+        for (let i = 0; i < this.rooms.length; i++) {
+            
+        }
+    }
+    generateRoom(tileTable) {
+        for (var x = 0; x < tileTable.getRowCount(); x++) {
+            for (var y = 0; y < tileTable.getColumnCount(); y++) {
+                if (tileTable.getString(x, y) == "w") { // wall
+                    this.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y);
+                } else if (tileTable.getString(x, y) == "g") { // ground
+                    this.addTile(new Tile(assets.images.floors[0]), x, y);
+                } else if (tileTable.getString(x, y) == "v") { // void
+                    this.addTile(new VoidTile(assets.images.void[0]), x, y);
+                } else if (tileTable.getString(x, y) == "t") { // trap
+                    // add trap tile
+                } else if (tileTable.getString(x, y) == "e") { // explosive
+                    // add explosive tile
+                } else if (tileTable.getString(x, y) == "c") { // chest
+                    // add chest tile
+                }
             }
         }
     }
@@ -103,6 +126,8 @@ class Level {
                 }
             }
         }
+        // generate the player's aura image
+        this.player.groundImage = assets.images.aura;
     }
     displayUpper() {
         let playerDrawn = false;

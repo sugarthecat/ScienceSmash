@@ -46,24 +46,8 @@ function setup() {
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
-	// generate the room based on the tiletable
-	for (var x = 0; x < tileTable.getRowCount(); x++) {
-		for (var y = 0; y < tileTable.getColumnCount(); y++) {
-			if (tileTable.getString(x, y) == "w") { // wall
-				level.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y);
-			} else if (tileTable.getString(x, y) == "g") { // ground
-				level.addTile(new Tile(assets.images.floors[0]), x, y);
-			} else if (tileTable.getString(x, y) == "v") { // void
-				level.addTile(new VoidTile(assets.images.void[0]), x, y);
-			} else if (tileTable.getString(x, y) == "t") { // trap
-				// add trap tile
-			} else if (tileTable.getString(x, y) == "e") { // explosive
-				// add explosive tile
-			}
-		}
-	}
+	level.generateRoom(tileTable);
 	level.finishSetup();
-	level.player.groundImage = assets.images.aura;
 	camera.setPositionAs(level.player)
 }
 function playPlaylist(playlist) {
