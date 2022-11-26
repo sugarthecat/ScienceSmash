@@ -1,4 +1,3 @@
-
 class Level {
     constructor(lvl) {
         this.tiles = [[]];
@@ -6,8 +5,10 @@ class Level {
         this.targetRotation = 0;
         this.player = new Player(500,500);
         this.entities = [];
+        this.tileTable = new p5.Table([]);
+        this.layout = [[]];
         this.rooms = [];
-        // let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; (commented out until loot and shop rooms are implemented)// 80% chance for standard, 10% chance for loot, 10% chance for shop
+        //let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; (commented out until loot and shop rooms are implemented)// 80% chance for standard, 10% chance for loot, 10% chance for shop
         let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
         this.rooms.push(new Room(0)); // Push an initial room
         if (this.lvl == 0) { // lvl 0 is the tutorial
@@ -24,11 +25,19 @@ class Level {
                 this.rooms.push(new Room(4));
             }
         }
+        let LP = [[]]; // layout positions
         for (let i = 0; i < this.rooms.length; i++) {
-            
+            if (i = 0) {
+                //layout[0][0] = 
+            }
+            let dir = Math.floor(Math.random() * 4); // 0N 1E 2S 3W
+            let branch = LP[Math.floor(Math.random() * LP.length)]; // 0N 1E 2S 3W
+        }
+        for (let i = 0; i < this.layout.length * 25; i++) {
+            //this.tileTable.addRow;
         }
     }
-    generateRoom(tileTable) {
+    generateTiles(tileTable) {
         for (var x = 0; x < tileTable.getRowCount(); x++) {
             for (var y = 0; y < tileTable.getColumnCount(); y++) {
                 if (tileTable.getString(x, y) == "w") { // wall
@@ -74,31 +83,6 @@ class Level {
         this.player.runMoveTick(this);
         this.player.fixDirections();
     }
-    displayGround() {
-        push();
-        // Vertically scale and rotate tiles in order to make isometric viewpoint
-        scale(1,TILE_SCALE);
-        rotate(45);
-        // call function "displayGround" for all items in 2d array tiles where hasGround is true
-        for (let x = 0; x < this.tiles.length; x++) {
-            for (let y = 0; y < this.tiles[x].length; y++) {
-                if (this.tiles[x][y].hasGround) {
-                    this.tiles[x][y].displayGround();
-                }
-            }
-        }
-        this.player.drawGround();
-        this.displayTarget();
-        fill(0);
-        rect(-1000,-1000,1000,100000);
-        rect(-1000,-1000,100000,1000);
-        rect(this.tiles.length*100,0,1000,100000);
-        rect(0,this.tiles[0].length*100,100000,1000);
-        for (let i = 0; i< this.entities.length; i++) {
-            this.entities[i].drawGround();
-        }
-        pop();
-    }
     addTile(t,x,y) {
         let tile = t;
         tile.x = x * 100;
@@ -129,6 +113,31 @@ class Level {
         // generate the player's aura image
         this.player.groundImage = assets.images.aura;
     }
+    displayGround() {
+        push();
+        // Vertically scale and rotate tiles in order to make isometric viewpoint
+        scale(1,TILE_SCALE);
+        rotate(45);
+        // call function "displayGround" for all items in 2d array tiles where hasGround is true
+        for (let x = 0; x < this.tiles.length; x++) {
+            for (let y = 0; y < this.tiles[x].length; y++) {
+                if (this.tiles[x][y].hasGround) {
+                    this.tiles[x][y].displayGround();
+                }
+            }
+        }
+        this.player.drawGround();
+        this.displayTarget();
+        fill(0);
+        rect(-1000,-1000,1000,100000);
+        rect(-1000,-1000,100000,1000);
+        rect(this.tiles.length*100,0,1000,100000);
+        rect(0,this.tiles[0].length*100,100000,1000);
+        for (let i = 0; i< this.entities.length; i++) {
+            this.entities[i].drawGround();
+        }
+        pop();
+    }
     displayUpper() {
         let playerDrawn = false;
         let entityDrawn = [];
@@ -138,7 +147,9 @@ class Level {
         if ((0+0)*100> this.player.x+this.player.y) {
             this.player.draw();
         }
-        for (let d = 0; d<this.tiles.length + this.tiles[0].length; d++) {
+        // d = distance to the top of the tile
+        // p = distance to the right of the tile
+        for (let d = 0; d < this.tiles.length+this.tiles[0].length; d++) {
             for (let p = 0; p<=d; p++) {
                 let x = d - p;
                 let y = p;
