@@ -5,11 +5,10 @@ let assets = new Assets();
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(43); // Initialize the loading screen with how many files need to be loaded
-var tileTable;
 let placeInPL = 0;
 
 function preload() {
-  tileTable = loadTable('rooms/initial/i0.csv', 'csv'); // Load the csv file containing the level information
+	level.generateRooms();
 }
 
 function loaded() {
@@ -46,9 +45,8 @@ function setup() {
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
-	level.generateTiles(tileTable);
 	level.finishSetup();
-	camera.setPositionAs(level.player)
+	camera.setPositionAs(level.player);
 }
 function playPlaylist(playlist) {
 	if (placeInPL == playlist.length) {
@@ -57,7 +55,7 @@ function playPlaylist(playlist) {
 	playlist[placeInPL].play();
 	setTimeout(function playSong() {
 		placeInPL++;
-		playPlaylist(playlist)
+		playPlaylist(playlist);
 	}, playlist[placeInPL].duration() * 1000);
 }
 let executed = false; // Ensure playPlaylist() can only be called once
