@@ -4,12 +4,12 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets();
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(29); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(30); // Initialize the loading screen with how many files need to be loaded
 var tileTable;
 let placeInPL = 0;
 let executed = false; // Ensure playPlaylist() can only be called once
 let loadTick = 0;
-let tutorial = new Tutorial();
+let tutorial;
 function preload() {
   tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
 }
@@ -89,6 +89,7 @@ function mouseClicked() {
 		executed = true;
 		playPlaylist(assets.music);
 		loadscreen.continue = true;
+		tutorial = new Tutorial(assets.tutorialText)
 	}
 }
 

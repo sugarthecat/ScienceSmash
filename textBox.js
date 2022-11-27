@@ -45,7 +45,7 @@ class TextBox{
             }
             for(let j = 0; j<this.text[i].content.length; j++){
                 if(lettersTyped < this.totalShown){
-                    fill(this.text[i].color.r,this.text[i].color.g,this.text[i].color.b)
+                    fill(this.text[i].color)
                     text(this.text[i].content.charAt(j),(width-xWidth)/2+xOn+xWidth*this.margin,height-yWidth+textSize()*rowOn)
                     xOn += textWidth(this.text[i].content.charAt(j))
                     lettersTyped++;

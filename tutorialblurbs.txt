@@ -1,0 +1,8 @@
+Uh Oh! This isn't my dorm room... (space to continue)
+I remember I went to sleep... How did i get here? (space to continue)
+At least I dont have to study for tests anymore... (space to continue)
+I should really move around though... (W / Up-Arrow to move up)
+I wonder what's over here (S / Down-Arrow to move down)
+Do I see something over there? (A / Left-Arrow to move left)
+I think I'll check out this last corner. (D / Right-Arrow to move right)
+Time for morning exercise! (Shift while moving to dash)
