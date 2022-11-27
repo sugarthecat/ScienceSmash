@@ -15,7 +15,19 @@ class Player extends Entity{
         this.phase = 0;
         this.facingLeft = false;
     }
+    isMovingUp(){
+        return this.dirx + this.diry < 0
+    }
+    isMovingDown(){
+        return this.dirx + this.diry > 0
+    }
+    isMovingRight(){
+        return this.dirx - this.diry > 0
+    }
+    isMovingLeft(){
+        return this.dirx - this.diry < 0
 
+    }
     // Ensures that dirx and diry are correct.
     fixDirections() {
         // Checks for movement key activations.

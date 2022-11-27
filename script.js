@@ -9,7 +9,7 @@ var tileTable;
 let placeInPL = 0;
 let executed = false; // Ensure playPlaylist() can only be called once
 let loadTick = 0;
-
+let tutorial = new Tutorial();
 function preload() {
   tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
 }
@@ -19,26 +19,31 @@ function loaded() {
 }
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
-		gamemenu.active = true; // Pause the game
+		//gamemenu.active = true; // Pause the game
 	}
 }, 200);
 
 function keyPressed() {
-	if (keyCode == ESCAPE) {
-		gamemenu.invertActive(); // Pause the game
-	}
-	if (keyCode == 81) { // Q
-		// activate first ability
-	}
-	if (keyCode == 69) { // E
-		// activate second ability
-	}
-	if (keyCode == 82) { // R
-		// activate third ability
-	}
-	if (keyCode == SHIFT) {
-		// activate dash
-		level.player.activateDash()
+	if(loadscreen.continue){
+		if(!gamemenu.active && !tutorial.isComplete()){
+			tutorial.takeInput(keyCode)
+		}
+		if (keyCode == ESCAPE) {
+			gamemenu.invertActive(); // Pause the game
+		}
+		if (keyCode == 81) { // Q
+			// activate first ability
+		}
+		if (keyCode == 69) { // E
+			// activate second ability
+		}
+		if (keyCode == 82) { // R
+			// activate third ability
+		}
+		if (keyCode == SHIFT) {
+			// activate dash
+			level.player.activateDash()
+		}
 	}
 }
 
@@ -97,12 +102,7 @@ function mouseWheel(e) {
 	}
 }
 
-let t = new TextBox([{content: "Press the", color: {r:0, g:0, b:0}},
-	{content: "W, A, S, ", color: {r:255, g:0, b:0}},
-	{content: "or", color: {r:0, g:0, b:0}},
-	{content: "D", color: {r:255, g:0, b:0}},
-	{content: "keys to move", color: {r:0, g:0, b:0}},
-	],1.5);
+
 function draw() {
 	if (loadscreen.continue == false) {
 		loadscreen.draw();
@@ -123,10 +123,16 @@ function draw() {
 			level.updateTargetPosition();
 			level.runEntityMovement();
 			level.runPlayerMovement();
-			t.advanceText()
+			if(!tutorial.isComplete()){
+				tutorial.advanceText()
+			}
 		}
 		pop();
-		t.display()
+		if(!tutorial.isComplete()){
+			tutorial.display();
+			//test level for completed tutorial condition
+			tutorial.testLevel();
+		}
 		gamemenu.display();
 	}
 }
