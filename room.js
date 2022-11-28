@@ -5,6 +5,7 @@ class Room {
         this.tileTableLoaded = false;
     }
     getCSV() {
+        // add switch case
         if (this.type = 0) { // Initial
             let x = Math.floor(Math.random() * 1) // needs to be equal to the amount of room files in the initial room directory
             this.tileTable = loadTable('rooms/initial/i'+x, 'csv', 'noheader', loaded);

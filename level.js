@@ -1,4 +1,3 @@
-
 class Level {
     constructor(lvl) {
         this.tiles = [[]];
@@ -25,7 +24,7 @@ class Level {
             }
         }
         for (let i = 0; i < this.rooms.length; i++) {
-            
+
         }
     }
     generateRoom(tileTable) {
