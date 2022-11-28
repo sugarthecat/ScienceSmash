@@ -1,5 +1,12 @@
 class Assets {
     constructor(){
+        this.rooms = {};
+        this.rooms.initial = [];
+        this.rooms.standard = [];
+        this.rooms.loot = [];
+        this.rooms.shop = [];
+        this.rooms.progression = [];
+        this.rooms.boss = [];
         this.music = [];
         this.images = {};
         this.images.walls = [];
@@ -11,6 +18,24 @@ class Assets {
         this.images.player.run = [];
     }
     loadFiles(){
+        for (let i = 0; i < 2; i++) { // needs to be equal to the amount of room files in the initial room directory
+            this.rooms.initial.push(loadTable('rooms/initial/i'+i+'.csv', 'csv', 'noheader', loaded))
+        }
+        for (let i = 0; i < 8; i++) { // needs to be equal to the amount of room files in the standard room directory
+            this.rooms.standard.push(loadTable('rooms/standard/s'+i+'.csv', 'csv', 'noheader', loaded))
+        }
+        for (let i = 0; i < 2; i++) { // needs to be equal to the amount of room files in the loot room directory
+            this.rooms.loot.push(loadTable('rooms/loot/l'+i+'.csv', 'csv', 'noheader', loaded))
+        }
+        for (let i = 0; i < 0; i++) { // needs to be equal to the amount of room files in the shop room directory
+            this.rooms.shop.push(loadTable('rooms/shop/sh'+i+'.csv', 'csv', 'noheader', loaded))
+        }
+        for (let i = 0; i < 2; i++) { // needs to be equal to the amount of room files in the progression room directory
+            this.rooms.progression.push(loadTable('rooms/progression/p'+i+'.csv', 'csv', 'noheader', loaded))
+        }
+        for (let i = 0; i < 0; i++) { // needs to be equal to the amount of room files in the boss room directory
+            this.rooms.boss.push(loadTable('rooms/boss/b'+i+'.csv', 'csv', 'noheader', loaded))
+        }
         this.music = [
             loadSound('music/a-robust-crew.mp3', loaded),
             loadSound('music/a-time-forgotten.mp3', loaded),
