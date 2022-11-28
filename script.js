@@ -2,7 +2,7 @@ let camera; // Initialize the camera
 const reader = new FileReader();
 const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets();
-let level = new Level(1); // Initialize the first level
+let level = new Level(); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(43); // Initialize the loading screen with how many files need to be loaded
 let placeInPL = 0;
@@ -21,9 +21,7 @@ setInterval(function checkWindowFocus() {
 }, 200);
 
 function keyPressed() {
-	if (keyCode == ESCAPE) {
-		gamemenu.invertActive(); // Pause the game
-	}
+	if (keyCode == ESCAPE) { gamemenu.invertActive(); } // Pause the game
 	if (keyCode == 81) { // Q
 		// activate first ability
 	}
@@ -33,20 +31,20 @@ function keyPressed() {
 	if (keyCode == 82) { // R
 		// activate third ability
 	}
-	if (keyCode == SHIFT) {
-		// activate dash
-		level.player.activateDash()
-	}
+	if (keyCode == SHIFT) { level.player.activateDash(); } // activate dash
 }
 
 function setup() {
-	assets.loadFiles()
+	assets.loadFiles();
 	camera = new Camera(-windowWidth / 2, -windowHeight / 2);
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
 	level.finishSetup();
 	camera.setPositionAs(level.player);
+	// TODO: needs to be adjusted to the center of the Initial room of the level.
+	level.player.x = 500;
+	level.player.y = 500;
 }
 function playPlaylist(playlist) {
 	if (placeInPL == playlist.length) {

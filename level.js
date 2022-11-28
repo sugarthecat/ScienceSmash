@@ -1,9 +1,9 @@
 class Level {
-    constructor(lvl) {
+    constructor() {
         this.tiles = [[]];
-        this.lvl = lvl; // integer representation of what level the player is on
+        this.lvl; // integer representation of what level the player is on
         this.targetRotation = 0;
-        this.player = new Player(500,500);
+        this.player = new Player();
         this.entities = [];
         this.tileTable = new p5.Table([]);
     }
@@ -36,80 +36,64 @@ class Level {
         }
         for (let i = 0; i < rooms.length; i++) {
             //let dir = Math.floor(Math.random() * 4); // 0N 1E 2S 3W
-            let dir = 0;
+            let dir = 1;
             let b = Math.floor(Math.random() * LP[0].length);
             let branchx = LP[0][b]; // A randomly selected already placed room's x axis in the layout array
             let branchy = LP[1][b]; // A randomly selected already placed room's y axis in the layout array
             let ln = 0;
-            if (dir == 0) { // North
-                if (branchy == 0) {
-                    for (let j = layout.length; j > 0; j--) {
-                        ln = this.getLC(layout);
-                        for (let k = 0; k < ln; k++) {
-                            layout[k].push(layout[k][j-1]);
+            switch(dir) {
+                case 0: // North
+                    if (branchy == 0) {
+                        for (let j = 0; j < layout.length; j++) {
+                            layout[j].unshift(undefined);
                         }
+                        for (let j = 0; j < LP[0].length; j++) { LP[1][j]++; }
+                        branchy++;
                     }
-                    for (let j = 0; j < LP[0].length; j--) { LP[1][j]++; }
-                    branchy++;
-                }
-                console.log(layout[branchx][branchy-1]);
-                if (layout[branchx][branchy-1] === undefined) {
-                    layout[branchx][branchy-1] = rooms[i];
-                } else {
-                    i--;
-                    continue;
-                }
-            } else if (dir == 1) { // East
-                if (layout[branchx+1] === undefined) {
-                    layout.push();
-                    layout[branchx+1][branchy] = rooms[i];
-                } else {
-                    i--;
-                    continue;
-                }
-            } else if (dir == 2) { // South
-                if (layout[branchx][branchy+1] === undefined) {
-                    layout[branchx].push();
-                    layout[branchx][branchy+1] = rooms[i];
-                } else {
-                    i--;
-                    continue;
-                }
-            } else if (dir == 3) { // West
-                if (branchx == 0) {
-                    ln = this.getLC(layout);
-                    for (let j = ln; j > 0; j--) {
-                        for (let k = layout.length; k > 0; k--) {
-                            layout[k][j] = layout[k-1][j];
-                        }
+                    if (layout[branchx][branchy-1] === undefined) {
+                        layout[branchx][branchy-1] = rooms[i];
+                    } else {
+                        i--;
+                        continue;
                     }
-                    for (let j = 0; j < LP[0].length; j--) { LP[0][j] = LP[0][j]+1; }
-                    branchx++;
-                }
-                if (layout[branchx-1] === undefined) {
-                    layout[branch-1][branchy] = rooms[i];
-                } else {
-                    i--;
-                    continue;
-                }
+                case 1: // East
+                    //console.log(layout[branchx+1]);
+                    if (layout[branchx+1][branchy] === undefined) {
+                        layout[branchx+1][branchy] = rooms[i];
+                    } else {
+                        i--;
+                        continue;
+                    }
+                case 2: // South
+                    if (layout[branchx][branchy+1] === undefined) {
+                        layout[branchx][branchy+1] = rooms[i];
+                    } else {
+                        i--;
+                        continue;
+                    }
+                case 3: // West
+                    if (branchx == 0) {
+                        layout.unshift(undefined);
+                        layout[0][layout[1].length-1] = undefined;
+                        for (let j = 0; j < LP[0].length; j++) { LP[0][j]++; }
+                        branchx++;
+                    }
+                    if (layout[branchx-1] === undefined) {
+                        layout[branch-1][branchy] = rooms[i];
+                    } else {
+                        i--;
+                        continue;
+                    }
             }
         }
-        ln = this.getLC(layout)
-        for (let i = 0; i < ln; i++) { // position on the y axis of layout array
+        for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
             for (let j = 0; j < 25; j++) { // position on the y axis of the csv rows
-                for (let k = 0; k < layout.length; k++) { // position on the x axis of the layour array
+                for (let k = 0; k < layout.length; k++) { // position on the x axis of the layout array
 
                 }
             }
         }
-        generateTiles(this.tileTable);
-    }
-    getLC(arr) { // return the longest column in a two dimensional array
-        let ln = 0;
-        for (let i = 0; i < arr.length; i++) { // determine the size of the largest array on the y axis
-            if (arr[i].length > ln) { ln = arr[i].length; }
-        }
-        return ln;
+        this.generateTiles(this.tileTable);
     }
     generateTiles() {
         for (var x = 0; x < this.tileTable.getRowCount(); x++) {
