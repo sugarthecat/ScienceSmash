@@ -1,19 +1,11 @@
-class ColorText{
-    constructor(textColor, text){
-        this.color = color(textColor)
-        this.content = text
-    }
-}
+
 class Tutorial{
     constructor(blurbText){
         this.textBoxes = []
         let blurbs = blurbText.split('\n')
     
         for(let i = 0; i<blurbs.length; i++){
-            blurbs[i] = new ColorText('white',blurbs[i])
-        }
-        for(let i = 0; i<blurbs.length; i++){
-            this.textBoxes.push(new TextBox([blurbs[i]],1.5))
+            this.textBoxes.push(new TextBox(blurbs[i],1.5))
         }
         this.textbox = this.textBoxes[0]
         this.phase = 0

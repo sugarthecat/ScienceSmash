@@ -4,18 +4,28 @@ class TextBox{
         this.text = []
         this.textSpeed = textSpeed
         this.totalShown = 0;
-        for(let i = 0; i<text.length; i++){
-            if(text[i].content.includes(" ")){
-                let splitParts = text[i].content.split(' ')
-                for(let j = 0; j<splitParts.length; j++){
-                    if(splitParts[j].length > 0){
-                        this.text.push({content: splitParts[j], color: text[i].color})
-                    }
+        let shownText = text.split('\\');
+        this.bottomtext = shownText[1];
+        shownText = "255,255,255}" + shownText[0]
+        shownText = shownText.replace('\n',"")
+        shownText = shownText.split('{')
+        for(let i = 0; i<shownText.length; i++){
+            let colorstring = shownText[i].split('}')[0]
+            let contentstring = shownText[i].split('}')[1]
+            let r = colorstring.split(',')[0];
+            let g = colorstring.split(',')[1];
+            let b = colorstring.split(',')[2];
+
+            let contents = contentstring.split(' ')
+            for(let i = 0; i<contents.length; i++){
+                let coloredTextContent = new ColorText(contents[i],r,g,b)
+                if(i + 1 < contents.length){
+                    coloredTextContent.addAfterSpace()
                 }
-            }else{
-                this.text.push(text[i])
+                this.text.push(coloredTextContent)
             }
         }
+
     }
     isComplete(){
         let letterOn = 0;
@@ -51,7 +61,9 @@ class TextBox{
                     lettersTyped++;
                 }
             }
-            xOn += textWidth(" ")
+            if(this.text[i].hasAfterSpace){
+                xOn += textWidth(" ")
+            }
         }
     }
     advanceText(){
