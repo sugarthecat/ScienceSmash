@@ -36,11 +36,10 @@ class Level {
         }
         for (let i = 0; i < rooms.length; i++) {
             //let dir = Math.floor(Math.random() * 4); // 0N 1E 2S 3W
-            let dir = 1;
+            let dir = 3;
             let b = Math.floor(Math.random() * LP[0].length);
             let branchx = LP[0][b]; // A randomly selected already placed room's x axis in the layout array
             let branchy = LP[1][b]; // A randomly selected already placed room's y axis in the layout array
-            let ln = 0;
             switch(dir) {
                 case 0: // North
                     if (branchy == 0) {
@@ -73,13 +72,14 @@ class Level {
                     }
                 case 3: // West
                     if (branchx == 0) {
-                        layout.unshift(undefined);
-                        layout[0][layout[1].length-1] = undefined;
+                        let arrayZero = [];
+                        for (let j = 0; j < layout[0].length; j++) { arrayZero.push(undefined); } // Create an array of undefined
+                        layout.unshift(arrayZero);
                         for (let j = 0; j < LP[0].length; j++) { LP[0][j]++; }
                         branchx++;
                     }
-                    if (layout[branchx-1] === undefined) {
-                        layout[branch-1][branchy] = rooms[i];
+                    if (layout[branchx-1][branchy] === undefined) {
+                        layout[branchx-1][branchy] = rooms[i];
                     } else {
                         i--;
                         continue;
@@ -87,13 +87,22 @@ class Level {
             }
         }
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
-            for (let j = 0; j < 25; j++) { // position on the y axis of the csv rows
-                for (let k = 0; k < layout.length; k++) { // position on the x axis of the layout array
-
+            for (let r = 0; r < 25; r++) { // position on the y axis of the csv rows
+                let row = [];
+                for (let j = 0; j < layout.length; j++) { // position on the x axis of the layout array
+                    for (let k = 0; k < 25; k++) {
+                        if (layout[j][i] !== undefined) {
+                            console.log(layout[j][i]);
+                            row.push(layout[j][i].tileTable.getRow(r).getString(c));
+                        } else {
+                            row.push("v");
+                        }
+                    }
                 }
+                this.tileTable.addRow(row);
             }
         }
-        this.generateTiles(this.tileTable);
+        this.generateTiles();
     }
     generateTiles() {
         for (var x = 0; x < this.tileTable.getRowCount(); x++) {

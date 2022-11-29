@@ -1,6 +1,6 @@
 class Room {
     constructor(typeInt) {
-        this.tileTable;
+        this.tileTable = new p5.Table([]);
         this.type = typeInt;
     }
     getArray() {

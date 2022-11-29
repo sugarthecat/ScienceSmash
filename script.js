@@ -8,7 +8,7 @@ let loadscreen = new LoadingScreen(43); // Initialize the loading screen with ho
 let placeInPL = 0;
 
 function preload() {
-	level.generateRooms();
+	assets.loadFiles();
 }
 
 function loaded() {
@@ -21,28 +21,26 @@ setInterval(function checkWindowFocus() {
 }, 200);
 
 function keyPressed() {
-	if (keyCode == ESCAPE) { gamemenu.invertActive(); } // Pause the game
-	if (keyCode == 81) { // Q
-		// activate first ability
+	switch (keyCode) {
+		case ESCAPE: gamemenu.invertActive(); // pause the game (esc)
+		case SHIFT: level.player.activateDash(); // activate dash (shift)
+		case 81: // activate first Ability (Q)
+		case 69: // activate second Ability (E)
+		case 82: // activate third Ability (R)
 	}
-	if (keyCode == 69) { // E
-		// activate second ability
-	}
-	if (keyCode == 82) { // R
-		// activate third ability
-	}
-	if (keyCode == SHIFT) { level.player.activateDash(); } // activate dash
 }
 
 function setup() {
-	assets.loadFiles();
+	console.log(assets.rooms.initial[0]);
+	level.lvl = 3; // needs to start at 1 and be incremented when level increases
+	level.generateRooms();
 	camera = new Camera(-windowWidth / 2, -windowHeight / 2);
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
 	level.finishSetup();
 	camera.setPositionAs(level.player);
-	// TODO: needs to be adjusted to the center of the Initial room of the level.
+	// TODO: x and y starting positions need to be adjusted to the center of the Initial room of the level.
 	level.player.x = 500;
 	level.player.y = 500;
 }
