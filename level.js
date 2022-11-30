@@ -45,7 +45,7 @@ class Level {
                         for (let j = 0; j < layout.length; j++) {
                             layout[j].unshift(undefined);
                         }
-                        for (let j = 0; j < LP[0].length; j++) { LP[1][j]++; }
+                        for (let j = 0; j < LP[0].length; j++) { LP[1][j]++; } // Update the branch's layout array position in the LP array 
                         branchy++;
                     }
                     console.log(layout[branchx][branchy-1]);
@@ -55,6 +55,7 @@ class Level {
                         i--;
                         continue;
                     }
+                    break;
                 case 1: // East
                     if (branchx+1 == layout.length) {
                         let arrayZero = [];
@@ -68,6 +69,7 @@ class Level {
                         i--;
                         continue;
                     }
+                    break;
                 case 2: // South
                     if (branchy+1 == layout[0].length) {
                         for (let j = 0; j < layout.length; j++) { layout[j].push(undefined); }
@@ -79,6 +81,7 @@ class Level {
                         i--;
                         continue;
                     }
+                    break;
                 case 3: // West
                     if (branchx == 0) {
                         let arrayZero = [];
@@ -94,17 +97,18 @@ class Level {
                         i--;
                         continue;
                     }
+                    break;
             }
         }
         console.log(1);
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
-            for (let r = 0; r < 25; r++) { // position on the y axis of the csv table
+            for (let r = 0; r < 25; r++) { // position on the y axis of the csv array
                 let row = [];
                 for (let j = 0; j < layout.length; j++) { // position on the x axis of the layout array
-                    for (let k = 0; k < 25; k++) { // position on the x axis of the csv table
+                    for (let k = 0; k < 25; k++) { // position on the x axis of the csv array
                         if (layout[j][i] !== undefined) {
                             console.log(layout[j][i]);
-                            row.push(layout[j][i].tileTable.getRow(r).getString(c));
+                            row.push(layout[j][i].tileTable.rows[r].arr[c]);
                         } else {
                             row.push("v");
                         }
@@ -118,20 +122,27 @@ class Level {
         console.log(3);
     }
     generateTiles() {
-        for (var x = 0; x < this.tileTable.getRowCount(); x++) {
-            for (var y = 0; y < this.tileTable.getColumnCount(); y++) {
-                if (this.tileTable.getString(x, y) == "w") { // wall
-                    this.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y);
-                } else if (this.tileTable.getString(x, y) == "g") { // ground
-                    this.addTile(new Tile(assets.images.floors[0]), x, y);
-                } else if (this.tileTable.getString(x, y) == "v") { // void
-                    this.addTile(new VoidTile(assets.images.void[0]), x, y);
-                } else if (this.tileTable.getString(x, y) == "t") { // trap
-                    this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
-                } else if (this.tileTable.getString(x, y) == "e") { // explosive
-                    this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add explosive tile
-                } else if (this.tileTable.getString(x, y) == "c") { // chest
-                    this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
+        for (var x = 0; x < this.tileTable[0].length; x++) {
+            for (var y = 0; y < this.tileTable.length; y++) {
+                switch(this.tileTable[x][y]) {
+                    case "w": // Wall
+                        this.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y); 
+                        break;
+                    case "g": // Ground 
+                        this.addTile(new Tile(assets.images.floors[0]), x, y);
+                        break;
+                    case "v": // Void
+                        this.addTile(new VoidTile(assets.images.void[0]), x, y); 
+                        break;
+                    case "t": 
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
+                        break;
+                    case "e": 
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add explosive tile
+                        break;
+                    case "c": 
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
+                        break;
                 }
             }
         }
@@ -178,7 +189,7 @@ class Level {
     getTiles() {
         return this.tiles;
     }
-    finishSetup() {
+    removeFalseWalls() {
         // Remove any walls that would be behind others
         for (let x = 0; x<this.tiles.length-1; x++) {
             for (let y = 0; y<this.tiles[x].length-1; y++) {
