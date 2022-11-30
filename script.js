@@ -7,10 +7,6 @@ let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(43); // Initialize the loading screen with how many files need to be loaded
 let placeInPL = 0;
 
-function preload() {
-	assets.loadFiles();
-}
-
 function loaded() {
 	loadscreen.fileLoaded(); // Increment the loading screen
 }
@@ -31,9 +27,12 @@ function keyPressed() {
 }
 
 function setup() {
-	console.log(assets.rooms.initial[0]);
+	assets.loadFiles();
+	while (!loadscreen.loadsLeft == 0) {
+		console.log("waiting");
+	}
 	level.lvl = 3; // needs to start at 1 and be incremented when level increases
-	level.generateRooms();
+	//level.generateRooms();
 	camera = new Camera(-windowWidth / 2, -windowHeight / 2);
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
@@ -60,7 +59,6 @@ function mouseClicked() {
 	if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
 		executed = true;
 		playPlaylist(assets.music);
-		loadscreen.continue = true;
 	}
 }
 
@@ -76,7 +74,7 @@ function mouseWheel(e) {
 let loadTick = 0;
 
 function draw() {
-	if (loadscreen.continue == false) {
+	if (loadscreen.loadsLeft == 0) {
 		loadscreen.draw();
 	} else {
 		level.basicChemistry();

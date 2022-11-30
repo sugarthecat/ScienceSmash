@@ -35,8 +35,7 @@ class Level {
             }
         }
         for (let i = 0; i < rooms.length; i++) {
-            //let dir = Math.floor(Math.random() * 4); // 0N 1E 2S 3W
-            let dir = 3;
+            let dir = Math.floor(Math.random() * 4); // 0N 1E 2S 3W
             let b = Math.floor(Math.random() * LP[0].length);
             let branchx = LP[0][b]; // A randomly selected already placed room's x axis in the layout array
             let branchy = LP[1][b]; // A randomly selected already placed room's y axis in the layout array
@@ -49,6 +48,7 @@ class Level {
                         for (let j = 0; j < LP[0].length; j++) { LP[1][j]++; }
                         branchy++;
                     }
+                    console.log(layout[branchx][branchy-1]);
                     if (layout[branchx][branchy-1] === undefined) {
                         layout[branchx][branchy-1] = rooms[i];
                     } else {
@@ -56,7 +56,12 @@ class Level {
                         continue;
                     }
                 case 1: // East
-                    //console.log(layout[branchx+1]);
+                    if (branchx+1 == layout.length) {
+                        let arrayZero = [];
+                        for (let j = 0; j < layout[0].length; j++) { arrayZero.push(undefined); } // Create an array of undefined
+                        layout.push(arrayZero);
+                    }
+                    console.log(layout[branchx+1][branchy]);
                     if (layout[branchx+1][branchy] === undefined) {
                         layout[branchx+1][branchy] = rooms[i];
                     } else {
@@ -64,6 +69,10 @@ class Level {
                         continue;
                     }
                 case 2: // South
+                    if (branchy+1 == layout[0].length) {
+                        for (let j = 0; j < layout.length; j++) { layout[j].push(undefined); }
+                    }
+                    console.log(layout[branchx][branchy+1]);
                     if (layout[branchx][branchy+1] === undefined) {
                         layout[branchx][branchy+1] = rooms[i];
                     } else {
@@ -78,6 +87,7 @@ class Level {
                         for (let j = 0; j < LP[0].length; j++) { LP[0][j]++; }
                         branchx++;
                     }
+                    console.log(layout[branchx-1][branchy]);
                     if (layout[branchx-1][branchy] === undefined) {
                         layout[branchx-1][branchy] = rooms[i];
                     } else {
@@ -86,11 +96,12 @@ class Level {
                     }
             }
         }
+        console.log(1);
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
-            for (let r = 0; r < 25; r++) { // position on the y axis of the csv rows
+            for (let r = 0; r < 25; r++) { // position on the y axis of the csv table
                 let row = [];
                 for (let j = 0; j < layout.length; j++) { // position on the x axis of the layout array
-                    for (let k = 0; k < 25; k++) {
+                    for (let k = 0; k < 25; k++) { // position on the x axis of the csv table
                         if (layout[j][i] !== undefined) {
                             console.log(layout[j][i]);
                             row.push(layout[j][i].tileTable.getRow(r).getString(c));
@@ -102,7 +113,9 @@ class Level {
                 this.tileTable.addRow(row);
             }
         }
+        console.log(2);
         this.generateTiles();
+        console.log(3);
     }
     generateTiles() {
         for (var x = 0; x < this.tileTable.getRowCount(); x++) {
@@ -114,11 +127,11 @@ class Level {
                 } else if (this.tileTable.getString(x, y) == "v") { // void
                     this.addTile(new VoidTile(assets.images.void[0]), x, y);
                 } else if (this.tileTable.getString(x, y) == "t") { // trap
-                    // add trap tile
+                    this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
                 } else if (this.tileTable.getString(x, y) == "e") { // explosive
-                    // add explosive tile
+                    this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add explosive tile
                 } else if (this.tileTable.getString(x, y) == "c") { // chest
-                    // add chest tile
+                    this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
                 }
             }
         }
