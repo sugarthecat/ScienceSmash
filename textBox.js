@@ -65,6 +65,9 @@ class TextBox{
                 xOn += textWidth(" ")
             }
         }
+        fill(255)
+        text(this.bottomtext,(width-xWidth)/2+xWidth*this.margin,height-textSize())
+        
     }
     advanceText(){
         this.totalShown += this.textSpeed*deltaTime/100

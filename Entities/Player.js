@@ -82,7 +82,7 @@ class Player extends Entity{
             disx *= -1;
             disx -= this.dispw;
         }
-        this.phase += 0.1;
+        this.phase += 0.3;
         if (this.dirx == 0 && this.diry == 0) {
             this.phase = this.phase % assets.images.player.idle.length;
             image(assets.images.player.idle[floor(this.phase)], disx, disy, this.dispw, this.disph)

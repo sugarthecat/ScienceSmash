@@ -9,9 +9,10 @@ class Tutorial{
         }
         this.textbox = this.textBoxes[0]
         this.phase = 0
+
     }
     isComplete(){
-        return this.phase == this.maxPhase;
+        return this.phase == this.textBoxes.length;
     }
     advanceText(){
         this.textbox.advanceText();
@@ -26,16 +27,16 @@ class Tutorial{
     }
     testLevel(){
         if(this.textbox.isComplete()){
-            if(this.phase == 3 && level.player.isMovingUp()){
+            if(this.phase == 3 && level.player.isMovingDown() && (level.player.x + level.player.y >3500)){
                 this.advancePhase();
             }
-            else if(this.phase == 4 && level.player.isMovingDown()){
+            else if(this.phase == 4 && level.player.isMovingUp() && (level.player.x + level.player.y <1200)){
                 this.advancePhase();
             }
-            else if(this.phase == 5 && level.player.isMovingLeft()){
+            else if(this.phase == 5 && level.player.isMovingLeft() && (level.player.x - level.player.y < -1000)){
                 this.advancePhase();
             }
-            else if(this.phase == 6 && level.player.isMovingRight()){
+            else if(this.phase == 6 && level.player.isMovingRight() && (level.player.x - level.player.y > 1000)){
                 this.advancePhase();
             }
         }
