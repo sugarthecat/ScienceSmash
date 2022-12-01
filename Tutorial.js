@@ -21,22 +21,25 @@ class Tutorial{
         this.textbox.display();
     }
     takeInput(key){
-        if(key == 32 && this.phase <= 2 && this.textbox.isComplete()){
+        if(key == 32 && (this.phase <= 2 || this.phase == 8) && this.textbox.isComplete()){
             this.advancePhase();
         }
     }
     testLevel(){
         if(this.textbox.isComplete()){
-            if(this.phase == 3 && level.player.isMovingDown() && (level.player.x + level.player.y >3500)){
+            if(this.phase == 3 && level.player.isMovingDown() && (level.player.x + level.player.y >3200)){
                 this.advancePhase();
             }
-            else if(this.phase == 4 && level.player.isMovingUp() && (level.player.x + level.player.y <1200)){
+            else if(this.phase == 4 && level.player.isMovingUp() && (level.player.x + level.player.y <1600)){
                 this.advancePhase();
             }
-            else if(this.phase == 5 && level.player.isMovingLeft() && (level.player.x - level.player.y < -1000)){
+            else if(this.phase == 5 && level.player.isMovingLeft() && (level.player.x - level.player.y < -800)){
                 this.advancePhase();
             }
-            else if(this.phase == 6 && level.player.isMovingRight() && (level.player.x - level.player.y > 1000)){
+            else if(this.phase == 6 && level.player.isMovingRight() && (level.player.x - level.player.y > 800)){
+                this.advancePhase();
+            }
+            else if(this.phase == 7 && level.player.dashTimer > 0){
                 this.advancePhase();
             }
         }
