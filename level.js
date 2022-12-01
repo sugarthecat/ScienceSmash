@@ -5,7 +5,7 @@ class Level {
         this.targetRotation = 0;
         this.player = new Player();
         this.entities = [];
-        this.tileTable = new p5.Table([]);
+        this.tileTable = [[]];
     }
     generateRooms() {
         // layout of the level in regard to the rooms
@@ -20,19 +20,13 @@ class Level {
         let rooms = [];
         //let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; (commented out until loot and shop rooms are implemented)// 80% chance for standard, 10% chance for loot, 10% chance for shop
         let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-        if (this.lvl == 0) { // lvl 0 is the tutorial
-            for (let i = 1; i < 5; i++) {
-                rooms.push(new Room(i)); // Push a standard, loot, shop, and progression room
-            }
-        } else {
-            for (let i = 0; i < this.lvl; i++) { // For every level
-                rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
-            }
-            if (this.lvl % 10) { // If its a tenth level, push a boss room
-                rooms.push(new Room(5));
-            } else { // Otherwise, push a normal progression room
-                rooms.push(new Room(4));
-            }
+        for (let i = 0; i < this.lvl; i++) { // For every level
+            rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
+        }
+        if (this.lvl % 10 == 0) { // If its a tenth level, push a boss room
+            rooms.push(new Room(5));
+        } else { // Otherwise, push a normal progression room
+            rooms.push(new Room(4));
         }
         for (let i = 0; i < rooms.length; i++) {
             let dir = Math.floor(Math.random() * 4); // 0N 1E 2S 3W
@@ -42,13 +36,10 @@ class Level {
             switch(dir) {
                 case 0: // North
                     if (branchy == 0) {
-                        for (let j = 0; j < layout.length; j++) {
-                            layout[j].unshift(undefined);
-                        }
+                        for (let j = 0; j < layout.length; j++) { layout[j].unshift(undefined); }
                         for (let j = 0; j < LP[0].length; j++) { LP[1][j]++; } // Update the branch's layout array position in the LP array 
                         branchy++;
                     }
-                    console.log(layout[branchx][branchy-1]);
                     if (layout[branchx][branchy-1] === undefined) {
                         layout[branchx][branchy-1] = rooms[i];
                     } else {
@@ -57,12 +48,7 @@ class Level {
                     }
                     break;
                 case 1: // East
-                    if (branchx+1 == layout.length) {
-                        let arrayZero = [];
-                        for (let j = 0; j < layout[0].length; j++) { arrayZero.push(undefined); } // Create an array of undefined
-                        layout.push(arrayZero);
-                    }
-                    console.log(layout[branchx+1][branchy]);
+                    if (branchx+1 == layout.length) { layout.push(new Array(layout[0].length).fill(undefined)); }
                     if (layout[branchx+1][branchy] === undefined) {
                         layout[branchx+1][branchy] = rooms[i];
                     } else {
@@ -74,7 +60,6 @@ class Level {
                     if (branchy+1 == layout[0].length) {
                         for (let j = 0; j < layout.length; j++) { layout[j].push(undefined); }
                     }
-                    console.log(layout[branchx][branchy+1]);
                     if (layout[branchx][branchy+1] === undefined) {
                         layout[branchx][branchy+1] = rooms[i];
                     } else {
@@ -84,13 +69,10 @@ class Level {
                     break;
                 case 3: // West
                     if (branchx == 0) {
-                        let arrayZero = [];
-                        for (let j = 0; j < layout[0].length; j++) { arrayZero.push(undefined); } // Create an array of undefined
-                        layout.unshift(arrayZero);
+                        layout.unshift(new Array(layout[0].length).fill(undefined));
                         for (let j = 0; j < LP[0].length; j++) { LP[0][j]++; }
                         branchx++;
                     }
-                    console.log(layout[branchx-1][branchy]);
                     if (layout[branchx-1][branchy] === undefined) {
                         layout[branchx-1][branchy] = rooms[i];
                     } else {
@@ -100,7 +82,6 @@ class Level {
                     break;
             }
         }
-        console.log(1);
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
             for (let r = 0; r < 25; r++) { // position on the y axis of the csv array
                 let row = [];
@@ -114,12 +95,10 @@ class Level {
                         }
                     }
                 }
-                this.tileTable.addRow(row);
+                this.tileTable.push(row);
             }
         }
-        console.log(2);
         this.generateTiles();
-        console.log(3);
     }
     generateTiles() {
         for (var x = 0; x < this.tileTable[0].length; x++) {

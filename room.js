@@ -1,12 +1,9 @@
 class Room {
     constructor(typeInt) {
         this.type = typeInt;
-        console.log
-        this.tileTable = [[]];
+        this.tileTable = new Array(25).fill(undefined).map(()=>new Array(25).fill(undefined));
         for (let i = 0; i < 25; i++) {
-            this.tileTable.pushe
             for (let j = 0; j < 25; j++) {
-                this.tileTable[i].push();
                 switch (this.type) { 
                     case 0: 
                         this.tileTable[j][i] = assets.rooms.initial[Math.floor(Math.random() * assets.rooms.initial.length)].rows[i].arr[j];
