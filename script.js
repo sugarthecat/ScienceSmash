@@ -80,7 +80,7 @@ function playPlaylist(playlist) {
 	playlist[placeInPL].play();
 	setTimeout(function playSong() {
 		placeInPL++;
-		playPlaylist(playlist)
+		playPlaylist(playlist);
 	}, playlist[placeInPL].duration() * 1000);
 }
 function mouseClicked() {
@@ -89,7 +89,7 @@ function mouseClicked() {
 		executed = true;
 		playPlaylist(assets.music);
 		loadscreen.continue = true;
-		tutorial = new Tutorial(assets.tutorialText)
+		tutorial = new Tutorial(assets.tutorialText);
 	}
 }
 
@@ -98,7 +98,7 @@ function mouseWheel(e) {
 		if (e.delta < 0) {
 			camera.scaleUp(1.1, level.player);
 		} else if (e.delta > 0) {
-			camera.scaleDown(1.1, level.player)
+			camera.scaleDown(1.1, level.player);
 		}
 	}
 }
@@ -124,15 +124,14 @@ function draw() {
 			level.updateTargetPosition();
 			level.runEntityMovement();
 			level.runPlayerMovement();
-			if(!tutorial.isComplete()){
-				tutorial.advanceText()
+			if (!tutorial.isComplete()) {
+				tutorial.advanceText();
 			}
 		}
 		pop();
-		if(!tutorial.isComplete()){
+		if (!tutorial.isComplete()) {
 			tutorial.display();
-			//test level for completed tutorial condition
-			tutorial.testLevel();
+			tutorial.testLevel(); //test level for completed tutorial condition
 		}
 		gamemenu.display();
 	}
