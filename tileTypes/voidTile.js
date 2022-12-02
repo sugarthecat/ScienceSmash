@@ -4,11 +4,11 @@ class VoidTile extends Tile {
     }
     displayGround() {
     }
-    collides(other) {
-        return false;
-    }
     displayRight() {
     }
     displayLeft() {
+    }
+    collides(other) {
+        return false;
     }
 }

@@ -40,7 +40,7 @@ function keyPressed() {
 }
 
 function setup() {
-	level.lvl = 17; // needs to start at 1 and be incremented when level increases
+	level.lvl = 1; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
     camera.y = -windowHeight / 2;
 	assets.loadFiles();

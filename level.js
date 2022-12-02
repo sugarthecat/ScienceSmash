@@ -90,6 +90,7 @@ class Level {
                     break;
             }
         }
+        // Build the tileTable
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
             for (let r = 0; r < 25; r++) { // position on the y axis of the csv array
                 let row = [];
@@ -105,6 +106,7 @@ class Level {
                 this.tileTable.push(row);
             }
         }
+        // Set the player's starting position to the middle of the initial room
         for(let x = 0; x<layout.length; x++){
             for(let y = 0; y<layout[x].length; y++){
                 if(layout[x][y] !== undefined && layout[x][y].type == 0){
@@ -112,6 +114,7 @@ class Level {
                 }
             }
         }
+        // Close the holes of each room
         for(let x= 0; x<this.tileTable.length; x++){
             for(let y = 0; y<this.tileTable[x]; y++){
                 if(x == 0 || y == 0 || x == this.tileTable.length-1 || y == this.tileTable[x].length-1){
@@ -135,6 +138,9 @@ class Level {
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[0]), x, y);
                         break;
+                    case "v": // Void 
+                        this.addTile(new VoidTile(), x, y);
+                        break;
                     case "t": 
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
                         break;
@@ -143,6 +149,9 @@ class Level {
                         break;
                     case "c": 
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
+                        break;
+                    case "p":
+                        this.addTile(new ProgressionTile(assets.images.progression[0]), x, y); // TODO: add chest tile
                         break;
                     default:
                         this.addTile(new VoidTile(), x, y); 

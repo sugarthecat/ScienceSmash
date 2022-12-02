@@ -12,6 +12,7 @@ class Assets {
         this.images = {};
         this.images.walls = [];
         this.images.floors = [];
+        this.images.portal = [];
         this.images.aura;
         this.images.target;
         this.images.player = {};
@@ -63,8 +64,9 @@ class Assets {
         this.images.floors = [
             loadImage('sprites/floorTile1.png', loaded),
             loadImage('sprites/floorTile2.png', loaded)];
-        this.images.void = [
-            loadImage('sprites/voidTile.png', loaded)];
+        this.images.progression = [
+            loadImage('sprites/portalTile.png', loaded),
+            loadImage('sprites/portalTile2.png')];
         this.images.aura = loadImage('sprites/playerAura.png', loaded);
         this.images.target = loadImage('sprites/target.png', loaded);
         this.images.player.idle = [loadImage('sprites/idle.png', loaded)];
