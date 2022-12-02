@@ -1,5 +1,5 @@
 class VoidTile extends Tile {
-    constructor(img) {
+    constructor() {
         super(undefined)
     }
     displayGround() {

@@ -106,20 +106,25 @@ class Level {
                 this.tileTable.push(row);
             }
         }
+        for(let x = 0; x<layout.length; x++){
+            for(let y = 0; y<layout[x].length; y++){
+                if(layout[x][y] !== undefined && layout[x][y].type == 0){
+                    console.log("I found it!")
+                    this.player.setPosition(y*2500 + 1250,x*2500 + 1250)
+                }
+            }
+        }
         this.generateTiles();
     }
-    generateTiles() {
-        for (var x = 0; x < this.tileTable[0].length; x++) {
-            for (var y = 0; y < this.tileTable.length; y++) {
+    generateTiles() {  
+        for (var x = 0; x < this.tileTable.length; x++) {
+            for (var y = 0; y < this.tileTable[x].length; y++) {
                 switch(this.tileTable[x][y]) {
                     case "w": // Wall
                         this.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y); 
                         break;
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[0]), x, y);
-                        break;
-                    case "v": // Void
-                        this.addTile(new VoidTile(assets.images.void[0]), x, y); 
                         break;
                     case "t": 
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
@@ -130,9 +135,14 @@ class Level {
                     case "c": 
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
                         break;
+                    default:
+                        this.addTile(new VoidTile(), x, y); 
+                        break;
                 }
             }
         }
+        console.log(this.tiles)
+        this.tiles.shift();
     }
     // This function is used in entity navigation
     generateNavCollideArray() {
@@ -162,6 +172,9 @@ class Level {
         this.player.fixDirections();
     }
     addTile(t,x,y) {
+        if(x < 0 || y < 0){
+            console.error('ew')
+        }
         let tile = t;
         tile.x = x * 100;
         tile.y = y * 100;

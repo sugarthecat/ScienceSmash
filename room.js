@@ -2,28 +2,31 @@ class Room {
     constructor(typeInt) {
         this.type = typeInt;
         this.tileTable = new Array(25).fill(undefined).map(()=>new Array(25).fill(undefined));
+        let chosenTable;
+        switch (this.type) { 
+            case 0: 
+                chosenTable = assets.rooms.initial
+                break;
+            case 1: 
+                chosenTable = assets.rooms.standard
+             break;
+            case 2: 
+                chosenTable = assets.rooms.loot
+                break;
+            case 3: 
+                chosenTable = assets.rooms.shop
+                break;
+            case 4: 
+                chosenTable = assets.rooms.progression
+                break;
+            case 5: 
+                chosenTable = assets.rooms.boss
+                break;
+        }
+        this.chosenIndex = min(Math.floor(Math.random() * chosenTable.length),3)
         for (let i = 0; i < 25; i++) {
             for (let j = 0; j < 25; j++) {
-                switch (this.type) { 
-                    case 0: 
-                        this.tileTable[i][j] = assets.rooms.initial[Math.floor(Math.random() * assets.rooms.initial.length)].rows[i].arr[j];
-                        break;
-                    case 1: 
-                        this.tileTable[i][j] = assets.rooms.standard[Math.floor(Math.random() * assets.rooms.standard.length)].rows[i].arr[j];
-                        break;
-                    case 2: 
-                        this.tileTable[i][j] = assets.rooms.loot[Math.floor(Math.random() * assets.rooms.loot.length)].rows[i].arr[j];
-                        break;
-                    case 3: 
-                        this.tileTable[i][j] = assets.rooms.shop[Math.floor(Math.random() * assets.rooms.shop.length)].rows[i].arr[j];
-                        break;
-                    case 4: 
-                        this.tileTable[i][j] = assets.rooms.progression[Math.floor(Math.random() * assets.rooms.progression.length)].rows[i].arr[j];
-                        break;
-                    case 5: 
-                        this.tileTable[i][j] = assets.rooms.boss[Math.floor(Math.random() * assets.rooms.boss.length)].rows[i].arr[j]; 
-                        break;
-                }
+                this.tileTable[i][j] = chosenTable[this.chosenIndex].rows[i].arr[j]
             }
         }
     }

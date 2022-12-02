@@ -4,7 +4,7 @@ let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(43); // Initialize the loading screen with how many files need to be loaded
-console.log("test")
+
 let placeInPL = 0;
 
 setInterval(function checkWindowFocus() {
@@ -83,7 +83,7 @@ function mouseWheel(e) {
 let loadTick = 0;
 
 function draw() {
-	if (loadscreen.loadsLeft == 0) {
+	if (!executed) {
 		loadscreen.draw();
 	} else {
 		level.basicChemistry();
