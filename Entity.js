@@ -43,7 +43,7 @@ class Entity {
             this.y += this.diry * this.moveSpeed/pythDir*deltaTime;
             // Accounts for distance via pythagorean theorem if there is movement.
         }
-        if (level.collides(this) && false) {
+        if (level.collides(this)) {
             // decollide
             let newX = this.x;
             let newY = this.y;

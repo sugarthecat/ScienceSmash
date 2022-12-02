@@ -9,16 +9,16 @@ let placeInPL = 0;
 
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
-		gamemenu.active = true; // Pause the game
+		gamemenu.active = false; // Pause the game
 	}
 }, 200);
 
 function loaded() {
 	loadscreen.loadsLeft--; // Increment the loading screen
 	if (loadscreen.loadsLeft == 0) {
-		console.log("test22");
 		level.generateRooms();
 		level.removeFalseWalls();
+		camera.setPositionAs(level.player);
 	}
 }
 
@@ -47,7 +47,6 @@ function setup() {
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
-	camera.setPositionAs(level.player);
 	// TODO: x and y starting positions need to be adjusted to the center of the Initial room of the level.
 	level.player.x = 500;
 	level.player.y = 500;

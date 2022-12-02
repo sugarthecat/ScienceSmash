@@ -5,14 +5,13 @@ class Level {
         this.targetRotation = 0;
         this.player = new Player();
         this.entities = [];
-        this.tileTable = [[]];
+        this.tileTable = [];
     }
     generateRooms() {
         // layout of the level in regard to the rooms
         // First array = x-axis/horizontal position
         // Second array = y-axis/vertical position
         let layout = [[new Room(0)]];
-        console.log(layout)
         // positions in the layout array (to efficiently keep track of positions in the grid which have been filled with rooms)
         // First array = the x-axis/horizontal position in the layout array
         // Second array = the y-axis/vertical position in the layout array
@@ -109,14 +108,24 @@ class Level {
         for(let x = 0; x<layout.length; x++){
             for(let y = 0; y<layout[x].length; y++){
                 if(layout[x][y] !== undefined && layout[x][y].type == 0){
-                    console.log("I found it!")
                     this.player.setPosition(y*2500 + 1250,x*2500 + 1250)
+                }
+            }
+        }
+        for(let x= 0; x<this.tileTable.length; x++){
+            for(let y = 0; y<this.tileTable[x]; y++){
+                if(x == 0 || y == 0 || x == this.tileTable.length-1 || y == this.tileTable[x].length-1){
+                    this.tileTable[x][y] = 'w'
+                    console.log('set '+x+","+y)
+                }
+                if(this.tileTable[x][y] == "g"){
+                    
                 }
             }
         }
         this.generateTiles();
     }
-    generateTiles() {  
+    generateTiles() { 
         for (var x = 0; x < this.tileTable.length; x++) {
             for (var y = 0; y < this.tileTable[x].length; y++) {
                 switch(this.tileTable[x][y]) {
@@ -141,8 +150,6 @@ class Level {
                 }
             }
         }
-        console.log(this.tiles)
-        this.tiles.shift();
     }
     // This function is used in entity navigation
     generateNavCollideArray() {
@@ -173,7 +180,7 @@ class Level {
     }
     addTile(t,x,y) {
         if(x < 0 || y < 0){
-            console.error('ew')
+            console.error('error: attempt to add tile out of bounds')
         }
         let tile = t;
         tile.x = x * 100;
