@@ -11,6 +11,11 @@ class Assets {
         this.images.player.run = [];
     }
     loadFiles(){
+        this.tutorialText;
+        fetch("tutorialblurbs.txt")
+        .then(x => x.text())
+        .then(x => this.tutorialText = x)
+        .then(loaded())
         this.music = [
             loadSound('music/a-robust-crew.mp3', loaded),
             loadSound('music/a-time-forgotten.mp3', loaded),
@@ -44,6 +49,9 @@ class Assets {
         this.images.player.idle = [loadImage('sprites/idle.png', loaded)];
         this.images.player.run = [
             loadImage('sprites/run1.png', loaded),
-            loadImage('sprites/run2.png', loaded)];
+            loadImage('sprites/run2.png', loaded),
+            loadImage('sprites/run3.png', loaded),
+            loadImage('sprites/run4.png', loaded),
+            loadImage('sprites/run5.png', loaded)];
     }
 }

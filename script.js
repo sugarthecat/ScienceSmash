@@ -4,12 +4,12 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets();
 let level = new Level(1); // Initialize the first level
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(29); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(33); // Initialize the loading screen with how many files need to be loaded
 var tileTable;
 let placeInPL = 0;
 let executed = false; // Ensure playPlaylist() can only be called once
 let loadTick = 0;
-
+let tutorial;
 function preload() {
   tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
 }
@@ -19,26 +19,31 @@ function loaded() {
 }
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
-		gamemenu.active = true; // Pause the game
+		//gamemenu.active = true; // Pause the game
 	}
 }, 200);
 
 function keyPressed() {
-	if (keyCode == ESCAPE) {
-		gamemenu.invertActive(); // Pause the game
-	}
-	if (keyCode == 81) { // Q
-		// activate first ability
-	}
-	if (keyCode == 69) { // E
-		// activate second ability
-	}
-	if (keyCode == 82) { // R
-		// activate third ability
-	}
-	if (keyCode == SHIFT) {
-		// activate dash
-		level.player.activateDash()
+	if(loadscreen.continue){
+		if(!gamemenu.active && !tutorial.isComplete()){
+			tutorial.takeInput(keyCode)
+		}
+		if (keyCode == ESCAPE) {
+			gamemenu.invertActive(); // Pause the game
+		}
+		if (keyCode == 81) { // Q
+			// activate first ability
+		}
+		if (keyCode == 69) { // E
+			// activate second ability
+		}
+		if (keyCode == 82) { // R
+			// activate third ability
+		}
+		if (keyCode == SHIFT) {
+			// activate dash
+			level.player.activateDash()
+		}
 	}
 }
 
@@ -75,7 +80,7 @@ function playPlaylist(playlist) {
 	playlist[placeInPL].play();
 	setTimeout(function playSong() {
 		placeInPL++;
-		playPlaylist(playlist)
+		playPlaylist(playlist);
 	}, playlist[placeInPL].duration() * 1000);
 }
 function mouseClicked() {
@@ -84,6 +89,7 @@ function mouseClicked() {
 		executed = true;
 		playPlaylist(assets.music);
 		loadscreen.continue = true;
+		tutorial = new Tutorial(assets.tutorialText);
 	}
 }
 
@@ -92,17 +98,12 @@ function mouseWheel(e) {
 		if (e.delta < 0) {
 			camera.scaleUp(1.1, level.player);
 		} else if (e.delta > 0) {
-			camera.scaleDown(1.1, level.player)
+			camera.scaleDown(1.1, level.player);
 		}
 	}
 }
 
-let t = new TextBox([{content: "Press the", color: {r:0, g:0, b:0}},
-	{content: "W, A, S, ", color: {r:255, g:0, b:0}},
-	{content: "or", color: {r:0, g:0, b:0}},
-	{content: "D", color: {r:255, g:0, b:0}},
-	{content: "keys to move", color: {r:0, g:0, b:0}},
-	],1.5);
+
 function draw() {
 	if (loadscreen.continue == false) {
 		loadscreen.draw();
@@ -123,10 +124,15 @@ function draw() {
 			level.updateTargetPosition();
 			level.runEntityMovement();
 			level.runPlayerMovement();
-			t.advanceText()
+			if (!tutorial.isComplete()) {
+				tutorial.advanceText();
+			}
 		}
 		pop();
-		t.display()
+		if (!tutorial.isComplete()) {
+			tutorial.display();
+			tutorial.testLevel(); //test level for completed tutorial condition
+		}
 		gamemenu.display();
 	}
 }
