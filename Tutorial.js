@@ -20,8 +20,12 @@ class Tutorial {
         this.textbox.display();
     }
     takeInput(key) {
-        if (key == 32 && (this.phase <= 2 || this.phase == 8) && this.textbox.isComplete()) {
-            this.advancePhase();
+        if (key == 32 ) {
+            if(this.textbox.isComplete() && (this.phase <= 2 || this.phase == 8)){
+                this.advancePhase();
+            }else{
+                this.textbox.advanceText(true);
+            }
         }
     }
     testLevel() {
@@ -44,7 +48,8 @@ class Tutorial {
         }
     }
     advancePhase() {
-        if (this.phase + 1 < this.textBoxes.length) {
+        console.log(0)
+        if (this.phase < this.textBoxes.length) {
             this.phase++;
             this.textbox = this.textBoxes[this.phase];
         }

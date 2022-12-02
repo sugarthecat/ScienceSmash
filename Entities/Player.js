@@ -31,10 +31,10 @@ class Player extends Entity{
     // Ensures that dirx and diry are correct.
     fixDirections() {
         // Checks for movement key activations.
-        let right = keyIsDown(RIGHT_ARROW) || keyIsDown(68); // D key
-        let left = keyIsDown(LEFT_ARROW) || keyIsDown(65); // A key
-        let up = keyIsDown(UP_ARROW) || keyIsDown(87); // W key
-        let down = keyIsDown(DOWN_ARROW) || keyIsDown(83); // S key
+        let right =  keyIsDown(68); // D key
+        let left =  keyIsDown(65); // A key
+        let up = keyIsDown(87); // W key
+        let down =  keyIsDown(83); // S key
         // Resolves key conflicts to ensure that if two opposite directions are attempted at the same time, nothing happens.
         if(this.dashTimer <= 0){
             this.moveSpeed = this.maxMoveSpeed

@@ -65,10 +65,18 @@ class TextBox {
             }
         }
         fill(255);
-        text(this.bottomtext,(width-xWidth)/2+xWidth*this.margin,height-textSize());
-        
+        if(this.isComplete()){
+            text(this.bottomtext,(width-xWidth)/2+xWidth*this.margin,height-textSize());
+        }
     }
-    advanceText() {
+    advanceText(finishText) {
         this.totalShown += this.textSpeed*deltaTime/100;
+        if(finishText){
+            let letterOn = 0;
+            for (let i = 0; i<this.text.length; i++) {
+                letterOn += this.text[i].content.length;
+            }
+            this.totalShown = letterOn + 1
+        }
     }
 }
