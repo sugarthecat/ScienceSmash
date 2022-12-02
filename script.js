@@ -1,23 +1,26 @@
-let camera; // Initialize the camera
+let camera = new Camera(); // Initialize the camera
 const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(43); // Initialize the loading screen with how many files need to be loaded
+console.log("test")
 let placeInPL = 0;
 
-function loaded() {
-	loadscreen.fileLoaded(); // Increment the loading screen
-	if (loadscreen.loadsLeft == 0) {
-		level.generateRooms();
-		level.removeFalseWalls();
-	}
-}
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
 		gamemenu.active = true; // Pause the game
 	}
 }, 200);
+
+function loaded() {
+	loadscreen.loadsLeft--; // Increment the loading screen
+	if (loadscreen.loadsLeft == 0) {
+		console.log("test22");
+		level.generateRooms();
+		level.removeFalseWalls();
+	}
+}
 
 function keyPressed() {
 	switch (keyCode) {
@@ -38,8 +41,9 @@ function keyPressed() {
 
 function setup() {
 	level.lvl = 17; // needs to start at 1 and be incremented when level increases
+	camera.x = -windowWidth / 2;
+    camera.y = -windowHeight / 2;
 	assets.loadFiles();
-	camera = new Camera(-windowWidth / 2, -windowHeight / 2);
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);

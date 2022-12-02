@@ -37,7 +37,7 @@ class Assets {
         for (let i = 0; i < 0; i++) { // needs to be equal to the amount of room files in the boss room directory
             this.rooms.boss.push(loadTable('rooms/boss/b'+i+'.csv', 'csv', 'noheader', loaded));
         }
-            this.music = [
+        this.music = [
             loadSound('music/a-robust-crew.mp3', loaded),
             loadSound('music/a-time-forgotten.mp3', loaded),
             loadSound('music/ale-and-anecdotes.mp3', loaded),

@@ -4,9 +4,6 @@ class LoadingScreen {
         this.loadTick = 0;
         this.loadsLeft = maxload;
     }
-    fileLoaded() {
-        this.loadsLeft--;
-    }
     draw() {
         let loadProgress = min((this.maxload - this.loadsLeft) / this.maxload, this.loadTick);
         if (this.loadTick <= loadProgress) {

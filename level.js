@@ -12,6 +12,7 @@ class Level {
         // First array = x-axis/horizontal position
         // Second array = y-axis/vertical position
         let layout = [[new Room(0)]];
+        console.log(layout)
         // positions in the layout array (to efficiently keep track of positions in the grid which have been filled with rooms)
         // First array = the x-axis/horizontal position in the layout array
         // Second array = the y-axis/vertical position in the layout array
@@ -42,6 +43,8 @@ class Level {
                     }
                     if (layout[branchx][branchy-1] === undefined) {
                         layout[branchx][branchy-1] = rooms[i];
+                        LP[0].push(branchx);
+                        LP[1].push(branchy-1);
                     } else {
                         i--;
                         continue;
@@ -51,6 +54,8 @@ class Level {
                     if (branchx+1 == layout.length) { layout.push(new Array(layout[0].length).fill(undefined)); }
                     if (layout[branchx+1][branchy] === undefined) {
                         layout[branchx+1][branchy] = rooms[i];
+                        LP[0].push(branchx+1);
+                        LP[1].push(branchy);
                     } else {
                         i--;
                         continue;
@@ -62,6 +67,8 @@ class Level {
                     }
                     if (layout[branchx][branchy+1] === undefined) {
                         layout[branchx][branchy+1] = rooms[i];
+                        LP[0].push(branchx);
+                        LP[1].push(branchy+1);
                     } else {
                         i--;
                         continue;
@@ -75,6 +82,8 @@ class Level {
                     }
                     if (layout[branchx-1][branchy] === undefined) {
                         layout[branchx-1][branchy] = rooms[i];
+                        LP[0].push(branchx-1);
+                        LP[1].push(branchy);
                     } else {
                         i--;
                         continue;
@@ -86,10 +95,9 @@ class Level {
             for (let r = 0; r < 25; r++) { // position on the y axis of the csv array
                 let row = [];
                 for (let j = 0; j < layout.length; j++) { // position on the x axis of the layout array
-                    for (let k = 0; k < 25; k++) { // position on the x axis of the csv array
+                    for (let c = 0; c < 25; c++) { // position on the x axis of the csv array
                         if (layout[j][i] !== undefined) {
-                            console.log(layout[j][i]);
-                            row.push(layout[j][i].tileTable.rows[r].arr[c]);
+                            row.push(layout[j][i].tileTable[r][c]);
                         } else {
                             row.push("v");
                         }
