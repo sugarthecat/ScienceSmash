@@ -1,26 +1,162 @@
-
 class Level {
-    constructor(lvl) {
+    constructor() {
         this.tiles = [[]];
-        this.lvl = lvl; // integer representation of what level the player is on
+        this.lvl; // integer representation of what level the player is on
         this.targetRotation = 0;
-        this.player = new Player(500,500);
+        this.player = new Player();
         this.entities = [];
-        this.rooms = [];
-        let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
-        this.rooms.push(new Room(0)); // Add initial room
-        if (this.lvl == 0) { // lvl 0 is the tutorial
-            for (let i = 1; i < 5; i++) {
-                this.rooms.push(new Room(i)); // Push a standard, loot, shop, and progression room
+        this.tileTable = [];
+    }
+    generateRooms() {
+        // layout of the level in regard to the rooms
+        // First array = x-axis/horizontal position
+        // Second array = y-axis/vertical position
+        let layout = [[new Room(0)]];
+        // positions in the layout array (to efficiently keep track of positions in the grid which have been filled with rooms)
+        // First array = the x-axis/horizontal position in the layout array
+        // Second array = the y-axis/vertical position in the layout array
+        let LP = [[0],[0]];
+        // an array of all the rooms to be generated in the layout
+        let rooms = [];
+        //let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; (commented out until loot and shop rooms are implemented)// 80% chance for standard, 10% chance for loot, 10% chance for shop
+        let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        for (let i = 0; i < this.lvl; i++) { // For every level
+            rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
+        }
+        if (this.lvl % 10 == 0) { // If its a tenth level, push a boss room
+            rooms.push(new Room(5));
+        } else { // Otherwise, push a normal progression room
+            rooms.push(new Room(4));
+        }
+        for (let i = 0; i < rooms.length; i++) {
+            let dir = Math.floor(Math.random() * 4); // 0N 1E 2S 3W
+            let b = Math.floor(Math.random() * LP[0].length);
+            let branchx = LP[0][b]; // A randomly selected already placed room's x axis in the layout array
+            let branchy = LP[1][b]; // A randomly selected already placed room's y axis in the layout array
+            switch(dir) {
+                case 0: // North
+                    if (branchy == 0) {
+                        for (let j = 0; j < layout.length; j++) { layout[j].unshift(undefined); }
+                        for (let j = 0; j < LP[0].length; j++) { LP[1][j]++; } // Update the branch's layout array position in the LP array 
+                        branchy++;
+                    }
+                    if (layout[branchx][branchy-1] === undefined) {
+                        layout[branchx][branchy-1] = rooms[i];
+                        LP[0].push(branchx);
+                        LP[1].push(branchy-1);
+                    } else {
+                        i--;
+                        continue;
+                    }
+                    break;
+                case 1: // East
+                    if (branchx+1 == layout.length) { layout.push(new Array(layout[0].length).fill(undefined)); }
+                    if (layout[branchx+1][branchy] === undefined) {
+                        layout[branchx+1][branchy] = rooms[i];
+                        LP[0].push(branchx+1);
+                        LP[1].push(branchy);
+                    } else {
+                        i--;
+                        continue;
+                    }
+                    break;
+                case 2: // South
+                    if (branchy+1 == layout[0].length) {
+                        for (let j = 0; j < layout.length; j++) { layout[j].push(undefined); }
+                    }
+                    if (layout[branchx][branchy+1] === undefined) {
+                        layout[branchx][branchy+1] = rooms[i];
+                        LP[0].push(branchx);
+                        LP[1].push(branchy+1);
+                    } else {
+                        i--;
+                        continue;
+                    }
+                    break;
+                case 3: // West
+                    if (branchx == 0) {
+                        layout.unshift(new Array(layout[0].length).fill(undefined));
+                        for (let j = 0; j < LP[0].length; j++) { LP[0][j]++; }
+                        branchx++;
+                    }
+                    if (layout[branchx-1][branchy] === undefined) {
+                        layout[branchx-1][branchy] = rooms[i];
+                        LP[0].push(branchx-1);
+                        LP[1].push(branchy);
+                    } else {
+                        i--;
+                        continue;
+                    }
+                    break;
             }
-        } else {
-            for (let i = 0; i < this.lvl; i++) { // For every level
-                this.rooms.push(new Room(mainRooms[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
+        }
+        // Build the tileTable
+        for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
+            for (let r = 0; r < 25; r++) { // position on the y axis of the csv array
+                let row = [];
+                for (let j = 0; j < layout.length; j++) { // position on the x axis of the layout array
+                    for (let c = 0; c < 25; c++) { // position on the x axis of the csv array
+                        if (layout[j][i] !== undefined) {
+                            row.push(layout[j][i].tileTable[r][c]);
+                        } else {
+                            row.push("v");
+                        }
+                    }
+                }
+                this.tileTable.push(row);
             }
-            if (this.lvl % 10) {
-                this.rooms.push(new Room(5)); // If its a tenth level, push a boss room
-            } else {
-                this.rooms.push(new Room(4)); // Else, push a normal progression room
+        }
+        // Set the player's starting position to the middle of the initial room
+        for(let x = 0; x<layout.length; x++){
+            for(let y = 0; y<layout[x].length; y++){
+                if(layout[x][y] !== undefined && layout[x][y].type == 0){
+                    this.player.setPosition(y*2500 + 1250,x*2500 + 1250)
+                }
+            }
+        }
+        // Close the holes of each room
+        for(let x= 0; x<this.tileTable.length; x++){
+            for(let y = 0; y<this.tileTable[x]; y++){
+                if(x == 0 || y == 0 || x == this.tileTable.length-1 || y == this.tileTable[x].length-1){
+                    this.tileTable[x][y] = 'w'
+                    console.log('set '+x+","+y)
+                }
+                if(this.tileTable[x][y] == "g"){
+                    
+                }
+            }
+        }
+        this.generateTiles();
+    }
+    generateTiles() { 
+        for (var x = 0; x < this.tileTable.length; x++) {
+            for (var y = 0; y < this.tileTable[x].length; y++) {
+                switch(this.tileTable[x][y]) {
+                    case "w": // Wall
+                        this.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y); 
+                        break;
+                    case "g": // Ground 
+                        this.addTile(new Tile(assets.images.floors[0]), x, y);
+                        break;
+                    case "v": // Void 
+                        this.addTile(new VoidTile(), x, y);
+                        break;
+                    case "t": 
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
+                        break;
+                    case "e": 
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add explosive tile
+                        break;
+                    case "c": 
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
+                        break;
+                    case "p":
+                        this.addTile(new ProgressionTile(assets.images.progression[0]), x, y); // TODO: add chest tile
+                        break;
+                    default:
+                        this.addTile(new VoidTile(), x, y); 
+                        break;
+                }
             }
         }
     }
@@ -51,6 +187,39 @@ class Level {
         this.player.runMoveTick(this);
         this.player.fixDirections();
     }
+    addTile(t,x,y) {
+        if(x < 0 || y < 0){
+            console.error('error: attempt to add tile out of bounds')
+        }
+        let tile = t;
+        tile.x = x * 100;
+        tile.y = y * 100;
+        while (x >= this.tiles.length) {
+            this.tiles.push([]);
+        }
+        while (y >= this.tiles[x].length) {
+            this.tiles[x].push(null);
+        }
+        this.tiles[x][y] = tile;
+    }
+    getTiles() {
+        return this.tiles;
+    }
+    removeFalseWalls() {
+        // Remove any walls that would be behind others
+        for (let x = 0; x<this.tiles.length-1; x++) {
+            for (let y = 0; y<this.tiles[x].length-1; y++) {
+                if ( (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)) {
+                    this.tiles[x][y].hasLeft = false;
+                }
+                if ( (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)) {
+                    this.tiles[x][y].hasRight = false;
+                }
+            }
+        }
+        // generate the player's aura image
+        this.player.groundImage = assets.images.aura;
+    }
     displayGround() {
         push();
         // Vertically scale and rotate tiles in order to make isometric viewpoint
@@ -76,34 +245,6 @@ class Level {
         }
         pop();
     }
-    addTile(t,x,y) {
-        let tile = t;
-        tile.x = x * 100;
-        tile.y = y * 100;
-        while (x >= this.tiles.length) {
-            this.tiles.push([]);
-        }
-        while (y >= this.tiles[x].length) {
-            this.tiles[x].push(null);
-        }
-        this.tiles[x][y] = tile;
-    }
-    getTiles() {
-        return this.tiles;
-    }
-    finishSetup() {
-        // Remove any walls that would be behind others
-        for (let x = 0; x<this.tiles.length-1; x++) {
-            for (let y = 0; y<this.tiles[x].length-1; y++) {
-                if ( (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)) {
-                    this.tiles[x][y].hasLeft = false;
-                }
-                if ( (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)) {
-                    this.tiles[x][y].hasRight = false;
-                }
-            }
-        }
-    }
     displayUpper() {
         let playerDrawn = false;
         let entityDrawn = [];
@@ -113,7 +254,9 @@ class Level {
         if ((0+0)*100> this.player.x+this.player.y) {
             this.player.draw();
         }
-        for (let d = 0; d<this.tiles.length + this.tiles[0].length; d++) {
+        // d = distance to the top of the tile
+        // p = distance to the right of the tile
+        for (let d = 0; d < this.tiles.length+this.tiles[0].length; d++) {
             for (let p = 0; p<=d; p++) {
                 let x = d - p;
                 let y = p;
@@ -229,7 +372,6 @@ class Level {
     }
     displayTarget(){
         let [disx,disy] = this.getProjectedMouseXY();
-        
         push()
         translate (this.targetx,this.targety)
         rotate (this.targetRotation)

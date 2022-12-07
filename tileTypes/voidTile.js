@@ -1,14 +1,14 @@
 class VoidTile extends Tile {
-    constructor(img) {
+    constructor() {
         super(undefined)
     }
     displayGround() {
     }
-    collides(other) {
-        return false;
-    }
     displayRight() {
     }
     displayLeft() {
+    }
+    collides(other) {
+        return false;
     }
 }
