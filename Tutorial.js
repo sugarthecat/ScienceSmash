@@ -48,6 +48,7 @@ class Tutorial {
         }
     }
     advancePhase() {
+        console.log(0)
         if (this.phase < this.textBoxes.length) {
             this.phase++;
             this.textbox = this.textBoxes[this.phase];
