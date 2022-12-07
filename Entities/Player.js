@@ -1,8 +1,9 @@
 class Player extends Entity{
-    constructor() {
+    // Constructor.
+    constructor(x,y) {
         super();
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
         this.w = 80;
         this.h = 80;
         this.dirx = 0; // 1, 0, or -1, representing direction x

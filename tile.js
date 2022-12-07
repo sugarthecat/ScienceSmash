@@ -2,8 +2,8 @@ class Tile {
     constructor(img) {
         this.x = 0;
         this.y = 0;
-        this.w = 100; // constant
-        this.h = 100; // constant
+        this.w = 100;
+        this.h = 100;
         this.img = img;
         this.hasUpper = false;
         this.hasGround = true;
