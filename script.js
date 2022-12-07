@@ -1,77 +1,55 @@
-let camera; // Initialize the camera
-const reader = new FileReader();
+let camera = new Camera(); // Initialize the camera
 const TILE_SCALE = 1 / Math.sqrt(3);
-let assets = new Assets();
-let level = new Level(1); // Initialize the first level
+let assets = new Assets(); // Initialize assets class
+let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(33); // Initialize the loading screen with how many files need to be loaded
-var tileTable;
-let placeInPL = 0;
-let executed = false; // Ensure playPlaylist() can only be called once
-let loadTick = 0;
-let tutorial;
-function preload() {
-  tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
-}
+let loadscreen = new LoadingScreen(43); // Initialize the loading screen with how many files need to be loaded
 
-function loaded() {
-	loadscreen.fileLoaded(); // Increment the loading screen
-}
+let placeInPL = 0;
+
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
-		//gamemenu.active = true; // Pause the game
+		gamemenu.active = false; // Pause the game
 	}
 }, 200);
 
+function loaded() {
+	loadscreen.loadsLeft--; // Increment the loading screen
+	if (loadscreen.loadsLeft == 0) {
+		level.generateRooms();
+		level.removeFalseWalls();
+		camera.setPositionAs(level.player);
+	}
+}
+
 function keyPressed() {
-	if(loadscreen.continue){
-		if(!gamemenu.active && !tutorial.isComplete()){
-			tutorial.takeInput(keyCode)
-		}
-		if (keyCode == ESCAPE) {
-			gamemenu.invertActive(); // Pause the game
-		}
-		if (keyCode == 81) { // Q
-			// activate first ability
-		}
-		if (keyCode == 69) { // E
-			// activate second ability
-		}
-		if (keyCode == 82) { // R
-			// activate third ability
-		}
-		if (keyCode == SHIFT) {
-			// activate dash
-			level.player.activateDash()
-		}
+	switch (keyCode) {
+		case ESCAPE: // pause the game (esc)
+			gamemenu.invertActive(); 
+			break;
+		case SHIFT: // activate dash (shift)
+			level.player.activateDash(); 
+			break;
+		case 81: // activate first Ability (Q)
+			break;
+		case 69: // activate second Ability (E)
+			break;
+		case 82: // activate third Ability (R)
+			break;
 	}
 }
 
 function setup() {
-	assets.loadFiles()
-	camera = new Camera(-windowWidth / 2, -windowHeight / 2);
+	level.lvl = 1; // needs to start at 1 and be incremented when level increases
+	camera.x = -windowWidth / 2;
+    camera.y = -windowHeight / 2;
+	assets.loadFiles();
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
-	// generate the room based on the tiletable
-	for (var x = 0; x < tileTable.getRowCount(); x++) {
-		for (var y = 0; y < tileTable.getColumnCount(); y++) {
-			if (tileTable.getString(x, y) == "w") { // wall
-				level.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y);
-			} else if (tileTable.getString(x, y) == "g") { // ground
-				level.addTile(new Tile(assets.images.floors[0]), x, y);
-			} else if (tileTable.getString(x, y) == "v") { // void
-				level.addTile(new VoidTile(assets.images.void[0]), x, y);
-			} else if (tileTable.getString(x, y) == "t") { // trap
-				// add trap tile
-			} else if (tileTable.getString(x, y) == "e") { // explosive
-				// add explosive tile
-			}
-		}
-	}
-	level.finishSetup();
-	level.player.groundImage = assets.images.aura;
-	camera.setPositionAs(level.player)
+	// TODO: x and y starting positions need to be adjusted to the center of the Initial room of the level.
+	level.player.x = 500;
+	level.player.y = 500;
 }
 function playPlaylist(playlist) {
 	if (placeInPL == playlist.length) {
@@ -83,13 +61,12 @@ function playPlaylist(playlist) {
 		playPlaylist(playlist);
 	}, playlist[placeInPL].duration() * 1000);
 }
+let executed = false; // Ensure playPlaylist() can only be called once
 function mouseClicked() {
 	level.basicChemistry();
 	if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
 		executed = true;
 		playPlaylist(assets.music);
-		loadscreen.continue = true;
-		tutorial = new Tutorial(assets.tutorialText);
 	}
 }
 
@@ -98,14 +75,14 @@ function mouseWheel(e) {
 		if (e.delta < 0) {
 			camera.scaleUp(1.1, level.player);
 		} else if (e.delta > 0) {
-			camera.scaleDown(1.1, level.player);
+			camera.scaleDown(1.1, level.player)
 		}
 	}
 }
-
+let loadTick = 0;
 
 function draw() {
-	if (loadscreen.continue == false) {
+	if (!executed) {
 		loadscreen.draw();
 	} else {
 		level.basicChemistry();
@@ -124,15 +101,8 @@ function draw() {
 			level.updateTargetPosition();
 			level.runEntityMovement();
 			level.runPlayerMovement();
-			if (!tutorial.isComplete()) {
-				tutorial.advanceText();
-			}
 		}
 		pop();
-		if (!tutorial.isComplete()) {
-			tutorial.display();
-			tutorial.testLevel(); //test level for completed tutorial condition
-		}
 		gamemenu.display();
 	}
 }

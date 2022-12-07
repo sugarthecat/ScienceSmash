@@ -1,9 +1,8 @@
 class Player extends Entity{
-    // Constructor.
-    constructor(x,y) {
+    constructor() {
         super();
-        this.x = x;
-        this.y = y;
+        this.x = 0;
+        this.y = 0;
         this.w = 80;
         this.h = 80;
         this.dirx = 0; // 1, 0, or -1, representing direction x
@@ -15,26 +14,14 @@ class Player extends Entity{
         this.phase = 0;
         this.facingLeft = false;
     }
-    isMovingUp(){
-        return this.dirx + this.diry < 0
-    }
-    isMovingDown(){
-        return this.dirx + this.diry > 0
-    }
-    isMovingRight(){
-        return this.dirx - this.diry > 0
-    }
-    isMovingLeft(){
-        return this.dirx - this.diry < 0
 
-    }
     // Ensures that dirx and diry are correct.
     fixDirections() {
         // Checks for movement key activations.
-        let right =  keyIsDown(68); // D key
-        let left =  keyIsDown(65); // A key
-        let up = keyIsDown(87); // W key
-        let down =  keyIsDown(83); // S key
+        let right = keyIsDown(RIGHT_ARROW) || keyIsDown(68); // D key
+        let left = keyIsDown(LEFT_ARROW) || keyIsDown(65); // A key
+        let up = keyIsDown(UP_ARROW) || keyIsDown(87); // W key
+        let down = keyIsDown(DOWN_ARROW) || keyIsDown(83); // S key
         // Resolves key conflicts to ensure that if two opposite directions are attempted at the same time, nothing happens.
         if(this.dashTimer <= 0){
             this.moveSpeed = this.maxMoveSpeed
@@ -70,11 +57,11 @@ class Player extends Entity{
     // draw upright display of character
     draw() {
         //display after adjusting for isometric angle
-        let dispDir = atan2(this.x+this.w/2,this.y+this.w/2);
+        let dispDir = atan2(this.x,this.y);
         dispDir -= 45;
-        let dispDist = dist(0,0,this.x+this.w/2,this.y+this.w/2);
+        let dispDist = dist(0,0,this.x,this.y);
         let disx = sin(dispDir)*dispDist - this.dispw/2;
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph;
+        let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph * 2 + dist(0,0,this.w,this.h);
         fill(255,100,50);
         push();
         if (this.facingLeft) {
@@ -82,7 +69,7 @@ class Player extends Entity{
             disx *= -1;
             disx -= this.dispw;
         }
-        this.phase += 0.3;
+        this.phase += 0.1;
         if (this.dirx == 0 && this.diry == 0) {
             this.phase = this.phase % assets.images.player.idle.length;
             image(assets.images.player.idle[floor(this.phase)], disx, disy, this.dispw, this.disph)

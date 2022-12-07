@@ -1,7 +1,7 @@
 class Camera {
-    constructor(x,y) {
-        this.x = x;
-        this.y = y;
+    constructor() {
+        this.x = 0;
+        this.y = 0;
         this.worldScale = 1;
     }
     getPositionAt(target){
