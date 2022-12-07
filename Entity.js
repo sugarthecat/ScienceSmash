@@ -15,10 +15,6 @@ class Entity {
     collides(other) {
         return (this.x +this.w > other.x && other.x + other.w > this.x && this.y +this.h > other.y && other.y + other.h > this.y);
     }
-    setPosition(x,y){
-        this.x = x
-        this.y = y
-    }
     // Updates the entity's x and y positions.
     runMoveTick(level) {
         if(this.dashTimer && this.dashTimer >= 0){
