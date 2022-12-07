@@ -2,6 +2,7 @@
 class Tutorial {
     constructor(blurbText) {
         this.textBoxes = [];
+        console.log(blurbText)
         let blurbs = blurbText.split('\n');
         for (let i = 0; i<blurbs.length; i++) {
             this.textBoxes.push(new TextBox(blurbs[i],1.5));

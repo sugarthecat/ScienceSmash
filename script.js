@@ -3,18 +3,13 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(43); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(47); // Initialize the loading screen with how many files need to be loaded
 
 let placeInPL = 0;
-let loadscreen = new LoadingScreen(33); // Initialize the loading screen with how many files need to be loaded
 var tileTable;
-let placeInPL = 0;
 let executed = false; // Ensure playPlaylist() can only be called once
 let loadTick = 0;
 let tutorial;
-function preload() {
-  tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
-}
 
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
@@ -31,24 +26,6 @@ function loaded() {
 	}
 }
 
-function keyPressed() {
-	switch (keyCode) {
-		case ESCAPE: // pause the game (esc)
-			gamemenu.invertActive(); 
-			break;
-		case SHIFT: // activate dash (shift)
-			level.player.activateDash(); 
-			break;
-		case 81: // activate first Ability (Q)
-			break;
-		case 69: // activate second Ability (E)
-			break;
-		case 82: // activate third Ability (R)
-			break;
-		//gamemenu.active = true; // Pause the game
-	}
-}, 200);
-/*
 function keyPressed() {
 	if(loadscreen.continue){
 		if(!gamemenu.active && !tutorial.isComplete()){
@@ -72,7 +49,7 @@ function keyPressed() {
 		}
 	}
 }
-*/
+
 function setup() {
 	level.lvl = 1; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
