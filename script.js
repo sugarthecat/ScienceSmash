@@ -6,6 +6,15 @@ let gamemenu = new GameMenu(); // Initialize the game menu
 let loadscreen = new LoadingScreen(43); // Initialize the loading screen with how many files need to be loaded
 
 let placeInPL = 0;
+let loadscreen = new LoadingScreen(33); // Initialize the loading screen with how many files need to be loaded
+var tileTable;
+let placeInPL = 0;
+let executed = false; // Ensure playPlaylist() can only be called once
+let loadTick = 0;
+let tutorial;
+function preload() {
+  tileTable = loadTable('rooms/room-initial.csv', 'csv'); // Load the csv file containing the level information
+}
 
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
@@ -36,9 +45,34 @@ function keyPressed() {
 			break;
 		case 82: // activate third Ability (R)
 			break;
+		//gamemenu.active = true; // Pause the game
+	}
+}, 200);
+/*
+function keyPressed() {
+	if(loadscreen.continue){
+		if(!gamemenu.active && !tutorial.isComplete()){
+			tutorial.takeInput(keyCode)
+		}
+		if (keyCode == ESCAPE) {
+			gamemenu.invertActive(); // Pause the game
+		}
+		if (keyCode == 81) { // Q
+			// activate first ability
+		}
+		if (keyCode == 69) { // E
+			// activate second ability
+		}
+		if (keyCode == 82) { // R
+			// activate third ability
+		}
+		if (keyCode == SHIFT) {
+			// activate dash
+			level.player.activateDash()
+		}
 	}
 }
-
+*/
 function setup() {
 	level.lvl = 1; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
@@ -61,12 +95,13 @@ function playPlaylist(playlist) {
 		playPlaylist(playlist);
 	}, playlist[placeInPL].duration() * 1000);
 }
-let executed = false; // Ensure playPlaylist() can only be called once
 function mouseClicked() {
 	level.basicChemistry();
 	if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
 		executed = true;
 		playPlaylist(assets.music);
+		loadscreen.continue = true;
+		tutorial = new Tutorial(assets.tutorialText);
 	}
 }
 
@@ -75,11 +110,11 @@ function mouseWheel(e) {
 		if (e.delta < 0) {
 			camera.scaleUp(1.1, level.player);
 		} else if (e.delta > 0) {
-			camera.scaleDown(1.1, level.player)
+			camera.scaleDown(1.1, level.player);
 		}
 	}
 }
-let loadTick = 0;
+
 
 function draw() {
 	if (!executed) {
@@ -101,8 +136,15 @@ function draw() {
 			level.updateTargetPosition();
 			level.runEntityMovement();
 			level.runPlayerMovement();
+			if (!tutorial.isComplete()) {
+				tutorial.advanceText();
+			}
 		}
 		pop();
+		if (!tutorial.isComplete()) {
+			tutorial.display();
+			tutorial.testLevel(); //test level for completed tutorial condition
+		}
 		gamemenu.display();
 	}
 }
