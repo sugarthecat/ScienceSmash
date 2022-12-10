@@ -3,7 +3,7 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(47); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(58); // Initialize the loading screen with how many files need to be loaded
 
 let placeInPL = 0;
 var tileTable;
@@ -27,9 +27,9 @@ function loaded() {
 }
 
 function keyPressed() {
-	if(loadscreen.continue){
-		if(!gamemenu.active && !tutorial.isComplete()){
-			tutorial.takeInput(keyCode)
+	if (loadscreen.continue) {
+		if (!gamemenu.active && !tutorial.isComplete()) {
+			tutorial.takeInput(keyCode);
 		}
 		if (keyCode == ESCAPE) {
 			gamemenu.invertActive(); // Pause the game
@@ -45,13 +45,13 @@ function keyPressed() {
 		}
 		if (keyCode == SHIFT) {
 			// activate dash
-			level.player.activateDash()
+			level.player.activateDash();
 		}
 	}
 }
 
 function setup() {
-	level.lvl = 1; // needs to start at 1 and be incremented when level increases
+	level.lvl = 10; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
     camera.y = -windowHeight / 2;
 	assets.loadFiles();
@@ -81,7 +81,6 @@ function mouseClicked() {
 		tutorial = new Tutorial(assets.tutorialText);
 	}
 }
-
 function mouseWheel(e) {
 	if (!gamemenu.active) {
 		if (e.delta < 0) {
@@ -91,8 +90,6 @@ function mouseWheel(e) {
 		}
 	}
 }
-
-
 function draw() {
 	if (!executed) {
 		loadscreen.draw();

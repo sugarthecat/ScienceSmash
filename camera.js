@@ -4,7 +4,7 @@ class Camera {
         this.y = 0;
         this.worldScale = 1;
     }
-    getPositionAt(target){
+    getPositionAt(target) {
         let desx = target.x + target.w/2;  // destination x
         let desy = target.y + target.h/2;  // destination y
         //account for rotation of isometric perspective
@@ -16,33 +16,33 @@ class Camera {
         //center in middle of screen
         desx-=width/2/this.worldScale;
         desy-=height/2/this.worldScale;
-        return [desx,desy]
+        return [desx,desy];
     }
-    setPositionAs(target){
+    setPositionAs(target) {
         // target is player
-        let desx,desy
-        [desx,desy] = this.getPositionAt(target) //JS equivalent of a tuple
-        this.x = desx
-        this.y = desy
+        let desx,desy;
+        [desx,desy] = this.getPositionAt(target); //JS equivalent of a tuple
+        this.x = desx;
+        this.y = desy;
     }
-    scaleUp(scalefac,tgt){
-        this.worldScale *= scalefac
-        if(this.worldScale > 2){
-            this.worldScale = 2
+    scaleUp(scalefac,tgt) {
+        this.worldScale *= scalefac;
+        if (this.worldScale > 1.3) {
+            this.worldScale = 1.3;
         }
-        this.setPositionAs(tgt)
+        this.setPositionAs(tgt);
     }
-    scaleDown(scalefac,tgt){
-        this.worldScale /= scalefac
-        if(this.worldScale < 0.3){
-            this.worldScale = 0.3
+    scaleDown(scalefac,tgt) {
+        this.worldScale /= scalefac;
+        if (this.worldScale < 0.1) {
+            this.worldScale = 0.1;
         }
-        this.setPositionAs(tgt)
+        this.setPositionAs(tgt);
     }
     moveTowards(target) {
         // target is player
-        let desx,desy
-        [desx,desy] = this.getPositionAt(target) //JS equivalent of a tuple
+        let desx,desy;
+        [desx,desy] = this.getPositionAt(target); //JS equivalent of a tuple
         let diffx = (this.x - desx)/width; // difference x
         let diffy = (this.y - desy)/height; // difference y
         // the further away, the faster the camera moves

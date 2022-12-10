@@ -18,8 +18,7 @@ class Level {
         let LP = [[0],[0]];
         // an array of all the rooms to be generated in the layout
         let rooms = [];
-        //let mainRooms = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; (commented out until loot and shop rooms are implemented)// 80% chance for standard, 10% chance for loot, 10% chance for shop
-        let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
         for (let i = 0; i < this.lvl; i++) { // For every level
             rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
         }
