@@ -132,10 +132,13 @@ class Level {
             for (var y = 0; y < this.tileTable[x].length; y++) {
                 switch(this.tileTable[x][y]) {
                     case "w": // Wall
-                        this.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y); 
+                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random()*4)], assets.images.walls[Math.floor(Math.random()*4)]), x, y); 
                         break;
                     case "g": // Ground 
-                        this.addTile(new Tile(assets.images.floors[0]), x, y);
+                        this.addTile(new Tile(assets.images.floors[Math.floor(Math.random()*4)]), x, y);
+                        if(Math.random() <.02){
+                            this.entities.push(new Enemy(10,x*100,y*100));
+                        }
                         break;
                     case "v": // Void 
                         this.addTile(new VoidTile(), x, y);
