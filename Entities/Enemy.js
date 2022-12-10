@@ -6,12 +6,12 @@ class Enemy extends Entity {
         this.isNavigationEntity = true;
         this.w = 80;
         this.h = 80;
-        this.x = x
-        this.y = y
+        this.x = x;
+        this.y = y;
     }
     navTowardsPosition(level,position) {
         let tfArray = [];
-        if (dist (position.x,position.y,this.x,this.y) > 100) {
+        if (dist(position.x,position.y,this.x,this.y) > 100) {
             // If further than a tile, navigate using algorithm
             let currentX = floor(this.x/100);
             let currentY = floor(this.y/100);

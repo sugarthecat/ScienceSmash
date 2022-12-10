@@ -24,12 +24,12 @@ class GameMenu {
             adjh -= 40;
             noStroke();
             fill (200);
-            translate (xoff,yoff)
-            scale(adjw/600,adjh/400)
+            translate (xoff,yoff);
+            scale(adjw/600,adjh/400);
             //all menu items displayed on scale of 600 to 400
-            rect(0,0,600,400)
-            fill(100)
-            rect(10,10,30,30)
+            rect(0,0,600,400);
+            fill(100);
+            rect(10,10,30,30);
             pop ();
         }
     }
