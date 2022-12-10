@@ -8,7 +8,7 @@ class Entity {
         this.diry = 50; // 1,0, or -1, representing direction y
         this.dispw = 50; //display width
         this.disph = 100; //display height
-        this.moveSpeed = 0.5;
+        this.moveSpeed = 25;
     }
     //Given the level object, returns true if this player is colliding with any objects.
     //returns if it collides with another object
@@ -29,7 +29,7 @@ class Entity {
         if (this.destination) {
             this.dirx = this.destination.x - this.x;
             this.diry = this.destination.y - this.y;
-            if ( dist(this.destination.x,this.destination.y,this.x,this.y)<this.moveSpeed*1.5) {
+            if ( dist(this.destination.x,this.destination.y,this.x,this.y)<this.moveSpeed/2) {
                 this.x = this.destination.x;
                 this.y = this.destination.y;
                 this.dirx = 0;
@@ -37,10 +37,10 @@ class Entity {
                 this.destination = undefined;
             }
         }
-        let pythDir =  sqrt(this.dirx * this.dirx + this.diry * this.diry); //Distance of dirx and diry applied to a grid 
-        if (pythDir != 0) {
-            this.x += this.dirx * this.moveSpeed/pythDir*deltaTime;
-            this.y += this.diry * this.moveSpeed/pythDir*deltaTime;
+        let directionDistance =  sqrt(this.dirx * this.dirx + this.diry * this.diry); //Distance of dirx and diry, used to get directions
+        if (directionDistance != 0) {
+            this.x += this.dirx * this.moveSpeed/directionDistance*(deltaTime/100);
+            this.y += this.diry * this.moveSpeed/directionDistance*(deltaTime/100);
             // Accounts for distance via pythagorean theorem if there is movement.
         }
         if (level.collides(this)) {
