@@ -1,11 +1,13 @@
 class Enemy extends Entity {
-    constructor(health) {
+    constructor(health,x=0,y=0) {
         super();
         this.maxHealth = health;
         this.health = health;
         this.isNavigationEntity = true;
         this.w = 80;
         this.h = 80;
+        this.x = x
+        this.y = y
     }
     navTowardsPosition(level,position) {
         let tfArray = [];
@@ -21,7 +23,7 @@ class Enemy extends Entity {
             }
             tfArray[floor(position.x/100)][floor(position.y/100)] = 0;
             let change = true;
-            // While things are chaing on the t/f board
+            // While things are changing on the t/f board
             while (change) {
                 change = false;
                 // check every tile 

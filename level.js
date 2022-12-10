@@ -137,6 +137,9 @@ class Level {
                         break;
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[0]), x, y);
+                        if(Math.random() <.05){
+                            this.entities.push(new Enemy(10,x*100,y*100));
+                        }
                         break;
                     case "v": // Void 
                         this.addTile(new VoidTile(), x, y);
@@ -378,11 +381,26 @@ class Level {
         image(assets.images.target,-100,-100,200,200)
         pop()
     }
-    basicChemistry(){
+    activateBasicAttack(){
         let [disx,disy] = this.getProjectedMouseXY();
+        this.dealDamage(disx,disy,0,'point')
+    }
+    //accepts shapes: point, square
+    //x, y represent middle of shape.
+    dealDamage(x,y,size,shape="point"){
+        
+        let doesDamagefunction;
+        switch(shape){
+            case 'point':
+                doesDamagefunction = function(enemy){return enemy.collides({x:x,y:y,w:0,h:0}) }
+            break;
+            case 'square':
+                doesDamagefunction = function(enemy){return enemy.collides({x:x-size/2,y:y-size/2,w:size,h:size}) }
+            break;
+        }
         for (let i = 0; i < this.entities.length; i++) {
-            if (this.entities[i].collides({x:disx,y:disy,w:0,h:0})) {
-                this.entities[i].takeDamage(1);
+            if (doesDamagefunction(this.entities[i])) {
+                this.entities[i].takeDamage(122);
                 if (this.entities[i].health <= 0) {
                     this.entities.splice(i,1);
                 }

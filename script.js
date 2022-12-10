@@ -73,12 +73,15 @@ function playPlaylist(playlist) {
 	}, playlist[placeInPL].duration() * 1000);
 }
 function mouseClicked() {
-	level.basicChemistry();
-	if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
-		executed = true;
-		playPlaylist(assets.music);
-		loadscreen.continue = true;
-		tutorial = new Tutorial(assets.tutorialText);
+	if (loadscreen.loadsLeft == 0){
+		if(!executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
+			executed = true;
+			playPlaylist(assets.music);
+			loadscreen.continue = true;
+			tutorial = new Tutorial(assets.tutorialText);
+		}else{
+			level.activateBasicAttack();
+		}
 	}
 }
 
@@ -97,7 +100,6 @@ function draw() {
 	if (!executed) {
 		loadscreen.draw();
 	} else {
-		level.basicChemistry();
 		// Game is active
 		background(0); // draws black background
 		push();
