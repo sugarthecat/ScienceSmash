@@ -30,7 +30,7 @@ class Assets {
             this.rooms.loot.push(loadTable('rooms/loot/l'+i+'.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 7; i++) { // needs to be equal to the amount of room files in the shop room directory
-            this.rooms.shop.push(loadTable('rooms/shop/sh'+i+'.csv', 'csv', 'noheader', loaded));
+            this.rooms.shop.push(loadTable('rooms/shop/shop'+i+'.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 3; i++) { // needs to be equal to the amount of room files in the progression room directory
             this.rooms.progression.push(loadTable('rooms/progression/p'+i+'.csv', 'csv', 'noheader', loaded));
