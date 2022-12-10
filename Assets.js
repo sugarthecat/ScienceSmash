@@ -65,12 +65,10 @@ class Assets {
             loadSound('music/over-the-plains-of-snow.mp3', loaded),
             loadSound('music/the-phantoms-castle.mp3', loaded),
             loadSound('music/to-the-horizon.mp3', loaded)];
-        this.images.walls = [
-            loadImage('sprites/wallTile1.png', loaded),
-            loadImage('sprites/wallTile2.png', loaded)];
-        this.images.floors = [
-            loadImage('sprites/floorTile1.png', loaded),
-            loadImage('sprites/floorTile2.png', loaded)];
+        for (let i = 0; i < 4; i++) {
+            this.images.walls.push(loadImage('sprites/wallTile'+i+'.png', loaded));}
+        for (let i = 0; i < 4; i++) {
+            this.images.floors.push(loadImage('sprites/floorTile'+i+'.png', loaded));}
         this.images.progression = [
             loadImage('sprites/portalTile.png', loaded),
             loadImage('sprites/portalTile2.png')];
