@@ -89,6 +89,42 @@ class Level {
                     break;
             }
         }
+        // Close the holes in the level
+        for (let i = 0; i < layout.length; i++) { // position on the x axis of layout array
+            for (let j = 0; j < layout[i].length; j++) { // position on the y axis of the layout array
+                if (layout[i][j] === undefined) {
+                    console.log("empty");
+                } else {
+                    if (j == 0 || !(layout[i][j-1] instanceof Object)) { // top
+                        layout[i][j].north = false;
+                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "w"; } // seal north wall
+                    }
+                    if (i == layout.length-1 || !(layout[i+1][j] instanceof Object)) { // right
+                        layout[i][j].east = false;
+                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "w"; } // seal east wall
+                    }
+                    if (j == layout[i].length-1 || !(layout[i][j+1] instanceof Object)) { // bottom
+                        layout[i][j].south = false;
+                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "w"; } // seal south wall
+                    }
+                    if (i == 0 || !(layout[i-1][j] instanceof Object)) { // left
+                        layout[i][j].west = false;
+                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "w"; } // seal west wall
+                    }
+                    console.log("i:"+i+"   j:"+j);
+                    console.log(layout[i][j]);
+                }
+            }
+        }
+/*
+
+
+*/
+
+
+
+
+        
         // Build the tileTable
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
             for (let r = 0; r < 25; r++) { // position on the y axis of the csv array
@@ -113,18 +149,6 @@ class Level {
                 }
             }
         }
-        // Close the holes of each room
-        for(let x= 0; x<this.tileTable.length; x++){
-            for(let y = 0; y<this.tileTable[x]; y++){
-                if(x == 0 || y == 0 || x == this.tileTable.length-1 || y == this.tileTable[x].length-1){
-                    this.tileTable[x][y] = 'w'
-                    console.log('set '+x+","+y)
-                }
-                if(this.tileTable[x][y] == "g"){
-                    
-                }
-            }
-        }
         this.generateTiles();
     }
     generateTiles() { 
@@ -140,18 +164,22 @@ class Level {
                     case "v": // Void 
                         this.addTile(new VoidTile(), x, y);
                         break;
-                    case "t": 
+                    case "t": // Trap
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
                         break;
-                    case "e": 
+                    case "e": // Explosive
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add explosive tile
                         break;
-                    case "c": 
+                    case "c": // Chest
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
                         break;
-                    case "p":
-                        this.addTile(new ProgressionTile(assets.images.progression[Math.floor(Math.random() * assets.images.progression.length)]), x, y);
+                    case "p": // Portal
+                        this.addTile(new ProgressionTile(assets.images.portal[Math.floor(Math.random() * assets.images.portal.length)]), x, y);
                         break;
+                    /*case "s": // Shopkeeper
+                        break;
+                    case "b": // Buyable
+                        break;*/
                     default:
                         this.addTile(new VoidTile(), x, y); 
                         break;

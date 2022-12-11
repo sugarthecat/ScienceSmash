@@ -3,7 +3,6 @@ class Room {
         this.type = typeInt;
         this.tileTable = new Array(25).fill(undefined).map(()=>new Array(25).fill(undefined));
         let chosenTable;
-        let chosenIndex;
         switch (this.type) { 
             case 0: 
                 chosenTable = assets.rooms.initial;
@@ -24,7 +23,7 @@ class Room {
                 chosenTable = assets.rooms.boss;
                 break;
         }
-        chosenIndex = Math.floor(Math.random() * chosenTable.length);
+        let chosenIndex = Math.floor(Math.random() * chosenTable.length);
         for (let i = 0; i < 25; i++) {
             for (let j = 0; j < 25; j++) {
                 this.tileTable[i][j] = chosenTable[chosenIndex].rows[i].arr[j];

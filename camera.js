@@ -27,15 +27,15 @@ class Camera {
     }
     scaleUp(scalefac,tgt) {
         this.worldScale *= scalefac;
-        if (this.worldScale > 1.3) {
-            this.worldScale = 1.3;
+        if (this.worldScale > 1.2) {
+            this.worldScale = 1.2;
         }
         this.setPositionAs(tgt);
     }
     scaleDown(scalefac,tgt) {
         this.worldScale /= scalefac;
-        if (this.worldScale < 0.1) {
-            this.worldScale = 0.1;
+        if (this.worldScale < 0.8) {
+            this.worldScale = 0.8;
         }
         this.setPositionAs(tgt);
     }
