@@ -133,11 +133,11 @@ class Level {
             for (var y = 0; y < this.tileTable[x].length; y++) {
                 switch(this.tileTable[x][y]) {
                     case "w": // Wall
-                        this.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y); 
+                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random()*4)], assets.images.walls[Math.floor(Math.random()*4)]), x, y); 
                         break;
                     case "g": // Ground 
-                        this.addTile(new Tile(assets.images.floors[0]), x, y);
-                        if(Math.random() <.05){
+                        this.addTile(new Tile(assets.images.floors[Math.floor(Math.random()*4)]), x, y);
+                        if(Math.random() <.02){
                             this.entities.push(new Enemy(10,x*100,y*100));
                         }
                         break;
@@ -145,16 +145,16 @@ class Level {
                         this.addTile(new VoidTile(), x, y);
                         break;
                     case "t": 
-                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
+                        this.addTile(new TrapTile(assets.images.floors[0]), x, y); // TODO: add trap tile
                         break;
                     case "e": 
-                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add explosive tile
+                        this.addTile(new ExplosiveTile(assets.images.floors[0]), x, y); // TODO: add explosive tile
                         break;
                     case "c": 
-                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
+                        this.addTile(new ChestTile(assets.images.floors[0]), x, y); // TODO: add chest tile
                         break;
                     case "p":
-                        this.addTile(new ProgressionTile(assets.images.progression[0]), x, y); // TODO: add chest tile
+                        this.addTile(new ProgressionTile(assets.images.progression[0]), x, y);
                         break;
                     default:
                         this.addTile(new VoidTile(), x, y); 
