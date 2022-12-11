@@ -6,6 +6,7 @@ class Enemy extends Entity {
         this.isNavigationEntity = true;
         this.w = 80;
         this.h = 80;
+        this.viewDistance = 25;
         this.x = x
         this.y = y
     }
@@ -30,7 +31,7 @@ class Enemy extends Entity {
                 for (let x = 0; x < tfArray.length;x++) {
                     for (let y = 0; y<tfArray[x].length; y++) {
                         if (tfArray[x][y] !== false) {
-                            // check if each 
+                            // check if each can be navigated to from a neighboring tile, or navigated via a shorter path.
                             for (let x2 = x-1; x2<x+2; x2++) {
                                 for (let y2 = y-1; y2<y+2; y2++) {
                                     if ((x2 == x || y2 == y) 
@@ -40,7 +41,9 @@ class Enemy extends Entity {
                                     && y2 < tfArray[x2].length 
                                     && typeof tfArray[x2][y2] != "boolean" 
                                     && (tfArray[x][y] === true 
-                                    || sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < tfArray[x][y])) {
+                                    || sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < tfArray[x][y])
+                                    && sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < this.viewDistance
+                                    ) {
                                         tfArray[x][y] = tfArray[x2][y2] + dist(x,y,x2,y2)+level.sharedNavCollide(x2,y2,this)*50;
                                         change = true;
                                     }
