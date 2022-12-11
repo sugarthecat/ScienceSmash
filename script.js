@@ -3,7 +3,7 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(65); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(70); // Initialize the loading screen with how many files need to be loaded
 
 let placeInPL = 0;
 var tileTable;

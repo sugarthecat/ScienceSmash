@@ -132,10 +132,10 @@ class Level {
             for (var y = 0; y < this.tileTable[x].length; y++) {
                 switch(this.tileTable[x][y]) {
                     case "w": // Wall
-                        this.addTile(new CollisionTile(assets.images.walls[0], assets.images.walls[0]), x, y); 
+                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
                         break;
                     case "g": // Ground 
-                        this.addTile(new Tile(assets.images.floors[0]), x, y);
+                        this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
                         break;
                     case "v": // Void 
                         this.addTile(new VoidTile(), x, y);
@@ -150,7 +150,7 @@ class Level {
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
                         break;
                     case "p":
-                        this.addTile(new ProgressionTile(assets.images.progression[0]), x, y); // TODO: add chest tile
+                        this.addTile(new ProgressionTile(assets.images.progression[Math.floor(Math.random() * assets.images.progression.length)]), x, y);
                         break;
                     default:
                         this.addTile(new VoidTile(), x, y); 

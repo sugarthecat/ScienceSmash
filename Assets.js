@@ -43,7 +43,7 @@ class Assets {
         fetch("tutorialblurbs.txt")
         .then(x => x.text())
         .then(x => this.tutorialText = x)
-        .then(loaded())
+        .then(loaded());
         
         this.music = [
             loadSound('music/a-robust-crew.mp3', loaded),
@@ -65,23 +65,16 @@ class Assets {
             loadSound('music/over-the-plains-of-snow.mp3', loaded),
             loadSound('music/the-phantoms-castle.mp3', loaded),
             loadSound('music/to-the-horizon.mp3', loaded)];
-        this.images.walls = [
-            loadImage('sprites/wallTile1.png', loaded),
-            loadImage('sprites/wallTile2.png', loaded)];
-        this.images.floors = [
-            loadImage('sprites/floorTile1.png', loaded),
-            loadImage('sprites/floorTile2.png', loaded)];
-        this.images.progression = [
-            loadImage('sprites/portalTile.png', loaded),
-            loadImage('sprites/portalTile2.png')];
+        for (let i = 0; i < 4; i++) {
+            this.images.walls.push(loadImage('sprites/wallTile'+i+'.png', loaded));}
+        for (let i = 0; i < 4; i++) {
+            this.images.floors.push(loadImage('sprites/floorTile'+i+'.png', loaded));}
+        for (let i = 0; i < 2; i++) {
+            this.images.portal.push(loadImage('sprites/portalTile'+i+'.png', loaded));}
         this.images.aura = loadImage('sprites/playerAura.png', loaded);
         this.images.target = loadImage('sprites/target.png', loaded);
         this.images.player.idle = [loadImage('sprites/idle.png', loaded)];
-        this.images.player.run = [
-            loadImage('sprites/run1.png', loaded),
-            loadImage('sprites/run2.png', loaded),
-            loadImage('sprites/run3.png', loaded),
-            loadImage('sprites/run4.png', loaded),
-            loadImage('sprites/run5.png', loaded)];
+        for (let i = 0; i < 5; i++) {
+            this.images.player.run.push(loadImage('sprites/run'+i+'.png', loaded));}
     }
 }
