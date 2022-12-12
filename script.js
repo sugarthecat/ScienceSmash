@@ -3,9 +3,8 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(70); // Initialize the loading screen with how many files need to be loaded
-
-let placeInPL = 0;
+let loadscreen = new LoadingScreen(75); // Initialize the loading screen with how many files need to be loaded
+let placeInPL = 0; // Place in the music playlist
 var tileTable;
 let executed = false; // Ensure playPlaylist() can only be called once
 let loadTick = 0;
@@ -51,7 +50,7 @@ function keyPressed() {
 }
 
 function setup() {
-	level.lvl = 10; // needs to start at 1 and be incremented when level increases
+	level.lvl = 3; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
     camera.y = -windowHeight / 2;
 	assets.loadFiles();
@@ -103,9 +102,10 @@ function draw() {
 		}
 		camera.adjust();
 		noStroke();
-		level.displayGround();
-		level.displayUpper();
+		level.displayFloor();
+		level.displayWalls();
 		level.displayRoof();
+		level.displayGround();
 		if (!gamemenu.active) {
 			level.updateTargetPosition();
 			level.runEntityMovement();

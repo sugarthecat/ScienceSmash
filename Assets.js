@@ -21,60 +21,60 @@ class Assets {
     }
     loadFiles(){
         for (let i = 0; i < 2; i++) { // needs to be equal to the amount of room files in the initial room directory
-            this.rooms.initial.push(loadTable('rooms/initial/i'+i+'.csv', 'csv', 'noheader', loaded));
+            this.rooms.initial.push(loadTable('assets/rooms/initial/i'+i+'.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 16; i++) { // needs to be equal to the amount of room files in the standard room directory
-            this.rooms.standard.push(loadTable('rooms/standard/s'+i+'.csv', 'csv', 'noheader', loaded));
+            this.rooms.standard.push(loadTable('assets/rooms/standard/s'+i+'.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 2; i++) { // needs to be equal to the amount of room files in the loot room directory
-            this.rooms.loot.push(loadTable('rooms/loot/l'+i+'.csv', 'csv', 'noheader', loaded));
+            this.rooms.loot.push(loadTable('assets/rooms/loot/l'+i+'.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 7; i++) { // needs to be equal to the amount of room files in the shop room directory
-            this.rooms.shop.push(loadTable('rooms/shop/shop'+i+'.csv', 'csv', 'noheader', loaded));
+            this.rooms.shop.push(loadTable('assets/rooms/shop/shop'+i+'.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 3; i++) { // needs to be equal to the amount of room files in the progression room directory
-            this.rooms.progression.push(loadTable('rooms/progression/p'+i+'.csv', 'csv', 'noheader', loaded));
+            this.rooms.progression.push(loadTable('assets/rooms/progression/p'+i+'.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 2; i++) { // needs to be equal to the amount of room files in the boss room directory
-            this.rooms.boss.push(loadTable('rooms/boss/b'+i+'.csv', 'csv', 'noheader', loaded));
+            this.rooms.boss.push(loadTable('assets/rooms/boss/b'+i+'.csv', 'csv', 'noheader', loaded));
         }
         
         this.tutorialText;
-        fetch("tutorialblurbs.txt")
+        fetch("assets/tutorialblurbs.txt")
         .then(x => x.text())
         .then(x => this.tutorialText = x)
         .then(loaded());
         
         this.music = [
-            loadSound('music/a-robust-crew.mp3', loaded),
-            loadSound('music/a-time-forgotten.mp3', loaded),
-            loadSound('music/ale-and-anecdotes.mp3', loaded),
-            loadSound('music/crystal-caverns.mp3', loaded),
-            loadSound('music/i-am-not-what-i-thought.mp3', loaded),
-            loadSound('music/dusty-memories.mp3', loaded),
-            loadSound('music/eternal-sleep.mp3', loaded),
-            loadSound('music/fireside-tales.mp3', loaded),
-            loadSound('music/highland-castle.mp3', loaded),
-            loadSound('music/i-was-always-right-here.mp3', loaded),
-            loadSound('music/illusory-realm.mp3', loaded),
-            loadSound('music/into-oblivion.mp3', loaded),
-            loadSound('music/labyrinth-of-lost-dreams.mp3', loaded),
-            loadSound('music/lake-of-destiny.mp3', loaded),
-            loadSound('music/lord-mcdeath.mp3', loaded),
-            loadSound('music/lurking-evil.mp3', loaded),
-            loadSound('music/over-the-plains-of-snow.mp3', loaded),
-            loadSound('music/the-phantoms-castle.mp3', loaded),
-            loadSound('music/to-the-horizon.mp3', loaded)];
+            loadSound('assets/music/a-robust-crew.mp3', loaded),
+            loadSound('assets/music/a-time-forgotten.mp3', loaded),
+            loadSound('assets/music/ale-and-anecdotes.mp3', loaded),
+            loadSound('assets/music/crystal-caverns.mp3', loaded),
+            loadSound('assets/music/i-am-not-what-i-thought.mp3', loaded),
+            loadSound('assets/music/dusty-memories.mp3', loaded),
+            loadSound('assets/music/eternal-sleep.mp3', loaded),
+            loadSound('assets/music/fireside-tales.mp3', loaded),
+            loadSound('assets/music/highland-castle.mp3', loaded),
+            loadSound('assets/music/i-was-always-right-here.mp3', loaded),
+            loadSound('assets/music/illusory-realm.mp3', loaded),
+            loadSound('assets/music/into-oblivion.mp3', loaded),
+            loadSound('assets/music/labyrinth-of-lost-dreams.mp3', loaded),
+            loadSound('assets/music/lake-of-destiny.mp3', loaded),
+            loadSound('assets/music/lord-mcdeath.mp3', loaded),
+            loadSound('assets/music/lurking-evil.mp3', loaded),
+            loadSound('assets/music/over-the-plains-of-snow.mp3', loaded),
+            loadSound('assets/music/the-phantoms-castle.mp3', loaded),
+            loadSound('assets/music/to-the-horizon.mp3', loaded)];
         for (let i = 0; i < 4; i++) {
-            this.images.walls.push(loadImage('sprites/wallTile'+i+'.png', loaded));}
+            this.images.walls.push(loadImage('assets/sprites/wallTile'+i+'.png', loaded));}
         for (let i = 0; i < 4; i++) {
-            this.images.floors.push(loadImage('sprites/floorTile'+i+'.png', loaded));}
-        for (let i = 0; i < 2; i++) {
-            this.images.portal.push(loadImage('sprites/portalTile'+i+'.png', loaded));}
-        this.images.aura = loadImage('sprites/playerAura.png', loaded);
-        this.images.target = loadImage('sprites/target.png', loaded);
-        this.images.player.idle = [loadImage('sprites/idle.png', loaded)];
+            this.images.floors.push(loadImage('assets/sprites/floorTile'+i+'.png', loaded));}
+        for (let i = 0; i < 7; i++) {
+            this.images.portal.push(loadImage('assets/sprites/portalTile'+i+'.png', loaded));}
+        this.images.aura = loadImage('assets/sprites/playerAura.png', loaded);
+        this.images.target = loadImage('assets/sprites/target.png', loaded);
+        this.images.player.idle = [loadImage('assets/sprites/idle.png', loaded)];
         for (let i = 0; i < 5; i++) {
-            this.images.player.run.push(loadImage('sprites/run'+i+'.png', loaded));}
+            this.images.player.run.push(loadImage('assets/sprites/run'+i+'.png', loaded));}
     }
 }

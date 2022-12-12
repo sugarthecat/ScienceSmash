@@ -93,7 +93,6 @@ class Level {
         for (let i = 0; i < layout.length; i++) { // position on the x axis of layout array
             for (let j = 0; j < layout[i].length; j++) { // position on the y axis of the layout array
                 if (layout[i][j] === undefined) {
-                    console.log("empty");
                 } else {
                     if (j == 0 || !(layout[i][j-1] instanceof Object)) { // top
                         layout[i][j].north = false;
@@ -111,20 +110,9 @@ class Level {
                         layout[i][j].west = false;
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "w"; } // seal west wall
                     }
-                    console.log("i:"+i+"   j:"+j);
-                    console.log(layout[i][j]);
                 }
             }
         }
-/*
-
-
-*/
-
-
-
-
-        
         // Build the tileTable
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
             for (let r = 0; r < 25; r++) { // position on the y axis of the csv array
@@ -236,10 +224,10 @@ class Level {
         // Remove any walls that would be behind others
         for (let x = 0; x<this.tiles.length-1; x++) {
             for (let y = 0; y<this.tiles[x].length-1; y++) {
-                if ( (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft)) {
+                if (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft) {
                     this.tiles[x][y].hasLeft = false;
                 }
-                if ( (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight)) {
+                if (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight) {
                     this.tiles[x][y].hasRight = false;
                 }
             }
@@ -247,7 +235,7 @@ class Level {
         // generate the player's aura image
         this.player.groundImage = assets.images.aura;
     }
-    displayGround() {
+    displayFloor() {
         push();
         // Vertically scale and rotate tiles in order to make isometric viewpoint
         scale(1,TILE_SCALE);
@@ -272,7 +260,8 @@ class Level {
         }
         pop();
     }
-    displayUpper() {
+    // Displays the parts 
+    displayWalls() {
         let playerDrawn = false;
         let entityDrawn = [];
         for (let i = 0; i< this.entities.length; i++) {
@@ -324,6 +313,9 @@ class Level {
             }
         }
         pop()
+    }
+    displayGround() {
+
     }
     runEntityMovement(){
         this.generateNavCollideArray()
