@@ -7,8 +7,8 @@ class Enemy extends Entity {
         this.w = 80;
         this.h = 80;
         this.viewDistance = 25;
-        this.x = x
-        this.y = y
+        this.x = x;
+        this.y = y;
     }
     navTowardsPosition(level,position) {
         let tfArray = [];
@@ -25,33 +25,41 @@ class Enemy extends Entity {
             tfArray[floor(position.x/100)][floor(position.y/100)] = 0;
             let change = true;
             // While things are changing on the t/f board
-            while (change) {
+            let openOptions = [
+                {x: floor(position.x/100)-1, y: floor(position.y/100)},
+                {x: floor(position.x/100)+1, y: floor(position.y/100)},
+                {x: floor(position.x/100), y: floor(position.y/100)-1},
+                {x: floor(position.x/100), y: floor(position.y/100)+1},]
+            while (openOptions.length > 0) {
                 change = false;
-                // check every tile 
-                for (let x = 0; x < tfArray.length;x++) {
-                    for (let y = 0; y<tfArray[x].length; y++) {
-                        if (tfArray[x][y] !== false) {
-                            // check if each can be navigated to from a neighboring tile, or navigated via a shorter path.
-                            for (let x2 = x-1; x2<x+2; x2++) {
-                                for (let y2 = y-1; y2<y+2; y2++) {
-                                    if ((x2 == x || y2 == y) 
-                                    && x2 > 0 
-                                    && y2 > 0 
-                                    && x2 < tfArray.length 
-                                    && y2 < tfArray[x2].length 
-                                    && typeof tfArray[x2][y2] != "boolean" 
-                                    && (tfArray[x][y] === true 
-                                    || sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < tfArray[x][y])
-                                    && sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < this.viewDistance
-                                    ) {
-                                        tfArray[x][y] = tfArray[x2][y2] + dist(x,y,x2,y2)+level.sharedNavCollide(x2,y2,this)*50;
-                                        change = true;
-                                    }
-                                }
+                // check every tile
+                let x = openOptions[0].x
+                let y = openOptions[0].y
+                if (x >= 0 && y >= 0 && x < tfArray.length && y < tfArray[x].length && tfArray[x][y] !== false) {
+                    // check if each can be navigated to from a neighboring tile, or navigated via a shorter path.
+                    for (let x2 = x-1; x2<x+2; x2++) {
+                        for (let y2 = y-1; y2<y+2; y2++) {
+                            if ((x2 == x || y2 == y) 
+                            && x2 > 0 
+                            && y2 > 0 
+                            && x2 < tfArray.length 
+                            && y2 < tfArray[x2].length 
+                            && typeof tfArray[x2][y2] != "boolean" 
+                            && (tfArray[x][y] === true 
+                            || sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < tfArray[x][y])
+                            && sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < this.viewDistance
+                            ) {
+                                tfArray[x][y] = tfArray[x2][y2] + dist(x,y,x2,y2)+level.sharedNavCollide(x2,y2,this)*50;
+                                change = true;
+                                openOptions.push({x:x-1, y:y})
+                                openOptions.push({x:x+1, y:y})
+                                openOptions.push({x:x, y:y-1})
+                                openOptions.push({x:x, y:y+1})
                             }
                         }
                     }
                 }
+                openOptions.shift();
             } 
             for (let x = 0; x<tfArray.length;x++) {
                 for (let y = 0; y<tfArray[x].length; y++) {
