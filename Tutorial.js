@@ -11,7 +11,8 @@ class Tutorial {
 
     }
     isComplete() {
-        return this.phase == this.textBoxes.length;
+        //return this.phase == this.textBoxes.length;
+        return true;
     }
     advanceText() {
         this.textbox.advanceText();

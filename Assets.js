@@ -9,6 +9,7 @@ class Assets {
         this.rooms.progression = [];
         this.rooms.boss = [];
         this.music = [];
+        this.tutorialText;
         this.images = {};
         this.images.walls = [];
         this.images.floors = [];
@@ -18,12 +19,13 @@ class Assets {
         this.images.player = {};
         this.images.player.idle;
         this.images.player.run = [];
+        this.images.backgrounds = [];
     }
     loadFiles(){
         for (let i = 0; i < 2; i++) { // needs to be equal to the amount of room files in the initial room directory
             this.rooms.initial.push(loadTable('assets/rooms/initial/i'+i+'.csv', 'csv', 'noheader', loaded));
         }
-        for (let i = 0; i < 16; i++) { // needs to be equal to the amount of room files in the standard room directory
+        for (let i = 0; i < 18; i++) { // needs to be equal to the amount of room files in the standard room directory
             this.rooms.standard.push(loadTable('assets/rooms/standard/s'+i+'.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 2; i++) { // needs to be equal to the amount of room files in the loot room directory
@@ -39,14 +41,13 @@ class Assets {
             this.rooms.boss.push(loadTable('assets/rooms/boss/b'+i+'.csv', 'csv', 'noheader', loaded));
         }
         
-        this.tutorialText;
         fetch("assets/tutorialblurbs.txt")
         .then(x => x.text())
         .then(x => this.tutorialText = x)
         .then(loaded());
         
         this.music = [
-            loadSound('assets/music/a-robust-crew.mp3', loaded),
+            /*loadSound('assets/music/a-robust-crew.mp3', loaded),
             loadSound('assets/music/a-time-forgotten.mp3', loaded),
             loadSound('assets/music/ale-and-anecdotes.mp3', loaded),
             loadSound('assets/music/crystal-caverns.mp3', loaded),
@@ -61,7 +62,7 @@ class Assets {
             loadSound('assets/music/labyrinth-of-lost-dreams.mp3', loaded),
             loadSound('assets/music/lake-of-destiny.mp3', loaded),
             loadSound('assets/music/lord-mcdeath.mp3', loaded),
-            loadSound('assets/music/lurking-evil.mp3', loaded),
+            loadSound('assets/music/lurking-evil.mp3', loaded),*/
             loadSound('assets/music/over-the-plains-of-snow.mp3', loaded),
             loadSound('assets/music/the-phantoms-castle.mp3', loaded),
             loadSound('assets/music/to-the-horizon.mp3', loaded)];
@@ -76,5 +77,8 @@ class Assets {
         this.images.player.idle = [loadImage('assets/sprites/idle.png', loaded)];
         for (let i = 0; i < 5; i++) {
             this.images.player.run.push(loadImage('assets/sprites/run'+i+'.png', loaded));}
+        for (let i = 0; i < 2; i++) {
+            this.images.backgrounds.push(loadImage('assets/sprites/background'+i+'.png', loaded));
+        }
     }
 }

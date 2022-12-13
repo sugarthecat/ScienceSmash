@@ -3,7 +3,7 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(75); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(63); // Initialize the loading screen with how many files need to be loaded
 let placeInPL = 0; // Place in the music playlist
 var tileTable;
 let executed = false; // Ensure playPlaylist() can only be called once
@@ -50,7 +50,7 @@ function keyPressed() {
 }
 
 function setup() {
-	level.lvl = 3; // needs to start at 1 and be incremented when level increases
+	level.lvl = 20; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
     camera.y = -windowHeight / 2;
 	assets.loadFiles();
@@ -83,9 +83,9 @@ function mouseClicked() {
 function mouseWheel(e) {
 	if (!gamemenu.active) {
 		if (e.delta < 0) {
-			camera.scaleUp(1.1, level.player);
+			camera.scaleUp(level.player);
 		} else if (e.delta > 0) {
-			camera.scaleDown(1.1, level.player);
+			camera.scaleDown(level.player);
 		}
 	}
 }
@@ -95,7 +95,7 @@ function draw() {
 	} else {
 		level.basicChemistry();
 		// Game is active
-		background(0); // draws black background
+		background(assets.images.backgrounds[Math.floor(Math.random() * assets.images.backgrounds.length)]); // draws black background
 		push();
 		if (!gamemenu.active) {
 			camera.moveTowards(level.player);

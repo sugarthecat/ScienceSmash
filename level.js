@@ -250,11 +250,6 @@ class Level {
         }
         this.player.drawGround();
         this.displayTarget();
-        fill(0);
-        rect(-1000,-1000,1000,100000);
-        rect(-1000,-1000,100000,1000);
-        rect(this.tiles.length*100,0,1000,100000);
-        rect(0,this.tiles[0].length*100,100000,1000);
         for (let i = 0; i< this.entities.length; i++) {
             this.entities[i].drawGround();
         }
