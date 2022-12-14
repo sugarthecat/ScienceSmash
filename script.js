@@ -57,9 +57,6 @@ function setup() {
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
-	// TODO: x and y starting positions need to be adjusted to the center of the Initial room of the level.
-	level.player.x = 500;
-	level.player.y = 500;
 }
 function playPlaylist(playlist) {
 	if (placeInPL == playlist.length) {

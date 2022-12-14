@@ -142,7 +142,7 @@ class Level {
     generateTiles() { 
         for (var x = 0; x < this.tileTable.length; x++) {
             for (var y = 0; y < this.tileTable[x].length; y++) {
-                switch(this.tileTable[x][y]) {
+                switch (this.tileTable[x][y]) {
                     case "w": // Wall
                         this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
                         break;
@@ -260,7 +260,7 @@ class Level {
         let playerDrawn = false;
         let entityDrawn = [];
         for (let i = 0; i< this.entities.length; i++) {
-            entityDrawn.push(false)
+            entityDrawn.push(false);
         }
         if ((0+0)*100> this.player.x+this.player.y) {
             this.player.draw();
