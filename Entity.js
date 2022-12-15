@@ -62,7 +62,7 @@ class Entity {
                 }
                 increment *= 2;
             }
-            if(this.isNavigationEntity){
+            if (this.isNavigationEntity) {
                 this.destination = undefined
             }
         }

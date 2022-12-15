@@ -3,10 +3,10 @@ const TILE_SCALE = 1 / Math.sqrt(3);
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(63); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(65); // Initialize the loading screen with how many files need to be loaded
 let placeInPL = 0; // Place in the music playlist
 var tileTable;
-let executed = false; // Ensure playPlaylist() can only be called once
+let gameStarted = false; // boolean of whether the player has clicked continue after the loading screen
 let loadTick = 0;
 let tutorial;
 
@@ -70,8 +70,8 @@ function playPlaylist(playlist) {
 }
 function mouseClicked() {
 	level.basicChemistry();
-	if (loadscreen.loadsLeft == 0 && !executed) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
-		executed = true;
+	if (loadscreen.loadsLeft == 0 && !gameStarted) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
+		gameStarted = true;
 		playPlaylist(assets.music);
 		loadscreen.continue = true;
 		tutorial = new Tutorial(assets.tutorialText);
@@ -87,11 +87,10 @@ function mouseWheel(e) {
 	}
 }
 function draw() {
-	if (!executed) {
+	if (!gameStarted) {
 		loadscreen.draw();
 	} else {
 		level.basicChemistry();
-		// Game is active
 		background(assets.images.backgrounds[Math.floor(Math.random() * assets.images.backgrounds.length)]); // draws black background
 		push();
 		if (!gamemenu.active) {
@@ -99,6 +98,7 @@ function draw() {
 		}
 		camera.adjust();
 		noStroke();
+		//level.checkDoors();
 		level.displayFloor();
 		level.displayWalls();
 		level.displayRoof();

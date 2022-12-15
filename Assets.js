@@ -13,6 +13,8 @@ class Assets {
         this.images = {};
         this.images.walls = [];
         this.images.floors = [];
+        this.images.doorTop;
+        this.images.doorSide;
         this.images.portal = [];
         this.images.aura;
         this.images.target;
@@ -80,5 +82,7 @@ class Assets {
         for (let i = 0; i < 2; i++) {
             this.images.backgrounds.push(loadImage('assets/sprites/background'+i+'.png', loaded));
         }
+        this.images.doorTop = loadImage('assets/sprites/doorTop.png', loaded);
+        this.images.doorSide = loadImage('assets/sprites/doorSide.png', loaded);
     }
 }
