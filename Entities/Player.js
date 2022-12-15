@@ -13,17 +13,21 @@ class Player extends Entity{
         this.dashTimer = 0
         this.phase = 0;
         this.facingLeft = false;
+        this.onDoor = false; // true if the player is on a door
     }
-    isMovingUp(){
+    collides(x, y, w, h) {
+        return ((this.x + this.w > x) && (x + w > this.x) && (this.y + this.h > y) && (y + h > this.y))
+    }
+    isMovingUp() {
         return this.dirx + this.diry < 0
     }
-    isMovingDown(){
+    isMovingDown() {
         return this.dirx + this.diry > 0
     }
-    isMovingRight(){
+    isMovingRight() {
         return this.dirx - this.diry > 0
     }
-    isMovingLeft(){
+    isMovingLeft() {
         return this.dirx - this.diry < 0
 
     }

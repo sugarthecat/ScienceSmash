@@ -1,14 +1,15 @@
 class Tile {
     constructor(img) {
+        this.img = img;
         this.x = 0;
         this.y = 0;
         this.w = 100; // constant
         this.h = 100; // constant
-        this.img = img;
-        this.hasUpper = false;
-        this.hasGround = true;
-        this.hasRight = false;
-        this.hasLeft = false;
+        this.hasLeft = false; // true if wall to the bottom-left of it will display
+        this.hasRight = false; // true if wall to the bottom-right of it will display
+        this.hasGround = true; // true if bottom of tile will display
+        this.hasRoof = false; // true if top of tile will display
+        this.isCollisionTile = false;
     }
     displayGround() {
         image(this.img,this.x,this.y,this.w,this.h);
