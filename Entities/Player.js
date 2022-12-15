@@ -16,7 +16,7 @@ class Player extends Entity{
         this.onDoor = false; // true if the player is on a door
     }
     collides(x, y, w, h) {
-        return ((this.x + this.w > x) && (x + w > this.x) && (this.y + this.h > y) && (y + h > this.y))
+        return ((this.x + this.w > x) && (x + w > this.x) && (this.y + this.h > y) && (y + h > this.y));
     }
     isMovingUp() {
         return this.dirx + this.diry < 0

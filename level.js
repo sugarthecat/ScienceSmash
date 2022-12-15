@@ -93,7 +93,7 @@ class Level {
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "w"; } // seal north wall
                     } else if (layout[i][j] instanceof Object) {
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; }
-                        this.doorPositions.push([(i*25)+11,(j*25),(i*25)+13,(j*25)-1]); // add 3x2 door area positions to positions tracker
+                        this.doorPositions.push([false,(i*25)+11,(j*25),300,200]); // add 3x2 door area positions to positions tracker
                     }
                     if (i == layout.length-1 || !(layout[i+1][j] instanceof Object)) { // right
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "w"; } // seal east wall
@@ -109,7 +109,7 @@ class Level {
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "w"; } // seal west wall
                     } else if (layout[i][j] instanceof Object) {
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; }
-                        this.doorPositions.push([(i*25),(j*25)+13,(i*25)-1,(j*25)+11]); // add 2x3 door area positions to positions tracker
+                        this.doorPositions.push([false,(i*25),(j*25)+13,200,300]); // add 2x3 door area positions to positions tracker
                     }
                 }
             }
@@ -184,17 +184,34 @@ class Level {
     // Check for necessary door collision changes
     checkDoors() {
         for (let i = 0; i < this.doorPositions.length; i++) {
-            if ((doorPositions[i][0] == false) && (this.player.collides(doorPositions[i][1],doorPositions[i][2],doorPositions[i][3],doorPositions[i][4]))) {
+            if ((doorPositions[i][0] == false) && (this.player.collides(doorPositions[i][1]*100,doorPositions[i][2]*100,doorPositions[i][3],doorPositions[i][4]))) {
                 this.player.onDoor = true;
                 doorPositions[i][0] = true; 
             } else if (this.player.onDoor) {
                 this.player.onDoor = false;
-                this.flipWalls(x,y);
+                let arrangement;
+                if (doorPositions[i][3] == 200) { arrangement = 'v'; } else if (doorPositions[i][3] == 300) { arrangement = 'h'; }
+                this.flipWalls(doorPositions[i][1],doorPositions[i][2],arrangement);
             }
         }
     }
     // Flips the doors up or down
-    flipWalls(x,y) {
+    flipWalls(x,y,arrangement) { // arrangement = 'v' for vertical or 'h' for horizontal
+
+        if (arrangement == 'v') {
+
+        } else if (arrangement == 'h') {
+            
+        }
+
+
+
+
+
+
+
+
+
         this.tiles[x][y].changeCollision();
         if ((this.tiles[x-1][y] instanceof DoorTile) && (this.tiles[x+1][y] instanceof DoorTile)) {
             this.tiles[x-1][y].changeCollision();
