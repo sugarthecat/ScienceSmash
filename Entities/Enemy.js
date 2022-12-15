@@ -1,5 +1,5 @@
 class Enemy extends Entity {
-    constructor(health,x=0,y=0) {
+    constructor(health=5,x=0,y=0) {
         super();
         this.maxHealth = health;
         this.health = health;
@@ -7,11 +7,12 @@ class Enemy extends Entity {
         this.w = 80;
         this.h = 80;
         this.viewDistance = 25;
+        this.navigateThroughEnemyCost = 5;
         this.x = x;
         this.y = y;
     }
     navTowardsPosition(level,position) {
-        let tfArray = [];
+        let tfArray = []; // board of true/false 
         if (dist(position.x,position.y,this.x,this.y) > 100) {
             // If further than a tile, navigate using algorithm
             let currentX = floor(this.x/100);
@@ -46,10 +47,10 @@ class Enemy extends Entity {
                             && y2 < tfArray[x2].length 
                             && typeof tfArray[x2][y2] != "boolean" 
                             && (tfArray[x][y] === true 
-                            || sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < tfArray[x][y])
-                            && sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*50 + tfArray[x2][y2] < this.viewDistance
+                            || sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*this.navigateThroughEnemyCost + tfArray[x2][y2] < tfArray[x][y])
+                            && sqrt(abs(x-x2)*abs(x-x2)+abs(y-y2)*abs(y-y2)) + level.sharedNavCollide(x2,y2,this)*this.navigateThroughEnemyCost + tfArray[x2][y2] < this.viewDistance
                             ) {
-                                tfArray[x][y] = tfArray[x2][y2] + dist(x,y,x2,y2)+level.sharedNavCollide(x2,y2,this)*50;
+                                tfArray[x][y] = tfArray[x2][y2] + dist(x,y,x2,y2) + level.sharedNavCollide(x2,y2,this)*this.navigateThroughEnemyCost;
                                 change = true;
                                 openOptions.push({x:x-1, y:y})
                                 openOptions.push({x:x+1, y:y})
@@ -81,6 +82,7 @@ class Enemy extends Entity {
                     }
                 }
             }
+            if(this.destination == false){ console.log('no dest')}
             let choice = random(possArray);
             this.destination = {x:choice[0]*100+50-this.w/2, y: choice[1]*100+50-this.h/2};
             this.tfA = tfArray;
