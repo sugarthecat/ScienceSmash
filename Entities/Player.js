@@ -96,4 +96,10 @@ class Player extends Entity{
             this.dashTimer = 0.2
         }
     }
+    runMoveTick(level){
+        if(this.dashTimer && this.dashTimer >= 0){
+            this.dashTimer -= deltaTime/1000
+        }
+        super.runMoveTick(level)
+    }
 }

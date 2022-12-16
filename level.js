@@ -128,6 +128,16 @@ class Level {
         }
         this.generateTiles();
     }
+    getCollisionTileArray(){
+        let outArray = []
+        for (let i = 0; i < this.tiles.length; i++) {
+            outArray.push([]);
+            for (let j = 0; j < this.tiles[i].length; j++) {
+                outArray[i].push(!(this.tiles[i][j].isCollisionTile));
+            }
+        }
+        return outArray
+    }
     generateTiles() { 
         for (var x = 0; x < this.tileTable.length; x++) {
             for (var y = 0; y < this.tileTable[x].length; y++) {
@@ -315,9 +325,6 @@ class Level {
         //If improper object properties, pass an error.
         if(typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number"){
             console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h")
-        }
-        if(other.x < 0 || other.y < 0 || other.x+ other.w> this.tiles.length*100 || other.h+ other.y > this.tiles[0].length*100){
-            return true
         }
         //If colliding with any tiles, return true
         for(let x = floor(other.x/100); x<=min(floor((other.x+other.w)/100),this.tiles.length-1); x++){

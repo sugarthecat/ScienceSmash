@@ -21,22 +21,8 @@ class Entity {
     }
     // Updates the entity's x and y positions.
     runMoveTick(level) {
-        if(this.dashTimer && this.dashTimer >= 0){
-            this.dashTimer -= deltaTime/1000
-        }
         let oldX = this.x;
         let oldY = this.y;
-        if (this.destination) {
-            this.dirx = this.destination.x - this.x;
-            this.diry = this.destination.y - this.y;
-            if ( dist(this.destination.x,this.destination.y,this.x,this.y)<this.moveSpeed/2) {
-                this.x = this.destination.x;
-                this.y = this.destination.y;
-                this.dirx = 0;
-                this.diry = 0;
-                this.destination = undefined;
-            }
-        }
         let directionDistance =  sqrt(this.dirx * this.dirx + this.diry * this.diry); //Distance of dirx and diry, used to get directions
         if (directionDistance != 0) {
             this.x += this.dirx * this.moveSpeed/directionDistance*(deltaTime/100);
@@ -61,9 +47,6 @@ class Entity {
                     this.y -= (newY-oldY)/increment;
                 }
                 increment *= 2;
-            }
-            if(this.isNavigationEntity){
-                this.destination = undefined
             }
         }
     }

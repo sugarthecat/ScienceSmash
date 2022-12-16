@@ -17,12 +17,7 @@ class Enemy extends Entity {
             // If further than a tile, navigate using algorithm
             let currentX = floor(this.x/100);
             let currentY = floor(this.y/100);
-            for (let i = 0; i < level.tiles.length; i++) {
-                tfArray.push([]);
-                for (let j = 0; j < level.tiles[i].length; j++) {
-                    tfArray[i].push(!(level.tiles[i][j].isCollisionTile));
-                }
-            }
+            tfArray = level.getCollisionTileArray();
             tfArray[floor(position.x/100)][floor(position.y/100)] = 0;
             let change = true;
             // While things are changing on the t/f board
@@ -82,10 +77,13 @@ class Enemy extends Entity {
                     }
                 }
             }
-            if(this.destination == false){ console.log('no dest')}
             let choice = random(possArray);
+            this.possArray = possArray;
+            this.choice = choice;
             this.destination = {x:choice[0]*100+50-this.w/2, y: choice[1]*100+50-this.h/2};
+            this.d2 = {x:choice[0]*100+50-this.w/2, y: choice[1]*100+50-this.h/2}
             this.tfA = tfArray;
+
         } else {
             this.dirx = position.x-this.x;
             this.diry = position.y-this.y;
@@ -99,5 +97,23 @@ class Enemy extends Entity {
         rect(disx-5,disy-15,(this.dispw+10)*this.health/this.maxHealth,10);
         fill(255,0,0);
         rect(disx-5+(this.dispw+10)*this.health/this.maxHealth, disy-15, (this.dispw+10)*(1-this.health/this.maxHealth), 10);
+    }
+    runMoveTick(level){
+        
+        if (this.destination) {
+            this.dirx = this.destination.x - this.x;
+            this.diry = this.destination.y - this.y;
+            if ( dist(this.destination.x,this.destination.y,this.x,this.y)<this.moveSpeed * deltaTime/100  ) {
+                this.x = this.destination.x;
+                this.y = this.destination.y;
+                this.dirx = 0;
+                this.diry = 0;
+                this.destination = undefined;
+            } 
+        }else{
+            this.dirx = 0
+            this.diry = 0
+        }
+        super.runMoveTick(level)
     }
 }
