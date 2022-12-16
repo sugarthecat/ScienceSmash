@@ -68,7 +68,7 @@ class Enemy extends Entity {
             let minDistance = tfArray[currentX][currentY];
             let possArray = [[currentX,currentY]];
             for (let x = max(0,currentX-1); x<min(tfArray.length,currentX+2); x++) {
-                for (let y = max(0,currentY-1); y<min(tfArray.length,currentY+2); y++) {
+                for (let y = max(0,currentY-1); y<min(tfArray[x].length,currentY+2); y++) {
                     if (tfArray[x][y] < minDistance && tfArray[x][y] !== false && ((y == currentY || x == currentX))) {
                         minDistance = tfArray[x][y];
                         possArray = [[x,y]];
@@ -78,10 +78,9 @@ class Enemy extends Entity {
                 }
             }
             let choice = random(possArray);
-            this.possArray = possArray;
-            this.choice = choice;
             this.destination = {x:choice[0]*100+50-this.w/2, y: choice[1]*100+50-this.h/2};
             this.d2 = {x:choice[0]*100+50-this.w/2, y: choice[1]*100+50-this.h/2}
+            this.lastUpdate = new Date() / 1000;
             this.tfA = tfArray;
 
         } else {
@@ -103,17 +102,19 @@ class Enemy extends Entity {
         if (this.destination) {
             this.dirx = this.destination.x - this.x;
             this.diry = this.destination.y - this.y;
-            if ( dist(this.destination.x,this.destination.y,this.x,this.y)<this.moveSpeed * deltaTime/100  ) {
+            if ( dist(this.destination.x,this.destination.y,this.x,this.y)<this.moveSpeed * deltaTime/1000  ) {
                 this.x = this.destination.x;
                 this.y = this.destination.y;
                 this.dirx = 0;
                 this.diry = 0;
                 this.destination = undefined;
             } 
-        }else{
-            this.dirx = 0
-            this.diry = 0
         }
+        let oldX = this.x
+        let oldY = this.y
         super.runMoveTick(level)
+        if(oldX == this.x && oldY == this.y){
+            this.destination = undefined
+        }
     }
 }

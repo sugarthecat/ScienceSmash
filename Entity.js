@@ -8,7 +8,7 @@ class Entity {
         this.diry = 50; // 1,0, or -1, representing direction y
         this.dispw = 50; //display width
         this.disph = 100; //display height
-        this.moveSpeed = 25;
+        this.moveSpeed = 250;
     }
     //Given the level object, returns true if this player is colliding with any objects.
     //returns if it collides with another object
@@ -25,8 +25,8 @@ class Entity {
         let oldY = this.y;
         let directionDistance =  sqrt(this.dirx * this.dirx + this.diry * this.diry); //Distance of dirx and diry, used to get directions
         if (directionDistance != 0) {
-            this.x += this.dirx * this.moveSpeed/directionDistance*(deltaTime/100);
-            this.y += this.diry * this.moveSpeed/directionDistance*(deltaTime/100);
+            this.x += this.dirx * this.moveSpeed/directionDistance*min(deltaTime/1000,0.5); 
+            this.y += this.diry * this.moveSpeed/directionDistance*min(deltaTime/1000,0.5); //Framerate speed limited to 2 FPS to block phasing through walls
             // Accounts for distance via pythagorean theorem if there is movement.
         }
         if (level.collides(this)) {

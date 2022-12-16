@@ -6,7 +6,7 @@ class Ability{
         this.reloadTime = 0;
     }
     timeTick(){
-        this.reloadTime -= deltaTime;
+        this.reloadTime -= deltaTime/1000;
     }
     activate(){
         if(!this.isActive()){
