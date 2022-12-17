@@ -7,8 +7,6 @@ class Level {
         this.player = new Player();
         this.entities = [];
         this.tileTable = [];
-        // each item in the array is an array containing 5 values: 
-        //activated (true if the door has already been activated, false if not), x position, y position, width, height
         this.doorPositions = []; 
     }
     generateRooms() {
@@ -86,30 +84,32 @@ class Level {
             }
         }
         // Close the holes in the level and add doors between the rooms
-        for (let i = 0; i < layout.length; i++) { // position on the x axis of layout array
-            for (let j = 0; j < layout[i].length; j++) { // position on the y axis of the layout array
-                if (layout[i][j] !== undefined) {
-                    if (j == 0 || !(layout[i][j-1] instanceof Object)) { // top
-                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "w"; } // seal north wall
-                    } else if (layout[i][j] instanceof Object) {
-                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; }
-                        this.doorPositions.push([false,(i*25)+11,(j*25),300,200]); // add 3x2 door area positions to positions tracker
+        for (let i = 0; i < layout.length; i++) { // position on the y axis of layout array
+            for (let j = 0; j < layout[i].length; j++) { // position on the x axis of layout array
+                if (layout[i][j] instanceof Room) {
+                    if (i == 0 || !(layout[i-1][j] instanceof Room)) { // top
+                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "w"; } // seal north wall
+                    } else if (layout[i-1][j] instanceof Room) {
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; }
+                        this.doorPositions.push(new DoorPosition((j*25)+11,(i*25),300,100,0)); }
                     }
-                    if (i == layout.length-1 || !(layout[i+1][j] instanceof Object)) { // right
-                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "w"; } // seal east wall
-                    } else if (layout[i][j] instanceof Object) {
-                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "d"; }
+                    if (j == layout[i].length-1 || !(layout[i][j+1] instanceof Room)) { // right
+                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "w"; } // seal east wall
+                    } else if (layout[i][j+1] instanceof Room) {
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "d"; }
+                        this.doorPositions.push(new DoorPosition((j*25)+24,(i*25)+11,100,300,1)); }
                     }
-                    if (j == layout[i].length-1 || !(layout[i][j+1] instanceof Object)) { // bottom
-                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "w"; } // seal south wall
-                    } else if (layout[i][j] instanceof Object) {
-                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "d"; }
+                    if (i == layout.length-1 || !(layout[i+1][j] instanceof Room)) { // bottom
+                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "w"; } // seal south wall
+                    } else if (layout[i+1][j] instanceof Room) {
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "d"; }
+                        this.doorPositions.push(new DoorPosition((j*25)+11,(i*25)+24,300,100,2)); }
                     }
-                    if (i == 0 || !(layout[i-1][j] instanceof Object)) { // left
-                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "w"; } // seal west wall
-                    } else if (layout[i][j] instanceof Object) {
-                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; }
-                        this.doorPositions.push([false,(i*25),(j*25)+13,200,300]); // add 2x3 door area positions to positions tracker
+                    if (j == 0 || !(layout[i][j-1] instanceof Room)) { // left
+                        for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "w"; } // seal west wall
+                    } else if (layout[i][j-1] instanceof Room) {
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; }
+                        this.doorPositions.push(new DoorPosition((j*25),(i*25)+11,100,300,3)); }
                     }
                 }
             }
@@ -134,8 +134,7 @@ class Level {
         for (let x = 0; x<layout.length; x++) {
             for (let y = 0; y<layout[x].length; y++) {
                 if (layout[x][y] !== undefined && layout[x][y].type == 0) {
-                    this.spawn = [y*2500 + 1250,x*2500 + 1250]
-                    console.log(this.spawn)
+                    this.spawn = [y*2500 + 1250,x*2500 + 1250];
                     this.player.setPosition(this.spawn[0],this.spawn[1]);
                 }
             }
@@ -184,54 +183,130 @@ class Level {
     // Check for necessary door collision changes
     checkDoors() {
         for (let i = 0; i < this.doorPositions.length; i++) {
-            if ((doorPositions[i][0] == false) && (this.player.collides(doorPositions[i][1]*100,doorPositions[i][2]*100,doorPositions[i][3],doorPositions[i][4]))) {
-                this.player.onDoor = true;
-                doorPositions[i][0] = true; 
-            } else if (this.player.onDoor) {
-                this.player.onDoor = false;
-                let arrangement;
-                if (doorPositions[i][3] == 200) { arrangement = 'v'; } else if (doorPositions[i][3] == 300) { arrangement = 'h'; }
-                this.flipWalls(doorPositions[i][1],doorPositions[i][2],arrangement);
+            if ((this.doorPositions[i].activated == false) && (this.doorPositions[i].collides(this.player))) {
+                this.doorPositions[i].onDoor = true;
+            } else if (this.doorPositions[i].onDoor) {
+                this.doorPositions[i].activated = true;
+                this.doorPositions[i].onDoor = false;
+                this.flipWalls(this.doorPositions[i].x,this.doorPositions[i].y,this.doorPositions[i].position);
             }
         }
     }
     // Flips the doors up or down
-    flipWalls(x,y,arrangement) { // arrangement = 'v' for vertical or 'h' for horizontal
-
-        if (arrangement == 'v') {
-
-        } else if (arrangement == 'h') {
-            
+    flipWalls(x,y,p) { // p = position ( 0=N, 1=E, 2=S, 3=W )
+        if (p == 0 || p == 2) { // North or South
+            // This
+            for (let i = 0; i < 3; i++) { this.tiles[x+i][y].changeCollision(); }
+            // Opposite
+            let a1 = 24;
+            if (p == 2) { a1 = -24; }
+            if (this.tiles[x][y+a1] instanceof DoorTile) {
+                for (let i = 0; i < 3; i++) { this.tiles[x+i][y+a1].changeCollision(); }
+            }
+            // East and West
+            let a2 = 11
+            if (p == 2) { a2 = -13; }
+            let a3 = 13
+            for (let i = 0; i < 2; i++) {
+                if (this.tiles[x+a3][y+a2] instanceof DoorTile) {
+                    for (let j = 0; j < 3; j++) {
+                        this.tiles[x+a3][y+a2+j].changeCollision(); 
+                    }
+                }
+                a3 = -11;
+            }
+        } else if (p == 1 || p == 3) { // East or West
+            // This
+            for (let i = 0; i < 3; i++) { this.tiles[x][y+i].changeCollision(); }
+            // Opposite
+            let a1 = 24;
+            if (p == 1) { a1 = -24; }
+            if (this.tiles[x+a1][y] instanceof DoorTile) {
+                for (let i = 0; i < 3; i++) { this.tiles[x+a1][y+i].changeCollision(); }
+            }
+            // North and South
+            let a2 = 11
+            if (p == 1) { a2 = -13; }
+            let a3 = 13
+            for (let i = 0; i < 2; i++) {
+                if (this.tiles[x+a2][y+a3] instanceof DoorTile) {
+                    for (let j = 0; j < 3; j++) {
+                        this.tiles[x+a2+j][y+a3].changeCollision(); 
+                    }
+                }
+                a3 = -11;
+            }
         }
-
-
-
-
-
-
-
-
-
-        this.tiles[x][y].changeCollision();
-        if ((this.tiles[x-1][y] instanceof DoorTile) && (this.tiles[x+1][y] instanceof DoorTile)) {
-            this.tiles[x-1][y].changeCollision();
-            this.tiles[x+1][y].changeCollision();
-        } else if ((this.tiles[x-1][y] instanceof DoorTile) && (this.tiles[x-2][y] instanceof DoorTile)) {
-            this.tiles[x-1][y].changeCollision();
-            this.tiles[x-2][y].changeCollision();
-        } else if ((this.tiles[x+1][y] instanceof DoorTile) && (this.tiles[x+2][y] instanceof DoorTile)) {
+        
+        /*if (p == 0) { // North
+            // North
+            this.tiles[x][y].changeCollision();
             this.tiles[x+1][y].changeCollision();
             this.tiles[x+2][y].changeCollision();
-        } else if ((this.tiles[x][y-1] instanceof DoorTile) && (this.tiles[x][y-2] instanceof DoorTile)) {
-            this.tiles[x][y-1].changeCollision();
-            this.tiles[x][y-2].changeCollision();
-        } else if ((this.tiles[x][y+1] instanceof DoorTile) && (this.tiles[x][y+2] instanceof DoorTile)) {
-            this.tiles[x][y+1].changeCollision();
-            this.tiles[x][y+2].changeCollision();
-        } else if ((this.tiles[x][y-1] instanceof DoorTile) && (this.tiles[x][y+1] instanceof DoorTile)) {
-            this.tiles[x][y-1].changeCollision();
-            this.tiles[x][y+1].changeCollision();
-        }
+            // East
+            this.tiles[x-11][y+11].changeCollision();
+            this.tiles[x-11][y+12].changeCollision();
+            this.tiles[x-11][y+13].changeCollision();
+            // South
+            this.tiles[x][y+24].changeCollision();
+            this.tiles[x+1][y+24].changeCollision();
+            this.tiles[x+2][y+24].changeCollision();
+            // West
+            this.tiles[x+11][y+11].changeCollision();
+            this.tiles[x+11][y+12].changeCollision();
+            this.tiles[x+11][y+13].changeCollision();
+        } else if (p == 1) { // East
+            // North
+            this.tiles[x][y].changeCollision();
+            this.tiles[x+1][y].changeCollision();
+            this.tiles[x+2][y].changeCollision();
+            // East
+            this.tiles[x-11][y+11].changeCollision();
+            this.tiles[x-11][y+12].changeCollision();
+            this.tiles[x-11][y+13].changeCollision();
+            // South
+            this.tiles[x][y+24].changeCollision();
+            this.tiles[x+1][y+24].changeCollision();
+            this.tiles[x+2][y+24].changeCollision();
+            // West
+            this.tiles[x+11][y+11].changeCollision();
+            this.tiles[x+11][y+12].changeCollision();
+            this.tiles[x+11][y+13].changeCollision();
+        } else if (p == 2) { // South
+            // North
+            this.tiles[x][y-24].changeCollision();
+            this.tiles[x+1][y-24].changeCollision();
+            this.tiles[x+2][y-24].changeCollision();
+            // East
+            this.tiles[x-11][y-11].changeCollision();
+            this.tiles[x-11][y-12].changeCollision();
+            this.tiles[x-11][y-13].changeCollision();
+            // South
+            this.tiles[x][y].changeCollision();
+            this.tiles[x+1][y].changeCollision();
+            this.tiles[x+2][y].changeCollision();
+            // West
+            this.tiles[x+11][y-11].changeCollision();
+            this.tiles[x+11][y-12].changeCollision();
+            this.tiles[x+11][y-13].changeCollision();
+        } else if (p == 3) { // West
+            // North
+            this.tiles[x][y].changeCollision();
+            this.tiles[x+1][y].changeCollision();
+            this.tiles[x+2][y].changeCollision();
+            // East
+            this.tiles[x-11][y+11].changeCollision();
+            this.tiles[x-11][y+12].changeCollision();
+            this.tiles[x-11][y+13].changeCollision();
+            // South
+            this.tiles[x][y+24].changeCollision();
+            this.tiles[x+1][y+24].changeCollision();
+            this.tiles[x+2][y+24].changeCollision();
+            // West
+            this.tiles[x+11][y+11].changeCollision();
+            this.tiles[x+11][y+12].changeCollision();
+            this.tiles[x+11][y+13].changeCollision();
+        }*/
     }
     // This function is used in entity navigation
     generateNavCollideArray() {

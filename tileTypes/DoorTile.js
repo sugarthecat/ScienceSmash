@@ -32,4 +32,4 @@ class DoorTile extends Tile {
         this.hasGround = !this.hasGround;
         this.hasRoof = !this.hasRoof;
     }
-}  
+}

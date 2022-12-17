@@ -49,7 +49,7 @@ function keyPressed() {
 }
 
 function setup() {
-	level.lvl = 20; // needs to start at 1 and be incremented when level increases
+	level.lvl = 3; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
     camera.y = -windowHeight / 2;
 	assets.loadFiles();
@@ -97,7 +97,7 @@ function draw() {
 		}
 		camera.adjust();
 		noStroke();
-		//level.checkDoors();
+		level.checkDoors();
 		level.displayFloor();
 		level.displayWalls();
 		level.displayRoof();

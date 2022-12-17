@@ -1,4 +1,4 @@
-class Player extends Entity{
+class Player extends Entity {
     constructor() {
         super();
         this.x = 0;
@@ -14,9 +14,6 @@ class Player extends Entity{
         this.phase = 0;
         this.facingLeft = false;
         this.onDoor = false; // true if the player is on a door
-    }
-    collides(x, y, w, h) {
-        return ((this.x + this.w > x) && (x + w > this.x) && (this.y + this.h > y) && (y + h > this.y));
     }
     isMovingUp() {
         return this.dirx + this.diry < 0
@@ -39,8 +36,8 @@ class Player extends Entity{
         let up = keyIsDown(87); // W key
         let down =  keyIsDown(83); // S key
         // Resolves key conflicts to ensure that if two opposite directions are attempted at the same time, nothing happens.
-        if(this.dashTimer <= 0){
-            this.moveSpeed = this.maxMoveSpeed
+        if (this.dashTimer <= 0) {
+            this.moveSpeed = this.maxMoveSpeed;
             this.dirx = 0;
             this.diry = 0;
             if (right && !left) {
