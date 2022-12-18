@@ -11,8 +11,7 @@ class Tutorial {
 
     }
     isComplete() {
-        //return this.phase == this.textBoxes.length; temporary disable of tutorial
-        return true;
+        return this.phase == this.textBoxes.length;
     }
     advanceText() {
         this.textbox.advanceText();

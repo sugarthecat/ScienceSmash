@@ -209,9 +209,7 @@ class Level {
             let a3 = 13
             for (let i = 0; i < 2; i++) {
                 if (this.tiles[x+a3][y+a2] instanceof DoorTile) {
-                    for (let j = 0; j < 3; j++) {
-                        this.tiles[x+a3][y+a2+j].changeCollision(); 
-                    }
+                    for (let j = 0; j < 3; j++) { this.tiles[x+a3][y+a2+j].changeCollision(); }
                 }
                 a3 = -11;
             }
@@ -237,76 +235,6 @@ class Level {
                 a3 = -11;
             }
         }
-        
-        /*if (p == 0) { // North
-            // North
-            this.tiles[x][y].changeCollision();
-            this.tiles[x+1][y].changeCollision();
-            this.tiles[x+2][y].changeCollision();
-            // East
-            this.tiles[x-11][y+11].changeCollision();
-            this.tiles[x-11][y+12].changeCollision();
-            this.tiles[x-11][y+13].changeCollision();
-            // South
-            this.tiles[x][y+24].changeCollision();
-            this.tiles[x+1][y+24].changeCollision();
-            this.tiles[x+2][y+24].changeCollision();
-            // West
-            this.tiles[x+11][y+11].changeCollision();
-            this.tiles[x+11][y+12].changeCollision();
-            this.tiles[x+11][y+13].changeCollision();
-        } else if (p == 1) { // East
-            // North
-            this.tiles[x][y].changeCollision();
-            this.tiles[x+1][y].changeCollision();
-            this.tiles[x+2][y].changeCollision();
-            // East
-            this.tiles[x-11][y+11].changeCollision();
-            this.tiles[x-11][y+12].changeCollision();
-            this.tiles[x-11][y+13].changeCollision();
-            // South
-            this.tiles[x][y+24].changeCollision();
-            this.tiles[x+1][y+24].changeCollision();
-            this.tiles[x+2][y+24].changeCollision();
-            // West
-            this.tiles[x+11][y+11].changeCollision();
-            this.tiles[x+11][y+12].changeCollision();
-            this.tiles[x+11][y+13].changeCollision();
-        } else if (p == 2) { // South
-            // North
-            this.tiles[x][y-24].changeCollision();
-            this.tiles[x+1][y-24].changeCollision();
-            this.tiles[x+2][y-24].changeCollision();
-            // East
-            this.tiles[x-11][y-11].changeCollision();
-            this.tiles[x-11][y-12].changeCollision();
-            this.tiles[x-11][y-13].changeCollision();
-            // South
-            this.tiles[x][y].changeCollision();
-            this.tiles[x+1][y].changeCollision();
-            this.tiles[x+2][y].changeCollision();
-            // West
-            this.tiles[x+11][y-11].changeCollision();
-            this.tiles[x+11][y-12].changeCollision();
-            this.tiles[x+11][y-13].changeCollision();
-        } else if (p == 3) { // West
-            // North
-            this.tiles[x][y].changeCollision();
-            this.tiles[x+1][y].changeCollision();
-            this.tiles[x+2][y].changeCollision();
-            // East
-            this.tiles[x-11][y+11].changeCollision();
-            this.tiles[x-11][y+12].changeCollision();
-            this.tiles[x-11][y+13].changeCollision();
-            // South
-            this.tiles[x][y+24].changeCollision();
-            this.tiles[x+1][y+24].changeCollision();
-            this.tiles[x+2][y+24].changeCollision();
-            // West
-            this.tiles[x+11][y+11].changeCollision();
-            this.tiles[x+11][y+12].changeCollision();
-            this.tiles[x+11][y+13].changeCollision();
-        }*/
     }
     // This function is used in entity navigation
     generateNavCollideArray() {
