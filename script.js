@@ -1,13 +1,13 @@
 let camera = new Camera(); // Initialize the camera
-const TILE_SCALE = 1 / Math.sqrt(3);
+const TILE_SCALE = 1 / Math.sqrt(3); // Initialize tile scale
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(65); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(76); // Initialize the loading screen with how many files need to be loaded
 let placeInPL = 0; // Place in the music playlist
 let gameStarted = false; // boolean of whether the player has clicked continue after the loading screen
-let loadTick = 0;
-let tutorial;
+let loadTick = 0; // Loadtick speed
+let tutorial; // Initialize tutorial
 
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
@@ -52,7 +52,7 @@ function setup() {
 	level.lvl = 3; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
     camera.y = -windowHeight / 2;
-	assets.loadFiles();
+	assets.loadFiles(); 
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
@@ -71,9 +71,12 @@ function mouseClicked() {
 	level.basicChemistry();
 	if (loadscreen.loadsLeft == 0 && !gameStarted) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
 		gameStarted = true;
-		playPlaylist(assets.music);
+		playPlaylist(assets.music.game);
 		loadscreen.continue = true;
 		tutorial = new Tutorial(assets.tutorialText);
+	}
+	if (tutorial.phase == 8) {
+		tutorial.advancePhase();
 	}
 }
 function mouseWheel(e) {
