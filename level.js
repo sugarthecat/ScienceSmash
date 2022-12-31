@@ -139,7 +139,7 @@ class Level {
                 }
             }
         }
-        return outArray
+        this.generateTiles();
     }
     generateTiles() { 
         for (var x = 0; x < this.tileTable.length; x++) {

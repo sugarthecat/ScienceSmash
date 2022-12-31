@@ -69,15 +69,18 @@ function playPlaylist(playlist) {
 	}, playlist[placeInPL].duration() * 1000);
 }
 function mouseClicked() {
-	level.basicChemistry();
-	if (loadscreen.loadsLeft == 0 && !gameStarted) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
-		gameStarted = true;
-		playPlaylist(assets.music.game);
-		loadscreen.continue = true;
-		tutorial = new Tutorial(assets.tutorialText);
-	}
-	if (tutorial.phase == 8) {
-		tutorial.advancePhase();
+	level.activateBasicAttack();
+	if (loadscreen.loadsLeft == 0) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
+		if(gameStarted){
+			if (tutorial.phase == 8) {
+				tutorial.advancePhase();
+			}
+		}else{
+			gameStarted = true;
+			playPlaylist(assets.music.game);
+			loadscreen.continue = true;
+			tutorial = new Tutorial(assets.tutorialText);
+		}
 	}
 }
 function mouseWheel(e) {
@@ -93,7 +96,6 @@ function draw() {
 	if (!gameStarted) {
 		loadscreen.draw();
 	} else {
-		level.basicChemistry();
 		background(assets.images.backgrounds[Math.floor(Math.random() * assets.images.backgrounds.length)]); // draws black background
 		push();
 		if (!gamemenu.active) {
