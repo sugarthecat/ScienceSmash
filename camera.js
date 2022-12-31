@@ -4,7 +4,7 @@ class Camera {
         this.y = 0;
         this.worldScale = 1;
     }
-    getPositionAt(target){
+    getPositionAt(target) {
         let desx = target.x + target.w/2;  // destination x
         let desy = target.y + target.h/2;  // destination y
         //account for rotation of isometric perspective
@@ -18,7 +18,7 @@ class Camera {
         desy-=height/2/this.worldScale;
         return [desx,desy];
     }
-    setPositionAs(target) {
+    setPositionAs(target)  {
         // target is player
         let desx,desy;
         [desx,desy] = this.getPositionAt(target); //JS equivalent of a tuple

@@ -9,7 +9,7 @@ class Room {
                 break;
             case 1: 
                 chosenTable = assets.rooms.standard;
-             break;
+                break;
             case 2: 
                 chosenTable = assets.rooms.loot;
                 break;

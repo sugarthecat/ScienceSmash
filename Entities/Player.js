@@ -1,4 +1,4 @@
-class Player extends Entity{
+class Player extends Entity {
     constructor() {
         super();
         this.x = 0;
@@ -14,17 +14,18 @@ class Player extends Entity{
         this.dashTimer = 0
         this.phase = 0;
         this.facingLeft = false;
+        this.onDoor = false; // true if the player is on a door
     }
-    isMovingUp(){
+    isMovingUp() {
         return this.dirx + this.diry < 0
     }
-    isMovingDown(){
+    isMovingDown() {
         return this.dirx + this.diry > 0
     }
-    isMovingRight(){
+    isMovingRight() {
         return this.dirx - this.diry > 0
     }
-    isMovingLeft(){
+    isMovingLeft() {
         return this.dirx - this.diry < 0
 
     }

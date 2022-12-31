@@ -10,7 +10,7 @@ class LoadingScreen {
             this.loadTick += 0.001*deltaTime;
         }
         // Draw loading screen
-        noStroke()
+        noStroke();
         rectMode(CORNER);
         //science bottle
         //calc adjusted w/h for loadingscreen
@@ -57,7 +57,7 @@ class LoadingScreen {
             textSize(0.07);
             text("Click to continue",0.4,0.4);
         }
-        pop()
+        pop();
     }
 }
     
