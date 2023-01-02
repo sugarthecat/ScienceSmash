@@ -150,6 +150,9 @@ class Level {
                         break;
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
+                        if(Math.random() < 0.1){
+                        this.entities.push(new Enemy(x*100,y*100,5))
+                        }
                         break;
                     case "v": // Void 
                         this.addTile(new VoidTile(), x, y);
@@ -316,30 +319,37 @@ class Level {
         }
         pop();
     }
+    getObjectsToDraw(){
+        let objectsToDraw = []
+        objectsToDraw.push(this.player)
+        let projectiles = this.player.getAbilityProjectiles()
+        for(let i = 0; i<projectiles.length; i++){
+            objectsToDraw.push(projectiles[i])
+        }
+        for(let i = 0; i<this.entities.length; i++){
+            objectsToDraw.push(this.entities[i])
+        }
+
+        return objectsToDraw
+    }
     // Displays the parts 
     displayWalls() {
-        let playerDrawn = false;
-        let entityDrawn = [];
-        for (let i = 0; i< this.entities.length; i++) {
-            entityDrawn.push(false);
+        let objectsToDraw = this.getObjectsToDraw();
+        let objectDrawn = [];
+        for (let i = 0; i< objectsToDraw.length; i++) {
+            objectDrawn.push(false);
         }
-        if (0 > this.player.x+this.player.y) {
-            this.player.draw();
-        }
-        // d = distance to the top of the tile
-        // p = distance to the right of the tile
+        //console.log(objectsToDraw)
+        // d = current tile X + tile Y
+        // p = current tile Y 
         for (let d = 0; d < this.tiles.length+this.tiles[0].length; d++) {
             for (let p = 0; p<=d; p++) {
                 let x = d - p;
                 let y = p;
-                if (!playerDrawn && (x+y+1)*100 > this.player.x+this.player.w+this.player.y) {
-                    this.player.draw();
-                    playerDrawn = true;
-                }
-                for (let i = 0; i< this.entities.length; i++) {
-                    if (!entityDrawn[i] && (x+y+1)*100 > this.entities[i].x+this.entities[i].w+this.entities[i].y) {
-                        this.entities[i].draw();
-                        entityDrawn[i] = true;
+                for (let i = 0; i<objectsToDraw.length; i++) {
+                    if (!objectDrawn[i] && (x+y+1)*100 > objectsToDraw[i].x + objectsToDraw[i].w + objectsToDraw[i].y) {
+                        objectsToDraw[i].draw();
+                        objectDrawn[i] = true;
                     }
                 }
                 if ( x < this.tiles.length && y < this.tiles[x].length) {
@@ -455,7 +465,7 @@ class Level {
     }
     activateBasicAttack(){
         let [disx,disy] = this.getProjectedMouseXY();
-        this.dealDamage(disx,disy,0,'point')
+        this.player.activateBaseAbility(disx,disy);
     }
     //accepts shapes: point, square
     //x, y represent middle of shape.

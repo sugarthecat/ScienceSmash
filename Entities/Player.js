@@ -15,6 +15,7 @@ class Player extends Entity {
         this.phase = 0;
         this.facingLeft = false;
         this.onDoor = false; // true if the player is on a door
+        this.baseAbility = new BookThrow();
     }
     isMovingUp() {
         return this.dirx + this.diry < 0
@@ -28,6 +29,14 @@ class Player extends Entity {
     isMovingLeft() {
         return this.dirx - this.diry < 0
 
+    }
+    activateBaseAbility(attackTargetX,attackTargetY){
+        this.baseAbility.activate(
+            this.x + this.w/2,
+            this.y + this.h/2,
+            attackTargetX,
+            attackTargetY
+            )
     }
     // Ensures that dirx and diry are correct.
     fixDirections() {
@@ -68,6 +77,13 @@ class Player extends Entity {
             this.moveSpeed = this.dashSpeed
         }
     }
+    getAbilityProjectiles(){
+        let objectsToReturn = [];
+        if(this.baseAbility.isActive()){
+            objectsToReturn.push(this.baseAbility)
+        }
+        return objectsToReturn
+    }
     // draw upright display of character
     draw() {
         //display after adjusting for isometric angle
@@ -102,6 +118,7 @@ class Player extends Entity {
         if(this.dashTimer && this.dashTimer >= 0){
             this.dashTimer -= deltaTime/1000
         }
+        this.baseAbility.timeTick();
         super.runMoveTick(level)
     }
 }

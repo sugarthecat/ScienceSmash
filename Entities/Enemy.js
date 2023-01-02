@@ -1,5 +1,5 @@
 class Enemy extends Entity {
-    constructor(health=5,x=0,y=0) {
+    constructor(x=0,y=0,health=5) {
         super();
         this.maxHealth = health;
         this.health = health;

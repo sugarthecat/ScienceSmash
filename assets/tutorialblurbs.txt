@@ -1,7 +1,7 @@
-Uh Oh! This isn't my {0,255,0}dorm room...
+Uh Oh! This isn't my {0,255,0}dorm room... \(Space to continue)
 I remember I went to sleep... How did I get here in this {0,255,0}creepy dungeon?
 At least I dont have to study for {0,255,0}tests{255,255,255} anymore...
-I should really move around though...
+I should really move around though... \(S key to move down)
 I think I'll head back over here. \(W key to move up)
 Do I see {0,255,0}something{255,255,255} over there? \(A key to move left)
 I think I'll check out this last corner. \(D key to move right)
