@@ -141,6 +141,16 @@ class Level {
         }
         this.generateTiles();
     }
+    getCollisionTileArray(){
+        let outArray = []
+        for (let i = 0; i < this.tiles.length; i++) {
+            outArray.push([]);
+            for (let j = 0; j < this.tiles[i].length; j++) {
+                outArray[i].push(!(this.tiles[i][j].isCollisionTile));
+            }
+        }
+        return outArray
+    }
     generateTiles() { 
         for (var x = 0; x < this.tileTable.length; x++) {
             for (var y = 0; y < this.tileTable[x].length; y++) {
@@ -150,7 +160,7 @@ class Level {
                         break;
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
-                        if(Math.random() < 0.1){
+                        if(Math.random() < 0.01){
                         this.entities.push(new Enemy(x*100,y*100,5))
                         }
                         break;
@@ -262,9 +272,18 @@ class Level {
         }
         return false;
     }
+    //run everything the player needs to run during a tick
     runPlayerMovement() {
         this.player.runMoveTick(this);
-        this.player.fixDirections();
+    }
+    runDamage(){
+        this.runPlayerDamage();
+    }
+    runPlayerDamage(){ 
+        let attacks = this.player.getAttacks();
+        for(let i = 0; i<attacks.length; i++){
+            this.dealDamage(attacks[i].x,attacks[i].y,attacks[i].size,attacks[i].shape)
+        }
     }
     addTile(t,x,y) {
         if (x < 0 || y < 0) {
@@ -329,7 +348,7 @@ class Level {
         for(let i = 0; i<this.entities.length; i++){
             objectsToDraw.push(this.entities[i])
         }
-
+        objectsToDraw.sort(function(a,b){return (a.x+a.y -b.x-b.y)})
         return objectsToDraw
     }
     // Displays the parts 
@@ -478,6 +497,9 @@ class Level {
             break;
             case 'square':
                 doesDamagefunction = function(enemy){return enemy.collides({x:x-size/2,y:y-size/2,w:size,h:size}) }
+            break;
+            case 'circle':
+                doesDamagefunction = function(enemy){return (dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,x,y) < size) }
             break;
         }
         for (let i = 0; i < this.entities.length; i++) {

@@ -116,6 +116,7 @@ function draw() {
 				tutorial.advanceText();
 			}
 		}
+		level.runDamage();
 		pop();
 		if (!tutorial.isComplete()) {
 			tutorial.display();

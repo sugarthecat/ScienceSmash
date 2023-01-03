@@ -15,7 +15,11 @@ class Player extends Entity {
         this.phase = 0;
         this.facingLeft = false;
         this.onDoor = false; // true if the player is on a door
-        this.baseAbility = new BookThrow();
+        this.baseAbility = new ChemicalThrow(1);
+    }
+    drawGround(){
+        this.baseAbility.drawGround();
+        super.drawGround();
     }
     isMovingUp() {
         return this.dirx + this.diry < 0
@@ -120,5 +124,16 @@ class Player extends Entity {
         }
         this.baseAbility.timeTick();
         super.runMoveTick(level)
+        this.fixDirections();
+    }
+    getAttacks(){
+        let attacks =[]
+        if(this.baseAbility.getActivationStatus()){
+            attacks.push({x: this.baseAbility.endX,
+                        y: this.baseAbility.endY,
+                        size: this.baseAbility.size,
+                        shape: this.baseAbility.shape })
+        }
+        return attacks;
     }
 }

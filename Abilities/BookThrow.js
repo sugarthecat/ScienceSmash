@@ -1,24 +1,15 @@
 class BookThrow extends Ability{
-    constructor(){
-        super(1,1)
+    constructor(level){
+
+        super(1/level,1/level)
         this.w = 10
         this.y = 10
-    }
-    activate(startX,startY,endX,endY){
-        if(!this.isActive()){
-            this.startX = startX;
-            this.startY = startY;
-            this.endX = endX;
-            this.endY = endY;
-
-            this.x = startX
-            this.y = startY
-            super.activate();
-        }
+        this.damage = 2;
+        this.shape = "point"
     }
     draw(){
         let currentProgress = 1 - (this.attackTime/this.attackLength);
-        let heightBoost = 60 * Math.sin(currentProgress * Math.PI)  
+        let heightBoost = 100 * Math.sin(currentProgress * Math.PI)  
         /* boost so it isnt thrown from player's foot */ + 60 * (1-currentProgress);
         this.x = this.endX * currentProgress + this.startX * (1-currentProgress);
         this.y = this.endY * currentProgress + this.startY * (1-currentProgress);
@@ -29,7 +20,7 @@ class BookThrow extends Ability{
         let disx = sin(dispDir)*dispDist;
         let disy = TILE_SCALE*(cos(dispDir)*dispDist);
 
-        fill (0)
-        rect (disx,disy - heightBoost,10,10)
+        fill (255)
+        rect (disx-25,disy - heightBoost-25,50,50)
     }
 }
