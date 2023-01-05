@@ -12,7 +12,7 @@ class ChemicalThrow extends Ability {
         let currentProgress = 1 - (this.attackTime/this.attackLength);
         if (currentProgress < 0.8) {
             currentProgress/=0.8;
-            let heightBoost = 100 * Math.sin(currentProgress * Math.PI);
+            let heightBoost = 100 * Math.sin(currentProgress * Math.PI)
             /* boost so it isnt thrown from player's foot */ + 60 * (1-currentProgress);
             this.x = this.endX * currentProgress + this.startX * (1-currentProgress);
             this.y = this.endY * currentProgress + this.startY * (1-currentProgress);

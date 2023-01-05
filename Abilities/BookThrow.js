@@ -10,8 +10,8 @@ class BookThrow extends Ability {
 
     draw() {
         let currentProgress = 1 - (this.attackTime/this.attackLength);
-        let heightBoost = 10 * Math.sin(currentProgress * Math.PI);
-        /* boost so it isnt thrown from player's foot */ + 60 * (1-currentProgress);
+        let heightBoost = 10 * Math.sin(currentProgress * Math.PI)
+        /* boost so it isnt thrown from player's foot */ + 50 * (1-currentProgress);
         this.x = this.endX * currentProgress + this.startX * (1-currentProgress);
         this.y = this.endY * currentProgress + this.startY * (1-currentProgress);
         //adjust angle
