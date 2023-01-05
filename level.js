@@ -9,6 +9,9 @@ class Level {
         this.tileTable = [];
         this.doorPositions = []; 
     }
+    incrementLvl() {
+        this.lvl++;
+    }
     generateRooms() {
         // layout of the level in regard to the rooms
         // First array = x-axis/horizontal position
@@ -17,7 +20,8 @@ class Level {
         let LP = [[0,0]]; // an array of all the rooms' x and y positions in the layout
         let rooms = []; // an array of all the rooms to be generated in the layout (starts with initial room at 0,0)
         let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
-        for (let i = 0; i < this.lvl; i++) { // For every level
+        let amountOfRooms = (Math.ceil(this.lvl / 5) * 5) - (Math.floor(Math.random() * 5));
+        for (let i = 0; i < amountOfRooms; i++) {
             rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
         }
         if (this.lvl % 10 == 0) { // If its a tenth level, push a boss room
@@ -486,6 +490,12 @@ class Level {
         let [disx,disy] = this.getProjectedMouseXY();
         this.player.activateBaseAbility(disx,disy);
     }
+    activateSpecialAttack() {
+        let [disx,disy] = this.getProjectedMouseXY();
+        this.player.activateSpecialAbility(disx,disy);
+    }
+
+
     //accepts shapes: point, square
     //x, y represent middle of shape.
     dealDamage(x,y,size,shape="point"){

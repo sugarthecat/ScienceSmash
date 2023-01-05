@@ -15,32 +15,41 @@ class Player extends Entity {
         this.phase = 0;
         this.facingLeft = false;
         this.onDoor = false; // true if the player is on a door
-        this.baseAbility = new ChemicalThrow(1);
+        this.baseAbility = new BookThrow();
+        this.specialAbility = new ChemicalThrow();
     }
-    drawGround(){
+    drawGround() {
         this.baseAbility.drawGround();
+        this.specialAbility.drawGround();
         super.drawGround();
     }
     isMovingUp() {
-        return this.dirx + this.diry < 0
+        return this.dirx + this.diry < 0;
     }
     isMovingDown() {
-        return this.dirx + this.diry > 0
+        return this.dirx + this.diry > 0;
     }
     isMovingRight() {
-        return this.dirx - this.diry > 0
+        return this.dirx - this.diry > 0;
     }
     isMovingLeft() {
-        return this.dirx - this.diry < 0
+        return this.dirx - this.diry < 0;
 
     }
-    activateBaseAbility(attackTargetX,attackTargetY){
+    activateBaseAbility(attackTargetX,attackTargetY) {
+        console.log("test");
         this.baseAbility.activate(
             this.x + this.w/2,
             this.y + this.h/2,
             attackTargetX,
-            attackTargetY
-            )
+            attackTargetY);
+    }
+    activateSpecialAbility(attackTargetX,attackTargetY) {
+        this.specialAbility.activate(
+            this.x + this.w/2,
+            this.y + this.h/2,
+            attackTargetX,
+            attackTargetY);
     }
     // Ensures that dirx and diry are correct.
     fixDirections() {
@@ -81,10 +90,13 @@ class Player extends Entity {
             this.moveSpeed = this.dashSpeed
         }
     }
-    getAbilityProjectiles(){
+    getAbilityProjectiles() {
         let objectsToReturn = [];
-        if(this.baseAbility.isActive()){
-            objectsToReturn.push(this.baseAbility)
+        if (this.baseAbility.isActive()) {
+            objectsToReturn.push(this.baseAbility);
+        }
+        if (this.specialAbility.isActive()) {
+            objectsToReturn.push(this.specialAbility);
         }
         return objectsToReturn
     }
@@ -111,28 +123,35 @@ class Player extends Entity {
             this.phase = this.phase % assets.images.player.run.length;
             image(assets.images.player.run[floor(this.phase)], disx, disy, this.dispw, this.disph)
         }
-        pop()
+        pop();
     }
-    activateDash(){
-        if(this.dashTimer <= 0 && (this.dirx != 0 || this.diry != 0)){
-            this.dashTimer = 0.2
+    activateDash() {
+        if (this.dashTimer <= 0 && (this.dirx != 0 || this.diry != 0)) {
+            this.dashTimer = 0.2;
         }
     }
-    runMoveTick(level){
+    runMoveTick(level) {
         if(this.dashTimer && this.dashTimer >= 0){
-            this.dashTimer -= deltaTime/1000
+            this.dashTimer -= deltaTime/1000;
         }
         this.baseAbility.timeTick();
-        super.runMoveTick(level)
+        this.specialAbility.timeTick();
+        super.runMoveTick(level);
         this.fixDirections();
     }
-    getAttacks(){
-        let attacks =[]
-        if(this.baseAbility.getActivationStatus()){
+    getAttacks() {
+        let attacks = [];
+        if (this.baseAbility.getActivationStatus()) {
             attacks.push({x: this.baseAbility.endX,
                         y: this.baseAbility.endY,
                         size: this.baseAbility.size,
                         shape: this.baseAbility.shape })
+        }
+        if (this.specialAbility.getActivationStatus()) {
+            attacks.push({x: this.specialAbility.endX,
+                        y: this.specialAbility.endY,
+                        size: this.specialAbility.size,
+                        shape: this.specialAbility.shape })
         }
         return attacks;
     }

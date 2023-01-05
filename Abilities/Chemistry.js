@@ -1,18 +1,18 @@
-class ChemicalThrow extends Ability{
-    constructor(level){
-
-        super(1,1)
-        this.w = 10
-        this.y = 10
+class ChemicalThrow extends Ability {
+    constructor() {
+        super(1,1);
+        this.w = 10;
+        this.y = 10;
         this.damage = 2;
-        this.size = 200
-        this.shape = "circle"
+        this.size = 200;
+        this.shape = "circle";
     }
-    draw(){
+
+    draw() {
         let currentProgress = 1 - (this.attackTime/this.attackLength);
-        if(currentProgress < 0.8){
-            currentProgress/=0.8
-            let heightBoost = 100 * Math.sin(currentProgress * Math.PI)  
+        if (currentProgress < 0.8) {
+            currentProgress/=0.8;
+            let heightBoost = 100 * Math.sin(currentProgress * Math.PI);
             /* boost so it isnt thrown from player's foot */ + 60 * (1-currentProgress);
             this.x = this.endX * currentProgress + this.startX * (1-currentProgress);
             this.y = this.endY * currentProgress + this.startY * (1-currentProgress);
@@ -23,14 +23,15 @@ class ChemicalThrow extends Ability{
             let disx = sin(dispDir)*dispDist;
             let disy = TILE_SCALE*(cos(dispDir)*dispDist);
 
-            fill (255)
-            rect (disx-25,disy - heightBoost-25,50,50)
+            fill (255);
+            rect (disx-25,disy - heightBoost-25,50,50);
         }
     }
-    drawGround(){
+
+    drawGround() {
         let currentProgress = 1 - (this.attackTime/this.attackLength);
-        if(currentProgress >= 0.8 && currentProgress <= 1.2){
-            circle(this.endX,this.endY,min((currentProgress-0.8) * 1000, 400 - (currentProgress-0.8) * 1000 ))
+        if (currentProgress >= 0.8 && currentProgress <= 1.2) {
+            circle(this.endX,this.endY,min((currentProgress-0.8) * 1000, 400 - (currentProgress-0.8) * 1000 ));
         }
     }
 }

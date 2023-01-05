@@ -1,3 +1,4 @@
+window.addEventListener("contextmenu", e => e.preventDefault());
 let camera = new Camera(); // Initialize the camera
 const TILE_SCALE = 1 / Math.sqrt(3); // Initialize tile scale
 let assets = new Assets(); // Initialize assets class
@@ -58,6 +59,7 @@ function setup() {
 	frameRate(60);
 	angleMode(DEGREES);
 }
+
 function playPlaylist(playlist) {
 	if (placeInPL == playlist.length) {
 		placeInPL = 0; // loop the playlist
@@ -68,8 +70,8 @@ function playPlaylist(playlist) {
 		playPlaylist(playlist);
 	}, playlist[placeInPL].duration() * 1000);
 }
+
 function mouseClicked() {
-	level.activateBasicAttack();
 	if (loadscreen.loadsLeft == 0) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
 		if(gameStarted){
 			if (tutorial.phase == 8) {
@@ -83,6 +85,7 @@ function mouseClicked() {
 		}
 	}
 }
+
 function mouseWheel(e) {
 	if (!gamemenu.active) {
 		if (e.delta < 0) {
@@ -92,6 +95,7 @@ function mouseWheel(e) {
 		}
 	}
 }
+
 function draw() {
 	if (!gameStarted) {
 		loadscreen.draw();
@@ -108,6 +112,7 @@ function draw() {
 		level.displayWalls();
 		level.displayRoof();
 		level.displayGround();
+		checkMousePress();
 		if (!gamemenu.active) {
 			level.updateTargetPosition();
 			level.runEntityMovement();
@@ -123,6 +128,20 @@ function draw() {
 			tutorial.testLevel(); //test level for completed tutorial condition
 		}
 		gamemenu.display();
+	}
+}
+
+function checkMousePress() {
+	if (mouseIsPressed === true) {
+		if (mouseButton === LEFT) {
+			level.activateBasicAttack();
+		}
+		if (mouseButton === RIGHT) {
+			level.activateSpecialAttack();
+		}
+		if (mouseButton === CENTER) {
+			// switch between loaded special attacks
+		}
 	}
 }
 
