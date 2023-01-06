@@ -37,7 +37,6 @@ class Player extends Entity {
 
     }
     activateBaseAbility(attackTargetX,attackTargetY) {
-        console.log("test");
         this.baseAbility.activate(
             this.x + this.w/2,
             this.y + this.h/2,
@@ -104,7 +103,7 @@ class Player extends Entity {
     draw() {
         //display after adjusting for isometric angle
         let dispDir = atan2(this.x+this.w/2,this.y+this.w/2);
-        dispDir -= 45;
+        dispDir -= TILT;
         let dispDist = dist(0,0,this.x+this.w/2,this.y+this.w/2);
         let disx = sin(dispDir)*dispDist - this.dispw/2;
         let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph;
@@ -142,14 +141,14 @@ class Player extends Entity {
     getAttacks() {
         let attacks = [];
         if (this.baseAbility.getActivationStatus()) {
-            attacks.push({x: this.baseAbility.endX,
-                        y: this.baseAbility.endY,
+            attacks.push({x: this.baseAbility.targetX,
+                        y: this.baseAbility.targetY,
                         size: this.baseAbility.size,
                         shape: this.baseAbility.shape })
         }
         if (this.specialAbility.getActivationStatus()) {
-            attacks.push({x: this.specialAbility.endX,
-                        y: this.specialAbility.endY,
+            attacks.push({x: this.specialAbility.targetX,
+                        y: this.specialAbility.targetY,
                         size: this.specialAbility.size,
                         shape: this.specialAbility.shape })
         }

@@ -6,7 +6,7 @@ class Level {
         this.spawn;
         this.player = new Player();
         this.entities = [];
-        this.tileTable = [];
+        //this.roomTable = []; // TODO: construct table of rooms to add a layer of abstraction to certain methods
         this.doorPositions = []; 
     }
     incrementLvl() {
@@ -17,9 +17,11 @@ class Level {
         // First array = x-axis/horizontal position
         // Second array = y-axis/vertical position
         let layout = [[new Room(0)]];
+
+        let tileTable = [];
         let LP = [[0,0]]; // an array of all the rooms' x and y positions in the layout
         let rooms = []; // an array of all the rooms to be generated in the layout (starts with initial room at 0,0)
-        let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
+        let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, /*should be 3 when shops are introduced*/1]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
         let amountOfRooms = (Math.ceil(this.lvl / 5) * 5) - (Math.floor(Math.random() * 5));
         for (let i = 0; i < amountOfRooms; i++) {
             rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
@@ -131,7 +133,7 @@ class Level {
                         }
                     }
                 }
-                this.tileTable.push(row);
+                tileTable.push(row);
             }
         }
         // Set the player's starting position to the middle of the initial room
@@ -143,22 +145,9 @@ class Level {
                 }
             }
         }
-        this.generateTiles();
-    }
-    getCollisionTileArray(){
-        let outArray = []
-        for (let i = 0; i < this.tiles.length; i++) {
-            outArray.push([]);
-            for (let j = 0; j < this.tiles[i].length; j++) {
-                outArray[i].push(!(this.tiles[i][j].isCollisionTile));
-            }
-        }
-        return outArray
-    }
-    generateTiles() { 
-        for (var x = 0; x < this.tileTable.length; x++) {
-            for (var y = 0; y < this.tileTable[x].length; y++) {
-                switch (this.tileTable[x][y]) {
+        for (var x = 0; x < tileTable.length; x++) {
+            for (var y = 0; y < tileTable[x].length; y++) {
+                switch (tileTable[x][y]) {
                     case "w": // Wall
                         this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
                         break;
@@ -196,6 +185,16 @@ class Level {
                 }
             }
         }
+    }
+    getCollisionTileArray(){
+        let outArray = []
+        for (let i = 0; i < this.tiles.length; i++) {
+            outArray.push([]);
+            for (let j = 0; j < this.tiles[i].length; j++) {
+                outArray[i].push(!(this.tiles[i][j].isCollisionTile));
+            }
+        }
+        return outArray
     }
     // Check for necessary door collision changes
     checkDoors() {
@@ -326,7 +325,7 @@ class Level {
         push();
         // Vertically scale and rotate tiles in order to make isometric viewpoint
         scale(1,TILE_SCALE);
-        rotate(45);
+        rotate(TILT);
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
         for (let x = 0; x < this.tiles.length; x++) {
             for (let y = 0; y < this.tiles[x].length; y++) {
@@ -362,9 +361,6 @@ class Level {
         for (let i = 0; i< objectsToDraw.length; i++) {
             objectDrawn.push(false);
         }
-        //console.log(objectsToDraw)
-        // d = current tile X + tile Y
-        // p = current tile Y 
         for (let d = 0; d < this.tiles.length+this.tiles[0].length; d++) {
             for (let p = 0; p<=d; p++) {
                 let x = d - p;
@@ -393,7 +389,7 @@ class Level {
     displayRoof() {
         push();
         scale(1,TILE_SCALE);
-        rotate(45);
+        rotate(TILT);
         for (let x = 0; x<this.tiles.length; x++) {
             for (let y = 0; y<this.tiles[x].length; y++) {
                 if (this.tiles[x][y].isCollisionTile) {
@@ -462,7 +458,7 @@ class Level {
         let disy = (mouseY / camera.worldScale + camera.y)
         disy /= TILE_SCALE
         let xydist = dist(disx,disy,0,0)
-        let targetAngle = atan2(disx,disy) + 45
+        let targetAngle = atan2(disx,disy) + TILT
         disx = sin(targetAngle) * xydist
         disy = cos(targetAngle) * xydist
         let currentDist = min(dist(disx,disy,this.player.x,this.player.y),750)
@@ -486,7 +482,7 @@ class Level {
         image(assets.images.target,-100,-100,200,200)
         pop()
     }
-    activateBasicAttack(){
+    activateBasicAttack() {
         let [disx,disy] = this.getProjectedMouseXY();
         this.player.activateBaseAbility(disx,disy);
     }
@@ -495,22 +491,20 @@ class Level {
         this.player.activateSpecialAbility(disx,disy);
     }
 
-
-    //accepts shapes: point, square
+    //accepts shapes: point, square, circle
     //x, y represent middle of shape.
-    dealDamage(x,y,size,shape="point"){
-        
+    dealDamage(x,y,size,shape="point") {
         let doesDamagefunction;
-        switch(shape){
-            case 'point':
-                doesDamagefunction = function(enemy){return enemy.collides({x:x,y:y,w:0,h:0}) }
-            break;
-            case 'square':
-                doesDamagefunction = function(enemy){return enemy.collides({x:x-size/2,y:y-size/2,w:size,h:size}) }
-            break;
-            case 'circle':
-                doesDamagefunction = function(enemy){return (dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,x,y) < size) }
-            break;
+        switch(shape) {
+            case "point":
+                doesDamagefunction = function(enemy) { return enemy.collides({x:x,y:y,w:0,h:0}) }
+                break;
+            case "square":
+                doesDamagefunction = function(enemy) { return enemy.collides({x:x-size/2,y:y-size/2,w:size,h:size}) }
+                break;
+            case "circle":
+                doesDamagefunction = function(enemy) { return (dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,x,y) < size) }
+                break;
         }
         for (let i = 0; i < this.entities.length; i++) {
             if (doesDamagefunction(this.entities[i])) {

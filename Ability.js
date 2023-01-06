@@ -1,11 +1,16 @@
 class Ability {
-    constructor(reloadTime,attackTime) {
-        this.reloadTime = reloadTime;
-        this.attackTime = attackTime;
+    constructor(reloadLength,attackLength) {
+        this.reloadLength = reloadLength;
+        this.attackLength = attackLength;
         this.attackTime = 0;
         this.reloadTime = 0;
-        //this.x = 0;
-        //this.y = 0;
+        this.x = 0;
+        this.y = 0;
+        this.w = 0; // I don't know why this is here, but when I delete it, abilities don't work.
+        this.startX = 0;
+        this.startY = 0;
+        this.targetX = 0;
+        this.targetY = 0;
         this.finishedActivation = false;
         this.damage = 0;
         this.shape = "point"; // defaultly single point ability
@@ -36,22 +41,22 @@ class Ability {
         }
         return false;
     }
-    activate(startX,startY,endX,endY) {
+    activate(startX,startY,targetX,targetY) {
         if (!this.isActive() && this.canActivate()) {
             this.startX = startX;
             this.startY = startY;
-            this.endX = endX;
-            this.endY = endY;
+            this.targetX = targetX;
+            this.targetY = targetY;
             this.x = startX;
             this.y = startY;
-            this.attackTime = this.attackTime;
-            this.reloadTime = this.reloadTime;
+            this.attackTime = this.attackLength;
+            this.reloadTime = this.reloadLength;
         }
     }
-    isActive(){
+    isActive() {
         return this.attackTime > 0;
     }
-    canActivate(){
+    canActivate() {
         return this.reloadTime < 0;
     }
     draw() {

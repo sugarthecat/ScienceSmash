@@ -1,5 +1,6 @@
 window.addEventListener("contextmenu", e => e.preventDefault());
 let camera = new Camera(); // Initialize the camera
+const TILT = 45;
 const TILE_SCALE = 1 / Math.sqrt(3); // Initialize tile scale
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
