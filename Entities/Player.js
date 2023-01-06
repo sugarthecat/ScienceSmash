@@ -17,6 +17,7 @@ class Player extends Entity {
         this.onDoor = false; // true if the player is on a door
         this.baseAbility = new BookThrow();
         this.specialAbility = new ChemicalThrow();
+        this.setHealth(20)
     }
     drawGround() {
         this.baseAbility.drawGround();
@@ -37,7 +38,6 @@ class Player extends Entity {
 
     }
     activateBaseAbility(attackTargetX,attackTargetY) {
-        console.log("test");
         this.baseAbility.activate(
             this.x + this.w/2,
             this.y + this.h/2,
@@ -102,28 +102,16 @@ class Player extends Entity {
     }
     // draw upright display of character
     draw() {
-        //display after adjusting for isometric angle
-        let dispDir = atan2(this.x+this.w/2,this.y+this.w/2);
-        dispDir -= 45;
-        let dispDist = dist(0,0,this.x+this.w/2,this.y+this.w/2);
-        let disx = sin(dispDir)*dispDist - this.dispw/2;
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph;
-        fill(255,100,50);
-        push();
-        if (this.facingLeft) {
-            scale(-1,1);
-            disx *= -1;
-            disx -= this.dispw;
-        }
         this.phase += 0.3;
         if (this.dirx == 0 && this.diry == 0) {
             this.phase = this.phase % assets.images.player.idle.length;
-            image(assets.images.player.idle[floor(this.phase)], disx, disy, this.dispw, this.disph)
+            this.displayImage = assets.images.player.idle[floor(this.phase)]
         } else {
             this.phase = this.phase % assets.images.player.run.length;
-            image(assets.images.player.run[floor(this.phase)], disx, disy, this.dispw, this.disph)
+            this.displayImage = assets.images.player.run[floor(this.phase)]
         }
-        pop();
+        this.displayImage = 
+        super.draw();
     }
     activateDash() {
         if (this.dashTimer <= 0 && (this.dirx != 0 || this.diry != 0)) {

@@ -164,8 +164,8 @@ class Level {
                         break;
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
-                        if(Math.random() < 0.01){
-                        this.entities.push(new Enemy(x*100,y*100,5))
+                        if(Math.random() < 0.02){
+                        this.entities.push(new MeleeEnemy(x*100,y*100,150))
                         }
                         break;
                     case "v": // Void 
@@ -413,6 +413,9 @@ class Level {
                 this.entities[i].navTowardsPosition(this,this.player)
             }
             this.entities[i].runMoveTick(this);
+            if(this.entities[i].collides(this.player) && this.entities[i].hasDecollideFunction){
+                this.entities[i].decollideWithEnemy(this.player)
+            }
         }
     }
     // Returns whether an object collides with anything on the level, given it has an x, y, w, and h property

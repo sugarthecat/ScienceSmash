@@ -1,8 +1,6 @@
 class Enemy extends Entity {
-    constructor(x=0,y=0,health=5) {
+    constructor(x=0,y=0) {
         super();
-        this.maxHealth = health;
-        this.health = health;
         this.isNavigationEntity = true;
         this.w = 80;
         this.h = 80;
@@ -10,6 +8,7 @@ class Enemy extends Entity {
         this.navigateThroughEnemyCost = 5;
         this.x = x;
         this.y = y;
+        this.damage = 1;
     }
     navTowardsPosition(level,position) {
         let tfArray = []; // board of true/false 
@@ -87,15 +86,6 @@ class Enemy extends Entity {
             this.dirx = position.x-this.x;
             this.diry = position.y-this.y;
         }
-    }
-    takeDamage(damage) {
-        this.health -= damage;
-    }
-    drawHealthBar(disx,disy) {
-        fill(0,255,0);
-        rect(disx-5,disy-15,(this.dispw+10)*this.health/this.maxHealth,10);
-        fill(255,0,0);
-        rect(disx-5+(this.dispw+10)*this.health/this.maxHealth, disy-15, (this.dispw+10)*(1-this.health/this.maxHealth), 10);
     }
     runMoveTick(level){
         
