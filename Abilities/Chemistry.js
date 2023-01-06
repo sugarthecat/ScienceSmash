@@ -1,19 +1,18 @@
 class ChemicalThrow extends Ability {
     constructor() {
-        super(1,1);
+        super(5,1); // reloadTime,attackTime
         this.w = 10;
         this.y = 10;
         this.damage = 2;
-        this.size = 200;
         this.shape = "circle";
+        this.size = 200;
     }
 
     draw() {
-        let currentProgress = 1 - (this.attackTime/this.attackLength);
+        let currentProgress = 1 - (this.attackTime/this.attackTime);
         if (currentProgress < 0.8) {
             currentProgress/=0.8;
-            let heightBoost = 100 * Math.sin(currentProgress * Math.PI);
-            /* boost so it isnt thrown from player's foot */ + 60 * (1-currentProgress);
+            let heightBoost = (100*Math.sin(currentProgress * Math.PI)) /*boost so it isnt thrown from player's foot*/+(60*(1-currentProgress));
             this.x = this.endX * currentProgress + this.startX * (1-currentProgress);
             this.y = this.endY * currentProgress + this.startY * (1-currentProgress);
             //adjust angle
@@ -29,7 +28,7 @@ class ChemicalThrow extends Ability {
     }
 
     drawGround() {
-        let currentProgress = 1 - (this.attackTime/this.attackLength);
+        let currentProgress = 1 - (this.attackTime/this.attackTime);
         if (currentProgress >= 0.8 && currentProgress <= 1.2) {
             circle(this.endX,this.endY,min((currentProgress-0.8) * 1000, 400 - (currentProgress-0.8) * 1000 ));
         }

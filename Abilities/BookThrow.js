@@ -1,15 +1,15 @@
 class BookThrow extends Ability {
     constructor() {
-        super(.5,.15);
+        super(.5,.15); // reloadTime,attackTime
         this.w = 10;
         this.y = 10;
-        this.damage = 2;
+        this.damage = 1;
         this.shape = "point";
+        this.size = 0;
     }
 
-
     draw() {
-        let currentProgress = 1 - (this.attackTime/this.attackLength);
+        let currentProgress = 1 - (this.attackTime/this.attackTime);
         let heightBoost = 10 * Math.sin(currentProgress * Math.PI);
         /* boost so it isnt thrown from player's foot */ + 60 * (1-currentProgress);
         this.x = this.endX * currentProgress + this.startX * (1-currentProgress);
