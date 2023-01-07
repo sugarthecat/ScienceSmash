@@ -1,6 +1,5 @@
 window.addEventListener("contextmenu", e => e.preventDefault());
 let camera = new Camera(); // Initialize the camera
-const TILT = 45;
 const TILE_SCALE = 1 / Math.sqrt(3); // Initialize tile scale
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
@@ -105,6 +104,10 @@ function draw() {
 		push();
 		if (!gamemenu.active) {
 			camera.moveTowards(level.player);
+			level.updateTargetPosition();
+			level.runEntityMovement();
+			level.runPlayerMovement();
+			if (!tutorial.isComplete()) { tutorial.advanceText(); }
 		}
 		camera.adjust();
 		noStroke();
@@ -115,18 +118,13 @@ function draw() {
 		level.displayGround();
 		checkMousePress();
 		if (!gamemenu.active) {
-			level.updateTargetPosition();
-			level.runEntityMovement();
-			level.runPlayerMovement();
-			if (!tutorial.isComplete()) {
-				tutorial.advanceText();
-			}
+			
 		}
 		level.runDamage();
 		pop();
 		if (!tutorial.isComplete()) {
 			tutorial.display();
-			tutorial.testLevel(); //test level for completed tutorial condition
+			tutorial.testLevel(); // test level for completed tutorial condition
 		}
 		gamemenu.display();
 	}

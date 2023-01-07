@@ -21,7 +21,7 @@ class Tile {
         push();
         rotate(60);
         scale(1,TILE_SCALE);
-        rotate(-TILT);
+        rotate(-45);
         image(this.img,this.x-this.y-this.w,this.y,this.w,this.h);
         pop();
     }
@@ -29,7 +29,7 @@ class Tile {
         push();
         rotate(-60);
         scale(1,TILE_SCALE);
-        rotate(TILT);
+        rotate(45);
         image(this.img,this.x-this.y,this.x,this.w,this.h);
         pop();
     }

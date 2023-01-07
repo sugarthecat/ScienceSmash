@@ -64,7 +64,7 @@ class Entity {
     draw() {
         //display after adjusting for isometric angle
         let dispDir = atan2(this.x+this.w/2,this.y+this.w/2);
-        dispDir -= TILT;
+        dispDir -= 45;
         let dispDist = dist(0,0,this.x+this.w/2,this.y+this.w/2);
         let disx = sin(dispDir)*dispDist - this.dispw/2;
         let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph;

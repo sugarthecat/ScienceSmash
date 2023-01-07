@@ -9,7 +9,7 @@ class Camera {
         let desy = target.y + target.h/2;  // destination y
         //account for rotation of isometric perspective
         let desdir = atan2(desx,desy);
-        desdir -= TILT;
+        desdir -= 45;
         let desdist = dist(0,0,desx,desy);
         desx = sin(desdir)*desdist;
         desy = cos(desdir)*desdist*TILE_SCALE;

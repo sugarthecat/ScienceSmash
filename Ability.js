@@ -1,9 +1,7 @@
 class Ability {
-    constructor(reloadLength,attackLength) {
-        this.reloadLength = reloadLength;
-        this.attackLength = attackLength;
+    constructor() {
         this.attackTime = 0;
-        this.reloadTime = 0;
+        this.cooldownTime = 0;
         this.x = 0;
         this.y = 0;
         this.w = 0; // I don't know why this is here, but when I delete it, abilities don't work.
@@ -12,21 +10,33 @@ class Ability {
         this.targetX = 0;
         this.targetY = 0;
         this.finishedActivation = false;
-        this.damage = 0;
-        this.shape = "point"; // defaultly single point ability
-        this.size = 0;
         this.powerScale = 1; // every ability starts at powerScale x1
+    }
+    inflictPoison() {
+
+    }
+    inflictBurning() {
+        
+    }
+    inflictRegeneration() {
+        
+    }
+    inflictStun() {
+        
+    }
+    inflictParalysis() {
+        
     }
     scalePower() {
         if (powerScale < 2.5) {
-            powerScale += 0.5
+            powerScale += 0.5;
         } else {
             // TODO: alert the player that the maximum diploma level has been reached, and give them 50 coins instead
         }
     }
     timeTick() {
         let previouslyActive = this.isActive();
-        this.reloadTime -= deltaTime/1000;
+        this.cooldownTime -= deltaTime/1000;
         this.attackTime -= deltaTime/1000;
         if (!this.finishedActivation) {
             this.finishedActivation = previouslyActive && !this.isActive();
@@ -50,14 +60,14 @@ class Ability {
             this.x = startX;
             this.y = startY;
             this.attackTime = this.attackLength;
-            this.reloadTime = this.reloadLength;
+            this.cooldownTime = this.cooldownLength;
         }
     }
     isActive() {
         return this.attackTime > 0;
     }
     canActivate() {
-        return this.reloadTime < 0;
+        return this.cooldownTime < 0;
     }
     draw() {
 

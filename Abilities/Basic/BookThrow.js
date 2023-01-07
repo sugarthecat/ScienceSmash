@@ -1,18 +1,20 @@
 class BookThrow extends Ability {
     constructor() {
-        super(.5,.15); // reloadLength,attackLength
-        this.damage = 1;
-        this.shape = "point";
-        this.size = 0;
+        super();
+        this.cooldownLength = .5; // cooldown length
+        this.attackDelay = .15; // length of delay before attack triggers
+        this.attackLength = .1; // length of attack after triggering
+        this.damage = 1; // damage dealt to enemies
+        this.shape = "point"; // shape of AOE
+        this.size = 0; // affects a single target
     }
-    // Draw projectile being thrown
-    draw() {
+    draw() { // Draw projectile being thrown
         let currentProgress = 1 - (this.attackTime/this.attackLength);
-        let heightBoost = (10*Math.sin(currentProgress * Math.PI)) /*boost so it isnt thrown from player's foot*/+(60*(1-currentProgress));
+        let heightBoost = (10*Math.sin(currentProgress * Math.PI))+(60*(1-currentProgress));
         this.x = this.targetX * currentProgress + this.startX * (1-currentProgress);
         this.y = this.targetY * currentProgress + this.startY * (1-currentProgress);
         // adjust angle
-        let dispDir = atan2(this.x,this.y) - TILT;
+        let dispDir = atan2(this.x,this.y) - 45;
         let dispDist = dist(0,0,this.x,this.y);
         let disx = sin(dispDir)*dispDist;
         let disy = TILE_SCALE*(cos(dispDir)*dispDist);

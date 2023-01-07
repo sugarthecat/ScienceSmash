@@ -154,7 +154,7 @@ class Level {
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
                         if(Math.random() < 0.01){
-                        this.entities.push(new Enemy(x*100,y*100,5))
+                        this.entities.push(new Enemy(x*100,y*100,1))
                         }
                         break;
                     case "v": // Void 
@@ -285,7 +285,7 @@ class Level {
     runPlayerDamage(){ 
         let attacks = this.player.getAttacks();
         for(let i = 0; i<attacks.length; i++){
-            this.dealDamage(attacks[i].x,attacks[i].y,attacks[i].size,attacks[i].shape)
+            this.dealDamage(attacks[i].x,attacks[i].y,attacks[i].size,attacks[i].shape,attacks[i].dmg)
         }
     }
     addTile(t,x,y) {
@@ -325,7 +325,7 @@ class Level {
         push();
         // Vertically scale and rotate tiles in order to make isometric viewpoint
         scale(1,TILE_SCALE);
-        rotate(TILT);
+        rotate(45);
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
         for (let x = 0; x < this.tiles.length; x++) {
             for (let y = 0; y < this.tiles[x].length; y++) {
@@ -389,7 +389,7 @@ class Level {
     displayRoof() {
         push();
         scale(1,TILE_SCALE);
-        rotate(TILT);
+        rotate(45);
         for (let x = 0; x<this.tiles.length; x++) {
             for (let y = 0; y<this.tiles[x].length; y++) {
                 if (this.tiles[x][y].isCollisionTile) {
@@ -458,7 +458,7 @@ class Level {
         let disy = (mouseY / camera.worldScale + camera.y)
         disy /= TILE_SCALE
         let xydist = dist(disx,disy,0,0)
-        let targetAngle = atan2(disx,disy) + TILT
+        let targetAngle = atan2(disx,disy) + 45
         disx = sin(targetAngle) * xydist
         disy = cos(targetAngle) * xydist
         let currentDist = min(dist(disx,disy,this.player.x,this.player.y),750)
@@ -468,13 +468,13 @@ class Level {
         disy = cos(currentAngle)*currentDist+this.player.y
         return [disx,disy];
     }
-    updateTargetPosition(){
+    updateTargetPosition() {
         this.targetRotation += 1.5
         let [dx,dy] = this.getProjectedMouseXY();
         this.targetx = dx
         this.targety = dy
     }
-    displayTarget(){
+    displayTarget() {
         let [disx,disy] = this.getProjectedMouseXY();
         push()
         translate (this.targetx,this.targety)
@@ -493,22 +493,30 @@ class Level {
 
     //accepts shapes: point, square, circle
     //x, y represent middle of shape.
-    dealDamage(x,y,size,shape="point") {
+    dealDamage(x,y,size,shape="point",dmg) {
         let doesDamagefunction;
         switch(shape) {
             case "point":
                 doesDamagefunction = function(enemy) { return enemy.collides({x:x,y:y,w:0,h:0}) }
                 break;
-            case "square":
-                doesDamagefunction = function(enemy) { return enemy.collides({x:x-size/2,y:y-size/2,w:size,h:size}) }
+            case "rectangle":
+                doesDamagefunction = function(enemy) { 
+                    return enemy.collides({x:x-size/2,y:y-size/2,w:100,h:size}) 
+                }
                 break;
             case "circle":
                 doesDamagefunction = function(enemy) { return (dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,x,y) < size) }
                 break;
+            case "halfcircle":
+                doesDamagefunction = function(enemy) { return (false) }
+                break;
+            case "board":
+                doesDamagefunction = function(enemy) { return (false) }
+                break;    
         }
         for (let i = 0; i < this.entities.length; i++) {
             if (doesDamagefunction(this.entities[i])) {
-                this.entities[i].takeDamage(122);
+                this.entities[i].takeDamage(dmg);
                 if (this.entities[i].health <= 0) {
                     this.entities.splice(i,1);
                 }
