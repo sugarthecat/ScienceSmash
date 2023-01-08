@@ -23,7 +23,7 @@ class Player extends Entity {
         this.onDoor = false; 
         // abilities
         this.baseAbility = new BookThrow();
-        this.specialAbility = new Theology();
+        this.specialAbility = new Geology();
         this.allBaseAbilities = [this.baseAbility];
         this.allSpecialAbilities = [this.specialAbility];
     }
@@ -154,14 +154,14 @@ class Player extends Entity {
                         y: this.baseAbility.targetY,
                         size: this.baseAbility.size,
                         shape: this.baseAbility.shape,
-                        dmg: this.damage })
+                        damage: this.baseAbility.damage })
         }
         if (this.specialAbility.getActivationStatus()) {
             attacks.push({x: this.specialAbility.targetX,
                         y: this.specialAbility.targetY,
                         size: this.specialAbility.size,
                         shape: this.specialAbility.shape,
-                        dmg: this.damage })
+                        damage: this.specialAbility.damage })
         }
         return attacks;
     }

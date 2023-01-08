@@ -89,7 +89,9 @@ class Enemy extends Entity {
         }
     }
     takeDamage(damage) {
+        console.log(this.health)
         this.health -= damage;
+        console.log(this.health)
     }
     drawHealthBar(disx,disy) {
         fill(0,255,0);

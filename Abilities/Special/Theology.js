@@ -26,8 +26,8 @@ class Theology extends Ability {
         }
     }
     drawGround() { // Draw attack area
-        let currentProgress = this.attackLength - (this.attackTime/this.attackLength);
-        if (currentProgress < this.attackLength) {
+        let currentProgress = 1 - (this.attackTime/this.attackLength);
+        if (currentProgress < 1) {
             circle(this.targetX,this.targetY,min((currentProgress-0.8) * 1000, this.size*2 - (currentProgress-0.8) * 1000 ));
         }
     }

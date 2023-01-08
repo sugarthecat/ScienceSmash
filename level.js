@@ -154,7 +154,7 @@ class Level {
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
                         if(Math.random() < 0.01){
-                        this.entities.push(new Enemy(x*100,y*100,1))
+                        this.entities.push(new Enemy(x*100,y*100,5))
                         }
                         break;
                     case "v": // Void 
@@ -285,7 +285,7 @@ class Level {
     runPlayerDamage(){ 
         let attacks = this.player.getAttacks();
         for(let i = 0; i<attacks.length; i++){
-            this.dealDamage(attacks[i].x,attacks[i].y,attacks[i].size,attacks[i].shape,attacks[i].dmg)
+            this.dealDamage(attacks[i].x,attacks[i].y,attacks[i].size,attacks[i].shape,attacks[i].damage)
         }
     }
     addTile(t,x,y) {
@@ -493,15 +493,15 @@ class Level {
 
     //accepts shapes: point, square, circle
     //x, y represent middle of shape.
-    dealDamage(x,y,size,shape="point",dmg) {
+    dealDamage(x,y,size,shape="point",damage) {
         let doesDamagefunction;
         switch(shape) {
             case "point":
                 doesDamagefunction = function(enemy) { return enemy.collides({x:x,y:y,w:0,h:0}) }
                 break;
             case "rectangle":
-                doesDamagefunction = function(enemy) { 
-                    return enemy.collides({x:x-size/2,y:y-size/2,w:100,h:size}) 
+                doesDamagefunction = function(enemy) {
+                    return enemy.atanCollides({x:atan2(x),y:atan2(y-50),w:size,h:100}) 
                 }
                 break;
             case "circle":
@@ -516,7 +516,8 @@ class Level {
         }
         for (let i = 0; i < this.entities.length; i++) {
             if (doesDamagefunction(this.entities[i])) {
-                this.entities[i].takeDamage(dmg);
+                console.log(damage);
+                this.entities[i].takeDamage(damage);
                 if (this.entities[i].health <= 0) {
                     this.entities.splice(i,1);
                 }
