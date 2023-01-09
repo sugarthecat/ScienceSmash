@@ -114,7 +114,6 @@ class Player extends Entity {
         this.phase += 0.3;
         if (this.dirx == 0 && this.diry == 0) {
             this.phase = this.phase % assets.images.player.idle.length;
-            image(assets.images.player.idle[floor(this.phase)], disx, disy, this.dispw, this.disph);
             this.displayImage = assets.images.player.idle
         } else {
             this.phase = this.phase % assets.spritesheets.player.run.getLength();
