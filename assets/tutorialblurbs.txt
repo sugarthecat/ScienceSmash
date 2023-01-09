@@ -14,3 +14,7 @@ I think I just manifested a... {0,255,0}Chemical vial{255,255,255}?\(Space to co
 Ah-ha! It's because my major is in {0,255,0}Chemistry{255,255,255}!\(Space to continue)
 So it must be that my powers in this weird place are based on my {0,255,0}real life{255,255,255}...\(Space to continue)
 So my {255,0,0}Heavy Attack{255,255,255} is my {0,255,0}Major{255,255,255}, and my {255,0,0}Light Attack{255,255,255} is my {0,255,0}Hobby{255,255,255}!\(Space to continue)
+I wonder how these could ever come in handy...\(Space to continue)
+Is that... a {255,0,0}Monster{255,255,255}?\(Defeat the Monster to continue)
+Whew! That was a close call!\(Space to continue)
+Well, I should really get out of here! Good thing this {0,255,0}corridor{255,255,255} just opened up!\(Space to continue)

@@ -18,6 +18,16 @@ class Level {
     incrementLvl() {
         this.lvl++;
     }
+    loadTurorialRoom(){
+        for(let i = 0; i<assets.rooms.tutorial.rows.length; i++){
+            this.tileTable.push([])
+            for(let j = 0; j<assets.rooms.tutorial.rows[i].arr.length; j++){
+                this.tileTable[i].push(assets.rooms.tutorial.rows[i].arr[j])
+            }
+        }
+        this.player.setPosition(1200,1200)
+        this.generateTiles();
+    }
     generateRooms() {
         // layout of the level in regard to the rooms
         // First array = x-axis/horizontal position
@@ -26,7 +36,7 @@ class Level {
         let LP = [[0,0]]; // an array of all the rooms' x and y positions in the layout
         let rooms = []; // an array of all the rooms to be generated in the layout (starts with initial room at 0,0)
         let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
-        let amountOfRooms = (Math.ceil(this.lvl / 5) * 5) - (Math.floor(Math.random() * 5));
+        let amountOfRooms = (Math.ceil(this.lvl)) + (Math.floor(Math.random() * 3));
         for (let i = 0; i < amountOfRooms; i++) {
             rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
         }
@@ -167,6 +177,23 @@ class Level {
             this.warningTextBox = undefined
         }
     }
+    spawnTutorialEnemy(){
+        if(this.player.x + this.player.w/2 > 1250){
+            this.entities.push(new TutorialFrog(100,1200))
+        }else{
+            this.entities.push(new TutorialFrog(2300,1200))
+        }
+    }
+    openTutorialCorridor(){
+        for(let x = 9; x< 16; x++){
+            for(let y = 24; y<48; y++){
+                this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
+            }
+        }
+        for(let y = 24; y<41; y++){
+            this.tiles[8][y].hasLeft = true;
+        }
+    }
     getCollisionTileArray(){
         let outArray = []
         for (let i = 0; i < this.tiles.length; i++) {
@@ -186,9 +213,6 @@ class Level {
                         break;
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
-                        if(Math.random() < 0.02){
-                        this.entities.push(new MeleeEnemy(x*100,y*100,150))
-                        }
                         break;
                     case "v": // Void 
                         this.addTile(new VoidTile(), x, y);

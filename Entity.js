@@ -86,6 +86,13 @@ class Entity {
         let disx = sin(dispDir)*dispDist - this.dispw/2;
         let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph;
         push();
+        if(this.destination){
+            if(this.x - this.y + this.destination.y - this.destination.x < 0){
+                this.facingLeft = true
+            }else{
+                this.facingLeft = false
+            }
+        }
         if (this.facingLeft) {
             scale(-1,1);
             disx *= -1;

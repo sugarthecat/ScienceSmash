@@ -21,7 +21,11 @@ class Tutorial {
     }
     takeInput(key) {
         if (key == 32 ) {
-            if(this.textbox.isComplete() && (this.phase <= 2 || this.phase == 8 || (this.phase >= 9 && this.phase <= 10) || (this.phase >= 12 && this.phase <= 16) )){
+            if(this.textbox.isComplete() && 
+                (this.phase <= 2 
+                    || (this.phase >= 9 && this.phase <= 10) 
+                    || (this.phase >= 12 && this.phase <= 16)
+                    || (this.phase >= 18 && this.phase <= 20) )){
                 this.advancePhase();
             }else{
                 this.textbox.advanceText(true);
@@ -45,12 +49,21 @@ class Tutorial {
             else if (this.phase == 7 && level.player.dashTimer > 0) {
                 this.advancePhase();
             }
+            else if (this.phase == 17 && level.entities.length == 0){
+                this.advancePhase();
+            }
         }
     }
     advancePhase() {
         if (this.phase < this.textBoxes.length) {
             this.phase++;
             this.textbox = this.textBoxes[this.phase];
+            if(this.phase == 17){
+                level.spawnTutorialEnemy();
+            }
+            if(this.phase == 19){
+                level.openTutorialCorridor();
+            }
         }
     }
 }

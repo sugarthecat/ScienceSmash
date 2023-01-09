@@ -23,11 +23,14 @@ class Assets {
         this.images.doorSide;
         this.images.portal = [];
         this.images.aura;
+        this.images.enemies = {};
         this.images.target;
         this.images.player = {};
         this.images.player.idle;
         this.images.player.run = [];
         this.images.backgrounds = [];
+        this.spritesheets = {};
+        this.spritesheets.player = {};
     }
     loadFiles() {
         // load room csvs
@@ -43,7 +46,7 @@ class Assets {
             this.rooms.progression.push(loadTable('assets/rooms/progression/p'+i+'.csv', 'csv', 'noheader', loaded));}
         for (let i = 0; i < 2; i++) {
             this.rooms.boss.push(loadTable('assets/rooms/boss/b'+i+'.csv', 'csv', 'noheader', loaded));}
-        
+        this.rooms.tutorial = loadTable('assets/rooms/tutorial/tutorial.csv','csv','noheader',loaded)
         // load tutorial blurbs
         fetch("assets/tutorialblurbs.txt")
         .then(x => x.text())
@@ -70,14 +73,13 @@ class Assets {
             this.images.portal.push(loadImage('assets/sprites/portalTile'+i+'.png', loaded));}
         this.images.aura = loadImage('assets/sprites/playerAura.png', loaded);
         this.images.target = loadImage('assets/sprites/target.png', loaded);
+        this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);
         this.images.player.idle = loadImage('assets/sprites/idle.png', loaded);
-        this.spritesheets = {}
-        this.spritesheets.player = {}
-        this.spritesheets.player.run = new SpriteSheet('assets/spritesheets/playerRun.png',loaded)
         for (let i = 0; i < 2; i++) {
             this.images.backgrounds.push(loadImage('assets/sprites/background'+i+'.png', loaded));
         }
         this.images.doorTop = loadImage('assets/sprites/doorTop.png', loaded);
         this.images.doorSide = loadImage('assets/sprites/doorSide.png', loaded);
+        this.spritesheets.player.run = new SpriteSheet('assets/spritesheets/playerRun.png',loaded);
     }
 }
