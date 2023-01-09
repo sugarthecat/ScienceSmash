@@ -96,25 +96,25 @@ class Level {
                     if (i == 0 || !(layout[i-1][j] instanceof Room)) { // top
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "w"; } // seal north wall
                     } else if (layout[i-1][j] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; }
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; } // add north door
                         this.doorPositions.push(new DoorPosition((j*25)+11,(i*25),300,100,0)); }
                     }
                     if (j == layout[i].length-1 || !(layout[i][j+1] instanceof Room)) { // right
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "w"; } // seal east wall
                     } else if (layout[i][j+1] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "d"; }
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "d"; } // add  east door
                         this.doorPositions.push(new DoorPosition((j*25)+24,(i*25)+11,100,300,1)); }
                     }
                     if (i == layout.length-1 || !(layout[i+1][j] instanceof Room)) { // bottom
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "w"; } // seal south wall
                     } else if (layout[i+1][j] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "d"; }
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "d"; } // add south door
                         this.doorPositions.push(new DoorPosition((j*25)+11,(i*25)+24,300,100,2)); }
                     }
                     if (j == 0 || !(layout[i][j-1] instanceof Room)) { // left
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "w"; } // seal west wall
                     } else if (layout[i][j-1] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; }
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; } // add west door
                         this.doorPositions.push(new DoorPosition((j*25),(i*25)+11,100,300,3)); }
                     }
                 }
@@ -279,13 +279,13 @@ class Level {
     runPlayerMovement() {
         this.player.runMoveTick(this);
     }
-    runDamage(){
+    runDamage() {
         this.runPlayerDamage();
     }
-    runPlayerDamage(){ 
+    runPlayerDamage() { 
         let attacks = this.player.getAttacks();
-        for(let i = 0; i<attacks.length; i++){
-            this.dealDamage(attacks[i].x,attacks[i].y,attacks[i].size,attacks[i].shape,attacks[i].damage)
+        for(let i = 0; i<attacks.length; i++) {
+            this.dealDamage(attacks[i]);
         }
     }
     addTile(t,x,y) {
@@ -493,31 +493,28 @@ class Level {
 
     //accepts shapes: point, square, circle
     //x, y represent middle of shape.
-    dealDamage(x,y,size,shape="point",damage) {
+    dealDamage(attack) { // x,y,size,shape="point",damage
         let doesDamagefunction;
-        switch(shape) {
+        switch(attack.shape) {
             case "point":
-                doesDamagefunction = function(enemy) { return enemy.collides({x:x,y:y,w:0,h:0}) }
+                doesDamagefunction = function(enemy) { return enemy.collides({x:attack.x,y:attack.y,w:0,h:0}); }
                 break;
             case "rectangle":
-                doesDamagefunction = function(enemy) {
-                    return enemy.atanCollides({x:atan2(x),y:atan2(y-50),w:size,h:100}) 
-                }
+                doesDamagefunction = function(enemy) { return enemy.degreeCollides(attack,30); }
                 break;
             case "circle":
-                doesDamagefunction = function(enemy) { return (dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,x,y) < size) }
+                doesDamagefunction = function(enemy) { return dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,attack.x,attack.y) < attack.size; }
                 break;
             case "halfcircle":
-                doesDamagefunction = function(enemy) { return (false) }
+                doesDamagefunction = function(enemy) { return enemy.degreeCollides(attack,180); }
                 break;
-            case "board":
+            /*case "board":
                 doesDamagefunction = function(enemy) { return (false) }
-                break;    
+                break;    */
         }
         for (let i = 0; i < this.entities.length; i++) {
             if (doesDamagefunction(this.entities[i])) {
-                console.log(damage);
-                this.entities[i].takeDamage(damage);
+                this.entities[i].takeDamage(attack.damage);
                 if (this.entities[i].health <= 0) {
                     this.entities.splice(i,1);
                 }

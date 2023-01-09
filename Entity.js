@@ -3,7 +3,7 @@ class Entity {
         this.x = 0;
         this.y = 0;
         this.w = 100;
-        this.h = 10;
+        this.h = 100;
         this.dirx = 50; // 1, 0, or -1, representing direction x
         this.diry = 50; // 1,0, or -1, representing direction y
         this.dispw = 50; //display width
@@ -15,10 +15,11 @@ class Entity {
     collides(other) {
         return (this.x + this.w > other.x && other.x + other.w > this.x && this.y + this.h > other.y && other.y + other.h > this.y);
     }
-    atanCollides(other) { // TODO under construction
-        console.log("test");
-        console.log(other)
-        return (atan2(this.x + this.w) > other.x && other.x + other.w > atan2(this.x) && atan2(this.y + this.h) > other.y && other.y + other.h > atan2(this.y));
+    degreeCollides(other,degrees) {
+        let otherTarget1 = other.degree - degrees/2;
+        let otherTarget2 = other.degree + degrees/2;
+        let thisDeg = atan2(this.y+this.h/2 - other.startY, this.x+this.w/2 - other.startX) ;
+        return ((dist(this.x+this.w/2,this.y+this.h/2,other.x,other.y) < other.size) && (thisDeg > otherTarget1) && (thisDeg < otherTarget2));
     }
     setPosition(x, y) {
         this.x = x;

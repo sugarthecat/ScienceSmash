@@ -59,6 +59,7 @@ class Ability {
             this.targetY = targetY;
             this.x = startX;
             this.y = startY;
+            this.degree = atan2(this.targetY - this.startY, this.targetX - this.startX);
             this.attackTime = this.attackLength;
             this.cooldownTime = this.cooldownLength;
         }

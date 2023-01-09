@@ -150,18 +150,10 @@ class Player extends Entity {
     getAttacks() {
         let attacks = [];
         if (this.baseAbility.getActivationStatus()) {
-            attacks.push({x: this.baseAbility.targetX,
-                        y: this.baseAbility.targetY,
-                        size: this.baseAbility.size,
-                        shape: this.baseAbility.shape,
-                        damage: this.baseAbility.damage })
+            attacks.push(this.baseAbility);
         }
         if (this.specialAbility.getActivationStatus()) {
-            attacks.push({x: this.specialAbility.targetX,
-                        y: this.specialAbility.targetY,
-                        size: this.specialAbility.size,
-                        shape: this.specialAbility.shape,
-                        damage: this.specialAbility.damage })
+            attacks.push(this.specialAbility);
         }
         return attacks;
     }
