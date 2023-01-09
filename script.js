@@ -45,7 +45,6 @@ function keyPressed() {
 		if (keyCode == SHIFT) {
 			// activate dash
 			level.player.activateDash();
-			level.player.activateDash();
 		}
 	}
 }
@@ -129,13 +128,18 @@ function draw() {
 			if (!tutorial.isComplete()) {
 				tutorial.advanceText();
 			}
+			if(level.warningTextBox instanceof TextBox){
+				level.warningTextBox.advanceText();
+			}
 		}
 		level.runDamage();
+		level.testLevelCompletion();
 		pop();
 		if (!tutorial.isComplete()) {
-			tutorial.display();
-			tutorial.testLevel(); //test level for completed tutorial condition
+			//tutorial.display();
+			//tutorial.testLevel(); //test level for completed tutorial condition
 		}
+		level.displayWarning();
 		gamemenu.display();
 	}
 }

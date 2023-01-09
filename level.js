@@ -8,6 +8,12 @@ class Level {
         this.entities = [];
         this.tileTable = [];
         this.doorPositions = []; 
+        this.warningTextBox = false;
+    }
+    displayWarning(){
+        if(this.warningTextBox instanceof TextBox){
+            this.warningTextBox.display();
+        }
     }
     incrementLvl() {
         this.lvl++;
@@ -144,6 +150,22 @@ class Level {
             }
         }
         this.generateTiles();
+    }
+    testLevelCompletion(){
+        for(let x = 0; x<this.tiles.length; x++){
+            for(let y = 0; y<this.tiles[x].length; y++){
+                if(this.tiles[x][y] instanceof ProgressionTile && this.tiles[x][y].collides(this.player)){
+                    if(this.entities.length == 0){
+
+                    }else if(!(this.warningTextBox instanceof TextBox)){
+                        this.warningTextBox = new TextBox("{255,255,255}I think I should really defeat some more enemies before moving on...",10)
+                    }
+                }
+            }
+        }
+        if(this.warningTextBox instanceof TextBox && this.warningTextBox.totalShown > 120){
+            this.warningTextBox = undefined
+        }
     }
     getCollisionTileArray(){
         let outArray = []
