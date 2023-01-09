@@ -24,8 +24,8 @@ class GameMenu {
             adjh -= 40;
             noStroke();
             fill (200);
-            translate (xoff,yoff);
-            scale(adjw/600,adjh/400);
+            translate (xoff,yoff);;
+            scale(adjw/600,adjh/400);;
             //all menu items displayed on scale of 600 to 400
             rect(0,0,600,400);
             let img = assets.images.portal[5];

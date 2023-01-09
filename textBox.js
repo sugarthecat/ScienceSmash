@@ -70,7 +70,7 @@ class TextBox {
         }
     }
     advanceText(finishText) {
-        this.totalShown += this.textSpeed*deltaTime/100;
+        this.totalShown += this.textSpeed*deltaTime/1000;
         if(finishText){
             let letterOn = 0;
             for (let i = 0; i<this.text.length; i++) {

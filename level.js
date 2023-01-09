@@ -8,6 +8,25 @@ class Level {
         this.entities = [];
         this.tileTable = [];
         this.doorPositions = []; 
+        this.warningTextBox = false;
+    }
+    displayWarning(){
+        if(this.warningTextBox instanceof TextBox){
+            this.warningTextBox.display();
+        }
+    }
+    incrementLvl() {
+        this.lvl++;
+    }
+    loadTurorialRoom(){
+        for(let i = 0; i<assets.rooms.tutorial.rows.length; i++){
+            this.tileTable.push([])
+            for(let j = 0; j<assets.rooms.tutorial.rows[i].arr.length; j++){
+                this.tileTable[i].push(assets.rooms.tutorial.rows[i].arr[j])
+            }
+        }
+        this.player.setPosition(1200,1200)
+        this.generateTiles();
     }
     generateRooms() {
         // layout of the level in regard to the rooms
@@ -17,7 +36,8 @@ class Level {
         let LP = [[0,0]]; // an array of all the rooms' x and y positions in the layout
         let rooms = []; // an array of all the rooms to be generated in the layout (starts with initial room at 0,0)
         let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
-        for (let i = 0; i < this.lvl; i++) { // For every level
+        let amountOfRooms = (Math.ceil(this.lvl)) + (Math.floor(Math.random() * 3));
+        for (let i = 0; i < amountOfRooms; i++) {
             rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
         }
         if (this.lvl % 10 == 0) { // If its a tenth level, push a boss room
@@ -141,6 +161,49 @@ class Level {
         }
         this.generateTiles();
     }
+    testLevelCompletion(){
+        for(let x = 0; x<this.tiles.length; x++){
+            for(let y = 0; y<this.tiles[x].length; y++){
+                if(this.tiles[x][y] instanceof ProgressionTile && this.tiles[x][y].collides(this.player)){
+                    if(this.entities.length == 0){
+
+                    }else if(!(this.warningTextBox instanceof TextBox)){
+                        this.warningTextBox = new TextBox("{255,255,255}I think I should really defeat some more enemies before moving on...",10)
+                    }
+                }
+            }
+        }
+        if(this.warningTextBox instanceof TextBox && this.warningTextBox.totalShown > 120){
+            this.warningTextBox = undefined
+        }
+    }
+    spawnTutorialEnemy(){
+        if(this.player.x + this.player.w/2 > 1250){
+            this.entities.push(new TutorialFrog(100,1200))
+        }else{
+            this.entities.push(new TutorialFrog(2300,1200))
+        }
+    }
+    openTutorialCorridor(){
+        for(let x = 9; x< 16; x++){
+            for(let y = 24; y<48; y++){
+                this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
+            }
+        }
+        for(let y = 24; y<41; y++){
+            this.tiles[8][y].hasLeft = true;
+        }
+    }
+    getCollisionTileArray(){
+        let outArray = []
+        for (let i = 0; i < this.tiles.length; i++) {
+            outArray.push([]);
+            for (let j = 0; j < this.tiles[i].length; j++) {
+                outArray[i].push(!(this.tiles[i][j].isCollisionTile));
+            }
+        }
+        return outArray
+    }
     generateTiles() { 
         for (var x = 0; x < this.tileTable.length; x++) {
             for (var y = 0; y < this.tileTable[x].length; y++) {
@@ -259,9 +322,18 @@ class Level {
         }
         return false;
     }
+    //run everything the player needs to run during a tick
     runPlayerMovement() {
         this.player.runMoveTick(this);
-        this.player.fixDirections();
+    }
+    runDamage(){
+        this.runPlayerDamage();
+    }
+    runPlayerDamage(){ 
+        let attacks = this.player.getAttacks();
+        for(let i = 0; i<attacks.length; i++){
+            this.dealDamage(attacks[i].x,attacks[i].y,attacks[i].size,attacks[i].shape)
+        }
     }
     addTile(t,x,y) {
         if (x < 0 || y < 0) {
@@ -316,30 +388,37 @@ class Level {
         }
         pop();
     }
+    getObjectsToDraw(){
+        let objectsToDraw = []
+        objectsToDraw.push(this.player)
+        let projectiles = this.player.getAbilityProjectiles()
+        for(let i = 0; i<projectiles.length; i++){
+            objectsToDraw.push(projectiles[i])
+        }
+        for(let i = 0; i<this.entities.length; i++){
+            objectsToDraw.push(this.entities[i])
+        }
+        objectsToDraw.sort(function(a,b){return (a.x+a.y -b.x-b.y)})
+        return objectsToDraw
+    }
     // Displays the parts 
     displayWalls() {
-        let playerDrawn = false;
-        let entityDrawn = [];
-        for (let i = 0; i< this.entities.length; i++) {
-            entityDrawn.push(false);
+        let objectsToDraw = this.getObjectsToDraw();
+        let objectDrawn = [];
+        for (let i = 0; i< objectsToDraw.length; i++) {
+            objectDrawn.push(false);
         }
-        if (0 > this.player.x+this.player.y) {
-            this.player.draw();
-        }
-        // d = distance to the top of the tile
-        // p = distance to the right of the tile
+        //console.log(objectsToDraw)
+        // d = current tile X + tile Y
+        // p = current tile Y 
         for (let d = 0; d < this.tiles.length+this.tiles[0].length; d++) {
             for (let p = 0; p<=d; p++) {
                 let x = d - p;
                 let y = p;
-                if (!playerDrawn && (x+y+1)*100 > this.player.x+this.player.w+this.player.y) {
-                    this.player.draw();
-                    playerDrawn = true;
-                }
-                for (let i = 0; i< this.entities.length; i++) {
-                    if (!entityDrawn[i] && (x+y+1)*100 > this.entities[i].x+this.entities[i].w+this.entities[i].y) {
-                        this.entities[i].draw();
-                        entityDrawn[i] = true;
+                for (let i = 0; i<objectsToDraw.length; i++) {
+                    if (!objectDrawn[i] && (x+y+1)*100 > objectsToDraw[i].x + objectsToDraw[i].w + objectsToDraw[i].y) {
+                        objectsToDraw[i].draw();
+                        objectDrawn[i] = true;
                     }
                 }
                 if ( x < this.tiles.length && y < this.tiles[x].length) {
@@ -380,6 +459,9 @@ class Level {
                 this.entities[i].navTowardsPosition(this,this.player)
             }
             this.entities[i].runMoveTick(this);
+            if(this.entities[i].collides(this.player) && this.entities[i].hasDecollideFunction){
+                this.entities[i].decollideWithEnemy(this.player)
+            }
         }
     }
     // Returns whether an object collides with anything on the level, given it has an x, y, w, and h property
@@ -453,11 +535,35 @@ class Level {
         image(assets.images.target,-100,-100,200,200)
         pop()
     }
-    basicChemistry(){
+    activateBasicAttack(){
         let [disx,disy] = this.getProjectedMouseXY();
+        this.player.activateBaseAbility(disx,disy);
+    }
+    activateSpecialAttack() {
+        let [disx,disy] = this.getProjectedMouseXY();
+        this.player.activateSpecialAbility(disx,disy);
+    }
+
+
+    //accepts shapes: point, square
+    //x, y represent middle of shape.
+    dealDamage(x,y,size,shape="point"){
+        
+        let doesDamagefunction;
+        switch(shape){
+            case 'point':
+                doesDamagefunction = function(enemy){return enemy.collides({x:x,y:y,w:0,h:0}) }
+            break;
+            case 'square':
+                doesDamagefunction = function(enemy){return enemy.collides({x:x-size/2,y:y-size/2,w:size,h:size}) }
+            break;
+            case 'circle':
+                doesDamagefunction = function(enemy){return (dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,x,y) < size) }
+            break;
+        }
         for (let i = 0; i < this.entities.length; i++) {
-            if (this.entities[i].collides({x:disx,y:disy,w:0,h:0})) {
-                this.entities[i].takeDamage(1);
+            if (doesDamagefunction(this.entities[i])) {
+                this.entities[i].takeDamage(122);
                 if (this.entities[i].health <= 0) {
                     this.entities.splice(i,1);
                 }

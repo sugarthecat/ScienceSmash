@@ -9,24 +9,47 @@ class Player extends Entity {
         this.diry = 0; // 1,0, or -1, representing direction y
         this.dispw = 70;
         this.disph = 90;
-        this.maxMoveSpeed = 0.5;
+        this.normalMoveSpeed = 400;
+        this.dashSpeed = 1200;
         this.dashTimer = 0
         this.phase = 0;
         this.facingLeft = false;
         this.onDoor = false; // true if the player is on a door
+        this.baseAbility = new BookThrow();
+        this.specialAbility = new ChemicalThrow();
+        this.setHealth(20)
+    }
+    drawGround() {
+        this.baseAbility.drawGround();
+        this.specialAbility.drawGround();
+        super.drawGround();
     }
     isMovingUp() {
-        return this.dirx + this.diry < 0
+        return this.dirx + this.diry < 0;
     }
     isMovingDown() {
-        return this.dirx + this.diry > 0
+        return this.dirx + this.diry > 0;
     }
     isMovingRight() {
-        return this.dirx - this.diry > 0
+        return this.dirx - this.diry > 0;
     }
     isMovingLeft() {
-        return this.dirx - this.diry < 0
+        return this.dirx - this.diry < 0;
 
+    }
+    activateBaseAbility(attackTargetX,attackTargetY) {
+        this.baseAbility.activate(
+            this.x + this.w/2,
+            this.y + this.h/2,
+            attackTargetX,
+            attackTargetY);
+    }
+    activateSpecialAbility(attackTargetX,attackTargetY) {
+        this.specialAbility.activate(
+            this.x + this.w/2,
+            this.y + this.h/2,
+            attackTargetX,
+            attackTargetY);
     }
     // Ensures that dirx and diry are correct.
     fixDirections() {
@@ -36,8 +59,8 @@ class Player extends Entity {
         let up = keyIsDown(87); // W key
         let down =  keyIsDown(83); // S key
         // Resolves key conflicts to ensure that if two opposite directions are attempted at the same time, nothing happens.
-        if (this.dashTimer <= 0) {
-            this.moveSpeed = this.maxMoveSpeed;
+        if(this.dashTimer <= 0){
+            this.moveSpeed = this.normalMoveSpeed
             this.dirx = 0;
             this.diry = 0;
             if (right && !left) {
@@ -64,37 +87,58 @@ class Player extends Entity {
                 this.facingLeft = true;
             }
         }else{
-            this.moveSpeed = this.maxMoveSpeed*3
+            this.moveSpeed = this.dashSpeed
         }
+    }
+    getAbilityProjectiles() {
+        let objectsToReturn = [];
+        if (this.baseAbility.isActive()) {
+            objectsToReturn.push(this.baseAbility);
+        }
+        if (this.specialAbility.isActive()) {
+            objectsToReturn.push(this.specialAbility);
+        }
+        return objectsToReturn
     }
     // draw upright display of character
     draw() {
-        //display after adjusting for isometric angle
-        let dispDir = atan2(this.x+this.w/2,this.y+this.w/2);
-        dispDir -= 45;
-        let dispDist = dist(0,0,this.x+this.w/2,this.y+this.w/2);
-        let disx = sin(dispDir)*dispDist - this.dispw/2;
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph;
-        fill(255,100,50);
-        push();
-        if (this.facingLeft) {
-            scale(-1,1);
-            disx *= -1;
-            disx -= this.dispw;
-        }
         this.phase += 0.3;
         if (this.dirx == 0 && this.diry == 0) {
-            this.phase = this.phase % assets.images.player.idle.length;
-            image(assets.images.player.idle[floor(this.phase)], disx, disy, this.dispw, this.disph)
+            this.displayImage = assets.images.player.idle
         } else {
-            this.phase = this.phase % assets.images.player.run.length;
-            image(assets.images.player.run[floor(this.phase)], disx, disy, this.dispw, this.disph)
+            this.phase = this.phase % assets.spritesheets.player.run.getLength();
+            this.displayImage = assets.spritesheets.player.run.getSprite(floor(this.phase))
         }
-        pop()
+        super.draw();
     }
-    activateDash(){
-        if(this.dashTimer <= 0 && (this.dirx != 0 || this.diry != 0)){
-            this.dashTimer = 0.2
+    activateDash() {
+        if (this.dashTimer <= 0 && (this.dirx != 0 || this.diry != 0)) {
+            this.dashTimer = 0.2;
         }
+    }
+    runMoveTick(level) {
+        if(this.dashTimer && this.dashTimer >= 0){
+            this.dashTimer -= deltaTime/1000;
+        }
+        this.baseAbility.timeTick();
+        this.specialAbility.timeTick();
+        super.runMoveTick(level);
+        this.fixDirections();
+    }
+    getAttacks() {
+        let attacks = [];
+        if (this.baseAbility.getActivationStatus()) {
+            attacks.push({x: this.baseAbility.endX,
+                        y: this.baseAbility.endY,
+                        size: this.baseAbility.size,
+                        shape: this.baseAbility.shape })
+        }
+        if (this.specialAbility.getActivationStatus()) {
+            attacks.push({x: this.specialAbility.endX,
+                        y: this.specialAbility.endY,
+                        size: this.specialAbility.size,
+                        shape: this.specialAbility.shape })
+        }
+        return attacks;
     }
 }

@@ -18,7 +18,7 @@ class Camera {
         desy-=height/2/this.worldScale;
         return [desx,desy];
     }
-    setPositionAs(target) {
+    setPositionAs(target)  {
         // target is player
         let desx,desy;
         [desx,desy] = this.getPositionAt(target); //JS equivalent of a tuple
@@ -26,15 +26,15 @@ class Camera {
         this.y = desy;
     }
     scaleUp(tgt) {
-        this.worldScale *= 1.1;
+        this.worldScale *= 1.1
         if (this.worldScale > 1.3) {
             this.worldScale = 1.3;
         }
         this.setPositionAs(tgt);
     }
     scaleDown(tgt) {
-        this.worldScale /= 1.1;
-        if (this.worldScale < 0.7) {
+        this.worldScale /= 1.1
+        if(this.worldScale < 0.7) {
             this.worldScale = 0.7;
         }
         this.setPositionAs(tgt);
@@ -52,7 +52,7 @@ class Camera {
         }
         if (diffy != 0) {
             //if Y difference, move camera towards desy
-          this.y -= diffy*diffy * (diffy/abs(diffy))*height;
+            this.y -= diffy*diffy * (diffy/abs(diffy))*height;
         }
     }
     adjust() {
