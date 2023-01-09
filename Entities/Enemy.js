@@ -103,7 +103,8 @@ class Enemy extends Entity {
         let oldX = this.x
         let oldY = this.y
         super.runMoveTick(level)
-        if(oldX == this.x && oldY == this.y){
+        //if less than 1% of possible movement has been acheived, recalculate destination
+        if(dist(oldX,oldY,this.x,this.y) < this.moveSpeed * 0.01){
             this.destination = undefined
         }
     }

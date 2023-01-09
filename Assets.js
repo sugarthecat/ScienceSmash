@@ -70,9 +70,10 @@ class Assets {
             this.images.portal.push(loadImage('assets/sprites/portalTile'+i+'.png', loaded));}
         this.images.aura = loadImage('assets/sprites/playerAura.png', loaded);
         this.images.target = loadImage('assets/sprites/target.png', loaded);
-        this.images.player.idle = [loadImage('assets/sprites/idle.png', loaded)];
-        for (let i = 0; i < 5; i++) {
-            this.images.player.run.push(loadImage('assets/sprites/run'+i+'.png', loaded));}
+        this.images.player.idle = loadImage('assets/sprites/idle.png', loaded);
+        this.spritesheets = {}
+        this.spritesheets.player = {}
+        this.spritesheets.player.run = new SpriteSheet('assets/spritesheets/playerRun.png',loaded)
         for (let i = 0; i < 2; i++) {
             this.images.backgrounds.push(loadImage('assets/sprites/background'+i+'.png', loaded));
         }

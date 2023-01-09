@@ -13,6 +13,5 @@ class MeleeEnemy extends Enemy{
         let desx = enemy.x - xdiff * this.recoilDistance/ diffDist
         let desy = enemy.y - ydiff * this.recoilDistance/ diffDist
         this.destination = {x:desx,y:desy}
-        console.log(this.destination)
     }
 }

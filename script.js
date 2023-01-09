@@ -4,7 +4,7 @@ const TILE_SCALE = 1 / Math.sqrt(3); // Initialize tile scale
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(76); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(72); // Initialize the loading screen with how many files need to be loaded
 let placeInPL = 0; // Place in the music playlist
 let gameStarted = false; // boolean of whether the player has clicked continue after the loading screen
 let loadTick = 0; // Loadtick speed
@@ -71,11 +71,21 @@ function playPlaylist(playlist) {
 	}, playlist[placeInPL].duration() * 1000);
 }
 
-function mouseClicked() {
+function mousePressed() {
 	if (loadscreen.loadsLeft == 0) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
+		checkMousePress();
 		if(gameStarted){
-			if (tutorial.phase == 8) {
-				tutorial.advancePhase();
+			if(mouseButton == LEFT){
+				level.activateBasicAttack();
+				if (tutorial.phase == 8 && tutorial.textbox.isComplete()) {
+					tutorial.advancePhase();
+				}
+			}
+			if(mouseButton == RIGHT){
+				level.activateSpecialAttack();
+				if (tutorial.phase == 11 && tutorial.textbox.isComplete()) {
+					tutorial.advancePhase();
+				}
 			}
 		}else{
 			gameStarted = true;
@@ -112,7 +122,6 @@ function draw() {
 		level.displayWalls();
 		level.displayRoof();
 		level.displayGround();
-		checkMousePress();
 		if (!gamemenu.active) {
 			level.updateTargetPosition();
 			level.runEntityMovement();
