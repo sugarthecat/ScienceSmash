@@ -25,6 +25,7 @@ class Assets {
         this.images.aura;
         this.images.enemies = {};
         this.images.target;
+        this.images.cone;
         this.images.player = {};
         this.images.player.idle;
         this.images.player.run = [];
@@ -73,7 +74,8 @@ class Assets {
             this.images.portal.push(loadImage('assets/sprites/portalTile'+i+'.png', loaded));}
         this.images.aura = loadImage('assets/sprites/playerAura.png', loaded);
         this.images.target = loadImage('assets/sprites/target.png', loaded);
-        this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);
+        this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);        
+        this.images.cone = loadImage('assets/sprites/cone.png', loaded);
         this.images.player.idle = loadImage('assets/sprites/idle.png', loaded);
         for (let i = 0; i < 2; i++) {
             this.images.backgrounds.push(loadImage('assets/sprites/background'+i+'.png', loaded));
