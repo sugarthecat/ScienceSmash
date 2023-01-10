@@ -3,6 +3,7 @@ class TextBox {
         this.margin = 0.04;
         this.text = [];
         this.textSpeed = textSpeed;
+        this.textSize = 0.2;
         this.totalShown = 0;
         let shownText = text.split('\\');
         this.bottomtext = shownText[1];
@@ -41,7 +42,7 @@ class TextBox {
         bgcolor.setAlpha(200);
         fill(bgcolor);
         rect((width - xWidth) / 2, height - yWidth, xWidth, yWidth);
-        textSize(min((xWidth - 20) / 4, (yWidth - 20) / 4));
+        textSize(this.textSize * min((xWidth - 20), (yWidth - 20)));
         textStyle(BOLD);
         fill(0);
         let rowOn = 1;

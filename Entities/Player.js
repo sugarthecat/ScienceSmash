@@ -14,8 +14,8 @@ class Player extends Entity {
         this.dispw = 70;
         this.disph = 90;
         // movement and animation
-        this.normalMoveSpeed = 400;
-        this.dashSpeed = 1200;
+        this.normalMoveSpeed = 800;
+        this.dashSpeed = 2500;
         this.dashTimer = 0
         this.phase = 0;
         this.facingLeft = false;

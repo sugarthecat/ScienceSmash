@@ -6,7 +6,7 @@ class Theology extends Ability {
         this.attackLength = 5; // length of attack after triggering
         this.damage = 10; // damage dealt to enemies
         this.shape = "circle"; // shape of AOE
-        this.size = 200; // radius of circle AOE
+        this.size = 400; // radius of circle AOE
     }
     draw() { // Draw projectile being thrown
         let currentProgress = 1 - (this.attackTime/this.attackLength);

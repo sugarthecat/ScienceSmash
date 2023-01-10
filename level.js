@@ -237,8 +237,11 @@ class Level {
                         this.incrementLvl();
                         this.generateRooms();
                         camera.setPositionAs(this.player)
+                        this.warningTextBox = new TextBox("{255,255,255}Level " + this.lvl, 10)
+                        this.warningTextBox.textSize = 0.5
                     } else if (!(this.warningTextBox instanceof TextBox)) {
                         this.warningTextBox = new TextBox("{255,255,255}I think I should really defeat some more enemies before moving on...", 10)
+                        this.warningTextBox.textSize = 0.2
                     }
                 }
             }
@@ -356,6 +359,9 @@ class Level {
     //run everything the player needs to run during a tick
     runPlayerMovement() {
         this.player.runMoveTick(this);
+        if(this.warningTextBox instanceof TextBox){
+            this.warningTextBox.advanceText();
+        }
     }
     runDamage() {
         this.runPlayerDamage();
