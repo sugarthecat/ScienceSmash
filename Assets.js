@@ -26,6 +26,7 @@ class Assets {
         this.images.enemies = {};
         this.images.target;
         this.images.cone;
+        this.images.book;
         this.images.player = {};
         this.images.player.idle;
         this.images.player.run = [];
@@ -89,6 +90,7 @@ class Assets {
         this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);
         this.images.cone = loadImage('assets/sprites/cone.png', loaded);
         this.images.pentagram = loadImage('assets/sprites/pentagram.png', loaded);
+        this.images.book = loadImage('assets/sprites/book.png', loaded);
         this.images.player.idle = loadImage('assets/sprites/idle.png', loaded);
         for (let i = 0; i < 2; i++) {
             this.images.backgrounds.push(loadImage('assets/sprites/background' + i + '.png', loaded));

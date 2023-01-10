@@ -1,9 +1,9 @@
-class Football extends Ability {
+class BasicAttack extends Ability {
     constructor() {
         super();
-        this.cooldownLength = .75; // cooldown length
-        this.attackDelay = .2; // length of delay before attack triggers
-        this.attackLength = .1; // length of attack after triggering
+        this.cooldownLength = .5; // cooldown length
+        this.attackDelay = .15; // length of delay before attack triggers
+        this.attackLength = .5; // length of attack after triggering
         this.damage = 1; // damage dealt to enemies
         this.shape = "point"; // shape of AOE
         this.size = 0; // affects a single target
@@ -19,7 +19,6 @@ class Football extends Ability {
         let disx = sin(dispDir)*dispDist;
         let disy = TILE_SCALE*(cos(dispDir)*dispDist);
         // draw animation
-        fill (255);
-        rect (disx-25,disy - heightBoost-25,50,50);
+        image (assets.images.book,disx-25,disy - heightBoost-25,50,50);
     }
 }

@@ -22,9 +22,8 @@ class Player extends Entity {
         // true if the player is on a door
         this.onDoor = false;
         // abilities
-        this.baseAbility = new BookThrow();
-        this.specialAbility = new Geology();
-        this.allBaseAbilities = [this.baseAbility];
+        this.baseAbility = new BasicAttack();
+        this.specialAbility = new Chemistry();
         this.allSpecialAbilities = [this.specialAbility];
         this.setHealth(20)
     }
