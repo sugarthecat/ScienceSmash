@@ -72,7 +72,6 @@ function playPlaylist(playlist) {
 
 function mousePressed() {
 	if (loadscreen.loadsLeft == 0) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
-		checkMousePress();
 		if (gameStarted) {
 			if (mouseButton == LEFT) {
 				level.activateBasicAttack();
@@ -132,20 +131,6 @@ function draw() {
 		}
 		level.displayWarning();
 		gamemenu.display();
-	}
-}
-
-function checkMousePress() {
-	if (mouseIsPressed === true) {
-		if (mouseButton === LEFT) {
-			level.activateBasicAttack();
-		}
-		if (mouseButton === RIGHT) {
-			level.activateSpecialAttack();
-		}
-		if (mouseButton === CENTER) {
-			// switch between loaded special attacks
-		}
 	}
 }
 

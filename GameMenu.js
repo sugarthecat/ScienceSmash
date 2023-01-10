@@ -15,7 +15,7 @@ class GameMenu {
             let yoff = 20;
             if (adjh / 400 < adjw / 600) {
                 adjw = (adjh * 600) / 400;
-                xoff = (width - adjw) / (2 + 20);
+                xoff = (width - adjw) / 2 + 20;
             } else {
                 adjh = adjw / 600 * 400;
                 yoff = (height - adjh) / 2 + 20;
