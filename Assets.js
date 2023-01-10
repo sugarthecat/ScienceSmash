@@ -90,6 +90,8 @@ class Assets {
         this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);
         this.images.cone = loadImage('assets/sprites/cone.png', loaded);
         this.images.pentagram = loadImage('assets/sprites/pentagram.png', loaded);
+        this.images.laserbeam = loadImage('assets/sprites/laserbeam.png', loaded);
+        this.images.laserbeambody = loadImage('assets/sprites/laserbeambody.png', loaded);
         this.images.book = loadImage('assets/sprites/book.png', loaded);
         this.images.player.idle = loadImage('assets/sprites/idle.png', loaded);
         for (let i = 0; i < 2; i++) {

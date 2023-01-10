@@ -1,17 +1,16 @@
 class Theology extends Ability {
     constructor() {
         super();
-        this.cooldownLength = 5; // cooldown length
+        this.cooldownLength = 15; // cooldown length
         this.attackDelay = 9; // length of delay before attack triggers
-        this.attackLength = 10; // length of attack after triggering
+        this.attackLength = 5; // length of attack after triggering
         this.damage = 10; // damage dealt to enemies
         this.shape = "circle"; // shape of AOE
-        this.size = 700; // pixel diamater of circle AOE
+        this.size = 800; // pixel diamater of circle AOE
     }
     draw() { // Draw projectile being thrown
         let currentProgress = 1 - (this.attackTime/this.attackLength);
-        if (currentProgress > 0.8 && currentProgress < 1) {
-            currentProgress/=0.8;
+        if (currentProgress > 1 && currentProgress < 1.5) {
             
             this.x = this.targetX;
             this.y = this.targetY;
@@ -21,8 +20,11 @@ class Theology extends Ability {
             let disx = sin(dispDir)*dispDist;
             let disy = TILE_SCALE*(cos(dispDir)*dispDist);
             // draw animation
+            let xshift = (20 * Math.random()-10)
+            let yshift =  (10 * Math.random() - 5)
             fill(255);
-            rect(disx-25,disy-25,50,50);
+            image(assets.images.laserbeambody,xshift+disx-100 ,yshift+disy-2000,200,1800);
+            image(assets.images.laserbeam,xshift+disx-100 ,yshift+disy-200,200,200);
         }
     }
     drawGround() { // Draw attack area
@@ -30,7 +32,7 @@ class Theology extends Ability {
         if(currentProgress < 1){
         push()
         translate(this.targetX,this.targetY)
-        rotate (currentProgress * 720)
+        rotate (currentProgress * 1080)
         image(assets.images.pentagram,-100*currentProgress,-100*currentProgress,200*currentProgress,200*currentProgress)
         pop()
         }

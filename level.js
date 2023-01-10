@@ -450,6 +450,13 @@ class Level {
                     }
                 }
                 if (x < this.tiles.length && y < this.tiles[x].length) {
+                    if(this.tiles[x][y] instanceof CollisionTile){
+                        push();
+                        scale(1, TILE_SCALE);
+                        rotate(45);
+                        this.tiles[x][y].displayGround();
+                        pop();
+                    }
                     if (this.tiles[x][y].hasLeft) {
                         push();
                         this.tiles[x][y].displayLeft()
@@ -463,22 +470,6 @@ class Level {
                 }
             }
         }
-    }
-    displayRoof() {
-        push();
-        scale(1, TILE_SCALE);
-        rotate(45);
-        for (let x = 0; x < this.tiles.length; x++) {
-            for (let y = 0; y < this.tiles[x].length; y++) {
-                if (this.tiles[x][y].isCollisionTile) {
-                    this.tiles[x][y].displayGround();
-                }
-            }
-        }
-        pop()
-    }
-    displayGround() {
-
     }
     runEntityMovement() {
         this.generateNavCollideArray()
