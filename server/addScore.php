@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "autoserver";
+$password = "793ex7_BPA2023";
 $dbname = "sci_smash";
 
 // Create connection

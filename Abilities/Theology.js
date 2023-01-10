@@ -6,7 +6,7 @@ class Theology extends Ability {
         this.attackLength = 5; // length of attack after triggering
         this.damage = 10; // damage dealt to enemies
         this.shape = "circle"; // shape of AOE
-        this.size = 800; // pixel diamater of circle AOE
+        this.size = 400; // radius of circle AOE
     }
     draw() { // Draw projectile being thrown
         let currentProgress = 1 - (this.attackTime/this.attackLength);
@@ -34,6 +34,14 @@ class Theology extends Ability {
         translate(this.targetX,this.targetY)
         rotate (currentProgress * 1080)
         image(assets.images.pentagram,-100*currentProgress,-100*currentProgress,200*currentProgress,200*currentProgress)
+        pop()
+        }else if(currentProgress < 1.5){
+            
+        push()
+        translate(this.targetX,this.targetY)
+        rotate (currentProgress * 1080)
+        fill(255, 220, 250)
+        circle(0,0,this.size*2)
         pop()
         }
     }

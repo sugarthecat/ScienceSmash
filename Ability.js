@@ -1,6 +1,6 @@
 class Ability {
     constructor() {
-        this.attackTime = 0;
+        this.attackTime = -20;
         this.cooldownTime = 0;
         this.x = 0;
         this.y = 0;
