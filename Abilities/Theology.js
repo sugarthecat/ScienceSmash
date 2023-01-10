@@ -24,7 +24,7 @@ class Theology extends Ability {
             let yshift =  (10 * Math.random() - 5)
             fill(255);
             image(assets.images.laserbeambody,xshift+disx-100 ,yshift+disy-2000,200,1800);
-            image(assets.images.laserbeam,xshift+disx-100 ,yshift+disy-200,200,200);
+            image(assets.images.laserbeam,xshift+disx-100 ,yshift+disy-450,200,500);
         }
     }
     drawGround() { // Draw attack area
