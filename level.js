@@ -63,9 +63,9 @@ class Level {
             }
         }
     }
-    displayWarning() {
+    drawWarning() {
         if (this.warningTextBox instanceof TextBox) {
-            this.warningTextBox.display();
+            this.warningTextBox.draw();
         }
     }
     incrementLvl() {
@@ -373,7 +373,7 @@ class Level {
         // generate the player's aura image
         this.player.groundImage = assets.images.aura;
     }
-    displayFloor() {
+    drawFloor() {
         push();
         // Vertically scale and rotate tiles in order to make isometric viewpoint
         scale(1, TILE_SCALE);
@@ -382,12 +382,12 @@ class Level {
         for (let x = 0; x < this.tiles.length; x++) {
             for (let y = 0; y < this.tiles[x].length; y++) {
                 if (this.tiles[x][y].hasGround) {
-                    this.tiles[x][y].displayGround();
+                    this.tiles[x][y].drawGround();
                 }
             }
         }
         this.player.drawGround();
-        this.displayTarget();
+        this.drawTarget();
         for (let i = 0; i < this.entities.length; i++) {
             this.entities[i].drawGround();
         }
@@ -407,7 +407,7 @@ class Level {
         return objectsToDraw
     }
     // Displays the parts 
-    displayWalls() {
+    drawWalls() {
         let objectsToDraw = this.getObjectsToDraw();
         let objectDrawn = [];
         for (let i = 0; i < objectsToDraw.length; i++) {
@@ -428,17 +428,17 @@ class Level {
                         push();
                         scale(1, TILE_SCALE);
                         rotate(45);
-                        this.tiles[x][y].displayGround();
+                        this.tiles[x][y].drawGround();
                         pop();
                     }
                     if (this.tiles[x][y].hasLeft) {
                         push();
-                        this.tiles[x][y].displayLeft()
+                        this.tiles[x][y].drawLeft()
                         pop();
                     }
                     if (this.tiles[x][y].hasRight) {
                         push();
-                        this.tiles[x][y].displayRight();
+                        this.tiles[x][y].drawRight();
                         pop();
                     }
                 }
@@ -503,7 +503,7 @@ class Level {
         this.targetx = dx
         this.targety = dy
     }
-    displayTarget() {
+    drawTarget() {
         push()
         translate(this.targetx, this.targety)
         rotate(this.targetRotation)

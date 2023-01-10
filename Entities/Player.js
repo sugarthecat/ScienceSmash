@@ -117,10 +117,10 @@ class Player extends Entity {
     draw() {
         this.phase += 0.3;
         if (this.dirx == 0 && this.diry == 0) {
-            this.displayImage = assets.images.player.idle
+            this.drawImage = assets.images.player.idle
         } else {
             this.phase = this.phase % assets.spritesheets.player.run.getLength();
-            this.displayImage = assets.spritesheets.player.run.getSprite(floor(this.phase))
+            this.drawImage = assets.spritesheets.player.run.getSprite(floor(this.phase))
         }
         super.draw();
     }

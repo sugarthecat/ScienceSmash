@@ -107,18 +107,18 @@ function draw() {
 		}
 		camera.adjust();
 		noStroke();
-		level.displayFloor();
-		level.displayWalls();
+		level.drawFloor();
+		level.drawWalls();
 		level.runDamage();
 		level.areItemsColliding();
 		level.testLevelCompletion();
 		pop();
 		if (!tutorial.isComplete() && !gamemenu.isActive()) {
-			tutorial.display();
+			tutorial.draw();
 			tutorial.testLevel(); // test level for completed tutorial condition
 		}
-		level.displayWarning();
-		gamemenu.display();
+		level.drawWarning();
+		gamemenu.draw();
 	}
 }
 

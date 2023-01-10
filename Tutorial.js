@@ -16,8 +16,8 @@ class Tutorial {
     advanceText() {
         this.textbox.advanceText();
     }
-    display() {
-        this.textbox.display();
+    draw() {
+        this.textbox.draw();
     }
     complete(){
         this.phase = this.textBoxes.length;

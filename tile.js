@@ -11,13 +11,13 @@ class Tile {
         this.hasRoof = false; // true if top of tile will display
         this.isCollisionTile = false;
     }
-    displayGround() {
+    drawGround() {
         image(this.img, this.x, this.y, this.w, this.h);
     }
     collides(other) {
         return false;
     }
-    displayRight() {
+    drawRight() {
         push();
         rotate(60);
         scale(1, TILE_SCALE);
@@ -25,7 +25,7 @@ class Tile {
         image(this.img, this.x - this.y - this.w, this.y, this.w, this.h);
         pop();
     }
-    displayLeft() {
+    drawLeft() {
         push();
         rotate(-60);
         scale(1, TILE_SCALE);

@@ -1,7 +1,7 @@
 class GameMenu {
     constructor() {
         this.active = false;
-        this.menuPage = "main"
+        this.menuPage = "main";
     }
     invertActive() {
         this.active = !this.active;
@@ -29,7 +29,7 @@ class GameMenu {
             xoff: xoff,
         }
     }
-    display() {
+    draw() {
         if (this.active) {
             let scaleFactors = this.getScaleFactors();
             let mousePos = this.getProjectedMousePosition();
@@ -49,7 +49,7 @@ class GameMenu {
             rect(10,10,380,90)
             fill(0)
             textSize(50)
-            text("Exit Menu",200,70)
+            text("Return to Game",200,70)
             pop();
         }
     }

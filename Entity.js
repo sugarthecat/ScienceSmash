@@ -110,8 +110,8 @@ class Entity {
             disx *= -1;
             disx -= this.dispw;
         }
-        if (this.displayImage) {
-            image(this.displayImage, disx, disy, this.dispw, this.disph);
+        if (this.drawImage) {
+            image(this.drawImage, disx, disy, this.dispw, this.disph);
 
         } else {
             rect(disx, disy, this.dispw, this.disph);

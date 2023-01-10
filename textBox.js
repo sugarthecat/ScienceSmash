@@ -34,7 +34,7 @@ class TextBox {
         }
         return letterOn < this.totalShown;
     }
-    display() {
+    draw() {
         let xWidth = min(width - 20, height);
         let yWidth = min(width / 3, height / 5);
         noStroke();

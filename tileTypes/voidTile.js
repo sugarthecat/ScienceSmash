@@ -2,11 +2,11 @@ class VoidTile extends Tile {
     constructor() {
         super(undefined)
     }
-    displayGround() {
+    drawGround() {
     }
-    displayRight() {
+    drawRight() {
     }
-    displayLeft() {
+    drawLeft() {
     }
     collides(other) {
         return false;
