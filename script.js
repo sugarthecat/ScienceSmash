@@ -12,7 +12,7 @@ let tutorial; // Initialize tutorial
 
 setInterval(function checkWindowFocus() {
 	if (!document.hasFocus()) { // When the game isn't in focus,
-		gamemenu.active = false; // Pause the game
+		gamemenu.active = true; // Pause the game
 	}
 }, 200);
 
@@ -27,7 +27,7 @@ function loaded() {
 
 function keyPressed() {
 	if (loadscreen.continue) {
-		if (!gamemenu.active && !tutorial.isComplete()) {
+		if (!gamemenu.isActive() && !tutorial.isComplete()) {
 			tutorial.takeInput(keyCode);
 		}
 		if (keyCode == ESCAPE) {
@@ -73,16 +73,20 @@ function playPlaylist(playlist) {
 function mousePressed() {
 	if (loadscreen.loadsLeft == 0) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
 		if (gameStarted) {
-			if (mouseButton == LEFT) {
-				level.activateBasicAttack();
-				if (tutorial.phase == 8 && tutorial.textbox.isComplete()) {
-					tutorial.advancePhase();
+			if (gamemenu.isActive()) {
+				gamemenu.mouseClicked()
+			}else{
+				if (mouseButton == LEFT) {
+					level.activateBasicAttack();
+					if (tutorial.phase == 8 && tutorial.textbox.isComplete()) {
+						tutorial.advancePhase();
+					}
 				}
-			}
-			if (mouseButton == RIGHT) {
-				level.activateSpecialAttack();
-				if (tutorial.phase == 11 && tutorial.textbox.isComplete()) {
-					tutorial.advancePhase();
+				if (mouseButton == RIGHT) {
+					level.activateSpecialAttack();
+					if (tutorial.phase == 11 && tutorial.textbox.isComplete()) {
+						tutorial.advancePhase();
+					}
 				}
 			}
 		} else {

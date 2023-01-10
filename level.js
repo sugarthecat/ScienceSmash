@@ -127,7 +127,7 @@ class Level {
             }
         }
         // Close the holes in the level and add doors between the rooms
-        for (let i = 0; i < layout.length; i++) { // position on the y axis of layout array
+        /*for (let i = 0; i < layout.length; i++) { // position on the y axis of layout array
             for (let j = 0; j < layout[i].length; j++) { // position on the x axis of layout array
                 if (layout[i][j] instanceof Room) {
                     if (i == 0 || !(layout[i - 1][j] instanceof Room)) { // top
@@ -164,7 +164,7 @@ class Level {
                     }
                 }
             }
-        }
+        }*/
         // Build the tileTable
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
             for (let r = 0; r < 25; r++) { // position on the y axis of the csv array

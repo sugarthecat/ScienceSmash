@@ -6,7 +6,7 @@ class Chemistry extends Ability {
         this.attackLength = 1; // length of attack after triggering
         this.damage = 5; // damage dealt to enemies
         this.shape = "circle"; // shape of AOE
-        this.size = 300; // pixel diamater of circle AOE
+        this.size = 300; // pixel radius of circle AOE
     }
     draw() { // Draw projectile being thrown
         let currentProgress = 1 - (this.attackTime / this.attackLength);
