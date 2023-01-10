@@ -6,7 +6,7 @@ class Level {
         this.spawn;
         this.player = new Player();
         this.entities = [];
-        this.tileTable = [];
+        //this.roomTable = []; // TODO: construct table of rooms to add a layer of abstraction to certain methods
         this.doorPositions = []; 
         this.warningTextBox = false;
     }
@@ -19,23 +19,45 @@ class Level {
         this.lvl++;
     }
     loadTurorialRoom(){
+        let tileTable = []
         for(let i = 0; i<assets.rooms.tutorial.rows.length; i++){
-            this.tileTable.push([])
+            tileTable.push([])
             for(let j = 0; j<assets.rooms.tutorial.rows[i].arr.length; j++){
-                this.tileTable[i].push(assets.rooms.tutorial.rows[i].arr[j])
+                tileTable[i].push(assets.rooms.tutorial.rows[i].arr[j])
             }
         }
+        
+        for (var x = 0; x < tileTable.length; x++) {
+            for (var y = 0; y < tileTable[x].length; y++) {
+                switch (tileTable[x][y]) {
+                    case "w": // Wall
+                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
+                        break;
+                    case "g": // Ground 
+                        this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
+                        break;
+                    case "p": // Portal
+                        this.addTile(new ProgressionTile(assets.images.portal[Math.floor(Math.random() * assets.images.portal.length)]), x, y);
+                        break;
+                    default:
+                        this.addTile(new VoidTile(), x, y); 
+                        break;
+                }
+            }
+        }
+    
         this.player.setPosition(1200,1200)
-        this.generateTiles();
     }
     generateRooms() {
         // layout of the level in regard to the rooms
         // First array = x-axis/horizontal position
         // Second array = y-axis/vertical position
         let layout = [[new Room(0)]];
+
+        let tileTable = [];
         let LP = [[0,0]]; // an array of all the rooms' x and y positions in the layout
         let rooms = []; // an array of all the rooms to be generated in the layout (starts with initial room at 0,0)
-        let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, 3]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
+        let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, /*should be 3 when shops are introduced*/1]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
         let amountOfRooms = (Math.ceil(this.lvl)) + (Math.floor(Math.random() * 3));
         for (let i = 0; i < amountOfRooms; i++) {
             rooms.push(new Room(mainRoomsTypes[Math.floor(Math.random() * 10)])); // Randomly push one of the main room types
@@ -110,25 +132,25 @@ class Level {
                     if (i == 0 || !(layout[i-1][j] instanceof Room)) { // top
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "w"; } // seal north wall
                     } else if (layout[i-1][j] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; }
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; } // add north door
                         this.doorPositions.push(new DoorPosition((j*25)+11,(i*25),300,100,0)); }
                     }
                     if (j == layout[i].length-1 || !(layout[i][j+1] instanceof Room)) { // right
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "w"; } // seal east wall
                     } else if (layout[i][j+1] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "d"; }
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "d"; } // add  east door
                         this.doorPositions.push(new DoorPosition((j*25)+24,(i*25)+11,100,300,1)); }
                     }
                     if (i == layout.length-1 || !(layout[i+1][j] instanceof Room)) { // bottom
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "w"; } // seal south wall
                     } else if (layout[i+1][j] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "d"; }
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "d"; } // add south door
                         this.doorPositions.push(new DoorPosition((j*25)+11,(i*25)+24,300,100,2)); }
                     }
                     if (j == 0 || !(layout[i][j-1] instanceof Room)) { // left
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "w"; } // seal west wall
                     } else if (layout[i][j-1] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; }
+                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; } // add west door
                         this.doorPositions.push(new DoorPosition((j*25),(i*25)+11,100,300,3)); }
                     }
                 }
@@ -147,7 +169,7 @@ class Level {
                         }
                     }
                 }
-                this.tileTable.push(row);
+                tileTable.push(row);
             }
         }
         // Set the player's starting position to the middle of the initial room
@@ -159,7 +181,43 @@ class Level {
                 }
             }
         }
-        this.generateTiles();
+        for (var x = 0; x < tileTable.length; x++) {
+            for (var y = 0; y < tileTable[x].length; y++) {
+                switch (tileTable[x][y]) {
+                    case "w": // Wall
+                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
+                        break;
+                    case "g": // Ground 
+                        this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
+                        break;
+                    case "v": // Void 
+                        this.addTile(new VoidTile(), x, y);
+                        break;
+                    case "d": // Door
+                        this.addTile(new DoorTile(assets.images.doorSide, assets.images.doorTop), x, y); 
+                        break;
+                    case "t": // Trap
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
+                        break;
+                    case "e": // Explosive
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add explosive tile
+                        break;
+                    case "c": // Chest
+                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
+                        break;
+                    case "p": // Portal
+                        this.addTile(new ProgressionTile(assets.images.portal[Math.floor(Math.random() * assets.images.portal.length)]), x, y);
+                        break;
+                    /*case "s": // Shopkeeper
+                        break;
+                    case "b": // Buyable
+                        break;*/
+                    default:
+                        this.addTile(new VoidTile(), x, y); 
+                        break;
+                }
+            }
+        }
     }
     testLevelCompletion(){
         for(let x = 0; x<this.tiles.length; x++){
@@ -203,45 +261,6 @@ class Level {
             }
         }
         return outArray
-    }
-    generateTiles() { 
-        for (var x = 0; x < this.tileTable.length; x++) {
-            for (var y = 0; y < this.tileTable[x].length; y++) {
-                switch (this.tileTable[x][y]) {
-                    case "w": // Wall
-                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
-                        break;
-                    case "g": // Ground 
-                        this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
-                        break;
-                    case "v": // Void 
-                        this.addTile(new VoidTile(), x, y);
-                        break;
-                    case "d": // Door
-                        this.addTile(new DoorTile(assets.images.doorSide, assets.images.doorTop), x, y); 
-                        break;
-                    case "t": // Trap
-                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
-                        break;
-                    case "e": // Explosive
-                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add explosive tile
-                        break;
-                    case "c": // Chest
-                        this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add chest tile
-                        break;
-                    case "p": // Portal
-                        this.addTile(new ProgressionTile(assets.images.portal[Math.floor(Math.random() * assets.images.portal.length)]), x, y);
-                        break;
-                    /*case "s": // Shopkeeper
-                        break;
-                    case "b": // Buyable
-                        break;*/
-                    default:
-                        this.addTile(new VoidTile(), x, y); 
-                        break;
-                }
-            }
-        }
     }
     // Check for necessary door collision changes
     checkDoors() {
@@ -326,13 +345,13 @@ class Level {
     runPlayerMovement() {
         this.player.runMoveTick(this);
     }
-    runDamage(){
+    runDamage() {
         this.runPlayerDamage();
     }
-    runPlayerDamage(){ 
+    runPlayerDamage() { 
         let attacks = this.player.getAttacks();
-        for(let i = 0; i<attacks.length; i++){
-            this.dealDamage(attacks[i].x,attacks[i].y,attacks[i].size,attacks[i].shape)
+        for(let i = 0; i<attacks.length; i++) {
+            this.dealDamage(attacks[i]);
         }
     }
     addTile(t,x,y) {
@@ -408,9 +427,6 @@ class Level {
         for (let i = 0; i< objectsToDraw.length; i++) {
             objectDrawn.push(false);
         }
-        //console.log(objectsToDraw)
-        // d = current tile X + tile Y
-        // p = current tile Y 
         for (let d = 0; d < this.tiles.length+this.tiles[0].length; d++) {
             for (let p = 0; p<=d; p++) {
                 let x = d - p;
@@ -521,13 +537,13 @@ class Level {
         disy = cos(currentAngle)*currentDist+this.player.y
         return [disx,disy];
     }
-    updateTargetPosition(){
+    updateTargetPosition() {
         this.targetRotation += 1.5
         let [dx,dy] = this.getProjectedMouseXY();
         this.targetx = dx
         this.targety = dy
     }
-    displayTarget(){
+    displayTarget() {
         let [disx,disy] = this.getProjectedMouseXY();
         push()
         translate (this.targetx,this.targety)
@@ -535,7 +551,7 @@ class Level {
         image(assets.images.target,-100,-100,200,200)
         pop()
     }
-    activateBasicAttack(){
+    activateBasicAttack() {
         let [disx,disy] = this.getProjectedMouseXY();
         this.player.activateBaseAbility(disx,disy);
     }
@@ -544,26 +560,30 @@ class Level {
         this.player.activateSpecialAbility(disx,disy);
     }
 
-
-    //accepts shapes: point, square
+    //accepts shapes: point, square, circle
     //x, y represent middle of shape.
-    dealDamage(x,y,size,shape="point"){
-        
+    dealDamage(attack) { // x,y,size,shape="point",damage
         let doesDamagefunction;
-        switch(shape){
-            case 'point':
-                doesDamagefunction = function(enemy){return enemy.collides({x:x,y:y,w:0,h:0}) }
-            break;
-            case 'square':
-                doesDamagefunction = function(enemy){return enemy.collides({x:x-size/2,y:y-size/2,w:size,h:size}) }
-            break;
-            case 'circle':
-                doesDamagefunction = function(enemy){return (dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,x,y) < size) }
-            break;
+        switch(attack.shape) {
+            case "point":
+                doesDamagefunction = function(enemy) { return enemy.collides({x:attack.x,y:attack.y,w:0,h:0}); }
+                break;
+            case "rectangle":
+                doesDamagefunction = function(enemy) { return enemy.degreeCollides(attack,30); }
+                break;
+            case "circle":
+                doesDamagefunction = function(enemy) { return dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,attack.x,attack.y) < attack.size; }
+                break;
+            case "halfcircle":
+                doesDamagefunction = function(enemy) { return enemy.degreeCollides(attack,180); }
+                break;
+            /*case "board":
+                doesDamagefunction = function(enemy) { return (false) }
+                break;    */
         }
         for (let i = 0; i < this.entities.length; i++) {
             if (doesDamagefunction(this.entities[i])) {
-                this.entities[i].takeDamage(122);
+                this.entities[i].takeDamage(attack.damage);
                 if (this.entities[i].health <= 0) {
                     this.entities.splice(i,1);
                 }

@@ -1,22 +1,31 @@
 class Player extends Entity {
     constructor() {
         super();
+        // position
         this.x = 0;
         this.y = 0;
+        // hitbox size
         this.w = 80;
         this.h = 80;
+        // direction facing
         this.dirx = 0; // 1, 0, or -1, representing direction x
         this.diry = 0; // 1,0, or -1, representing direction y
+        // display size
         this.dispw = 70;
         this.disph = 90;
+        // movement and animation
         this.normalMoveSpeed = 400;
         this.dashSpeed = 1200;
         this.dashTimer = 0
         this.phase = 0;
         this.facingLeft = false;
-        this.onDoor = false; // true if the player is on a door
+        // true if the player is on a door
+        this.onDoor = false; 
+        // abilities
         this.baseAbility = new BookThrow();
-        this.specialAbility = new ChemicalThrow();
+        this.specialAbility = new Geology();
+        this.allBaseAbilities = [this.baseAbility];
+        this.allSpecialAbilities = [this.specialAbility];
         this.setHealth(20)
     }
     drawGround() {
@@ -59,8 +68,8 @@ class Player extends Entity {
         let up = keyIsDown(87); // W key
         let down =  keyIsDown(83); // S key
         // Resolves key conflicts to ensure that if two opposite directions are attempted at the same time, nothing happens.
-        if(this.dashTimer <= 0){
-            this.moveSpeed = this.normalMoveSpeed
+        if (this.dashTimer <= 0) {
+            this.moveSpeed = this.normalMoveSpeed;
             this.dirx = 0;
             this.diry = 0;
             if (right && !left) {
@@ -86,8 +95,8 @@ class Player extends Entity {
             } else if (!this.facingLeft && !right && left) {
                 this.facingLeft = true;
             }
-        }else{
-            this.moveSpeed = this.dashSpeed
+        } else {
+            this.moveSpeed = this.dashSpeed;
         }
     }
     getAbilityProjectiles() {
@@ -98,7 +107,7 @@ class Player extends Entity {
         if (this.specialAbility.isActive()) {
             objectsToReturn.push(this.specialAbility);
         }
-        return objectsToReturn
+        return objectsToReturn;
     }
     // draw upright display of character
     draw() {
@@ -117,7 +126,7 @@ class Player extends Entity {
         }
     }
     runMoveTick(level) {
-        if(this.dashTimer && this.dashTimer >= 0){
+        if (this.dashTimer && this.dashTimer >= 0) {
             this.dashTimer -= deltaTime/1000;
         }
         this.baseAbility.timeTick();
@@ -128,16 +137,10 @@ class Player extends Entity {
     getAttacks() {
         let attacks = [];
         if (this.baseAbility.getActivationStatus()) {
-            attacks.push({x: this.baseAbility.endX,
-                        y: this.baseAbility.endY,
-                        size: this.baseAbility.size,
-                        shape: this.baseAbility.shape })
+            attacks.push(this.baseAbility);
         }
         if (this.specialAbility.getActivationStatus()) {
-            attacks.push({x: this.specialAbility.endX,
-                        y: this.specialAbility.endY,
-                        size: this.specialAbility.size,
-                        shape: this.specialAbility.shape })
+            attacks.push(this.specialAbility);
         }
         return attacks;
     }
