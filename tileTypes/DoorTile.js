@@ -1,5 +1,5 @@
 class DoorTile extends Tile {
-    constructor(img,horizontalImg) {
+    constructor(img, horizontalImg) {
         super(img);
         this.horizontalImg = horizontalImg;
         this.x = 0;
@@ -19,11 +19,11 @@ class DoorTile extends Tile {
     }
     // Despite name, this method displays the roof
     displayGround() {
-        fill(255,0,0);
+        fill(255, 0, 0);
         if (this.hasRoof) {
-            image(this.horizontalImg,this.x-100,this.y-100,this.w,this.h);
+            image(this.horizontalImg, this.x - 100, this.y - 100, this.w, this.h);
         } else {
-            image(this.horizontalImg,this.x,this.y,this.w,this.h);
+            image(this.horizontalImg, this.x, this.y, this.w, this.h);
         }
     }
     changeCollision() {

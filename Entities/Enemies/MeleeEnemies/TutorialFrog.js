@@ -1,6 +1,6 @@
-class TutorialFrog extends MeleeEnemy{
-    constructor(x,y){
-        super(x,y)
+class TutorialFrog extends MeleeEnemy {
+    constructor(x, y) {
+        super(x, y)
         this.recoilDistance = 250
         this.viewDistance = 50
         this.damage = 0
@@ -10,7 +10,7 @@ class TutorialFrog extends MeleeEnemy{
         this.dispw = 100
         this.setHealth(5)
     }
-    drawGround(){
+    drawGround() {
 
     }
 

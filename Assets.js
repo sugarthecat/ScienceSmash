@@ -36,52 +36,64 @@ class Assets {
     loadFiles() {
         // load room csvs
         for (let i = 0; i < 2; i++) {
-            this.rooms.initial.push(loadTable('assets/rooms/initial/i'+i+'.csv', 'csv', 'noheader', loaded));}
+            this.rooms.initial.push(loadTable('assets/rooms/initial/i' + i + '.csv', 'csv', 'noheader', loaded));
+        }
         for (let i = 0; i < 18; i++) {
-            this.rooms.standard.push(loadTable('assets/rooms/standard/s'+i+'.csv', 'csv', 'noheader', loaded));}
+            this.rooms.standard.push(loadTable('assets/rooms/standard/s' + i + '.csv', 'csv', 'noheader', loaded));
+        }
         for (let i = 0; i < 2; i++) {
-            this.rooms.loot.push(loadTable('assets/rooms/loot/l'+i+'.csv', 'csv', 'noheader', loaded));}
+            this.rooms.loot.push(loadTable('assets/rooms/loot/l' + i + '.csv', 'csv', 'noheader', loaded));
+        }
         for (let i = 0; i < 7; i++) {
-            this.rooms.shop.push(loadTable('assets/rooms/shop/shop'+i+'.csv', 'csv', 'noheader', loaded));}
+            this.rooms.shop.push(loadTable('assets/rooms/shop/shop' + i + '.csv', 'csv', 'noheader', loaded));
+        }
         for (let i = 0; i < 3; i++) {
-            this.rooms.progression.push(loadTable('assets/rooms/progression/p'+i+'.csv', 'csv', 'noheader', loaded));}
+            this.rooms.progression.push(loadTable('assets/rooms/progression/p' + i + '.csv', 'csv', 'noheader', loaded));
+        }
         for (let i = 0; i < 2; i++) {
-            this.rooms.boss.push(loadTable('assets/rooms/boss/b'+i+'.csv', 'csv', 'noheader', loaded));}
-        this.rooms.tutorial = loadTable('assets/rooms/tutorial/tutorial.csv','csv','noheader',loaded)
+            this.rooms.boss.push(loadTable('assets/rooms/boss/b' + i + '.csv', 'csv', 'noheader', loaded));
+        }
+        this.rooms.tutorial = loadTable('assets/rooms/tutorial/tutorial.csv', 'csv', 'noheader', loaded)
         // load tutorial blurbs
         fetch("assets/tutorialblurbs.txt")
-        .then(x => x.text())
-        .then(x => this.tutorialText = x)
-        .then(loaded());
+            .then(x => x.text())
+            .then(x => this.tutorialText = x)
+            .then(loaded());
 
         // load music and sounds
         for (let i = 0; i < 5; i++) {
-            this.music.game.push(loadSound('assets/music/game'+i+'.mp3', loaded));}
+            this.music.game.push(loadSound('assets/music/game' + i + '.mp3', loaded));
+        }
         for (let i = 0; i < 2; i++) {
-            this.music.shop.push(loadSound('assets/music/shop'+i+'.mp3', loaded));}
+            this.music.shop.push(loadSound('assets/music/shop' + i + '.mp3', loaded));
+        }
         this.music.menu = loadSound('assets/music/menu.mp3', loaded);
 
         for (let i = 0; i < 5; i++) {
-            this.sound.laugh.push(loadSound('assets/sound/laugh'+i+'.mp3', loaded));}
+            this.sound.laugh.push(loadSound('assets/sound/laugh' + i + '.mp3', loaded));
+        }
         this.sound.load = loadSound('assets/music/menu.mp3', loaded);
-        
+
         // load sprites
         for (let i = 0; i < 4; i++) {
-            this.images.walls.push(loadImage('assets/sprites/wallTile'+i+'.png', loaded));}
+            this.images.walls.push(loadImage('assets/sprites/wallTile' + i + '.png', loaded));
+        }
         for (let i = 0; i < 4; i++) {
-            this.images.floors.push(loadImage('assets/sprites/floorTile'+i+'.png', loaded));}
+            this.images.floors.push(loadImage('assets/sprites/floorTile' + i + '.png', loaded));
+        }
         for (let i = 0; i < 7; i++) {
-            this.images.portal.push(loadImage('assets/sprites/portalTile'+i+'.png', loaded));}
+            this.images.portal.push(loadImage('assets/sprites/portalTile' + i + '.png', loaded));
+        }
         this.images.aura = loadImage('assets/sprites/playerAura.png', loaded);
         this.images.target = loadImage('assets/sprites/target.png', loaded);
-        this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);        
+        this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);
         this.images.cone = loadImage('assets/sprites/cone.png', loaded);
         this.images.player.idle = loadImage('assets/sprites/idle.png', loaded);
         for (let i = 0; i < 2; i++) {
-            this.images.backgrounds.push(loadImage('assets/sprites/background'+i+'.png', loaded));
+            this.images.backgrounds.push(loadImage('assets/sprites/background' + i + '.png', loaded));
         }
         this.images.doorTop = loadImage('assets/sprites/doorTop.png', loaded);
         this.images.doorSide = loadImage('assets/sprites/doorSide.png', loaded);
-        this.spritesheets.player.run = new SpriteSheet('assets/spritesheets/playerRun.png',loaded);
+        this.spritesheets.player.run = new SpriteSheet('assets/spritesheets/playerRun.png', loaded);
     }
 }
