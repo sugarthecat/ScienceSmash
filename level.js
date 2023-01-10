@@ -19,14 +19,34 @@ class Level {
         this.lvl++;
     }
     loadTurorialRoom(){
+        let tileTable = []
         for(let i = 0; i<assets.rooms.tutorial.rows.length; i++){
-            this.tileTable.push([])
+            tileTable.push([])
             for(let j = 0; j<assets.rooms.tutorial.rows[i].arr.length; j++){
-                this.tileTable[i].push(assets.rooms.tutorial.rows[i].arr[j])
+                tileTable[i].push(assets.rooms.tutorial.rows[i].arr[j])
             }
         }
+        
+        for (var x = 0; x < tileTable.length; x++) {
+            for (var y = 0; y < tileTable[x].length; y++) {
+                switch (tileTable[x][y]) {
+                    case "w": // Wall
+                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
+                        break;
+                    case "g": // Ground 
+                        this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
+                        break;
+                    case "p": // Portal
+                        this.addTile(new ProgressionTile(assets.images.portal[Math.floor(Math.random() * assets.images.portal.length)]), x, y);
+                        break;
+                    default:
+                        this.addTile(new VoidTile(), x, y); 
+                        break;
+                }
+            }
+        }
+    
         this.player.setPosition(1200,1200)
-        this.generateTiles();
     }
     generateRooms() {
         // layout of the level in regard to the rooms
