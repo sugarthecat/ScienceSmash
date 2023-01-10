@@ -23,7 +23,7 @@ class Player extends Entity {
         this.onDoor = false;
         // abilities
         this.baseAbility = new BasicAttack();
-        this.specialAbility = new Chemistry();
+        this.specialAbility = new Theology();
         this.allSpecialAbilities = [this.specialAbility];
         this.setHealth(20)
     }

@@ -556,7 +556,6 @@ class Level {
         this.targety = dy
     }
     displayTarget() {
-        let [disx, disy] = this.getProjectedMouseXY();
         push()
         translate(this.targetx, this.targety)
         rotate(this.targetRotation)

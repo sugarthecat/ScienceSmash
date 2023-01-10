@@ -36,8 +36,8 @@ class Ability {
     }
     timeTick() {
         let previouslyActive = this.isActive();
-        this.cooldownTime -= deltaTime / 1000;
-        this.attackTime -= deltaTime / 1000;
+        this.cooldownTime -= deltaTime * 0.001;
+        this.attackTime -= deltaTime * 0.001;
         if (!this.finishedActivation) {
             this.finishedActivation = previouslyActive && !this.isActive();
         }
