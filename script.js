@@ -4,7 +4,7 @@ const TILE_SCALE = 1 / Math.sqrt(3); // Initialize tile scale
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(76); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(64); // Initialize the loading screen with how many files need to be loaded
 let placeInPL = 0; // Place in the music playlist
 let gameStarted = false; // boolean of whether the player has clicked continue after the loading screen
 let loadTick = 0; // Loadtick speed
@@ -27,25 +27,9 @@ function loaded() {
 
 function keyPressed() {
 	if (loadscreen.continue) {
-		if (!gamemenu.active && !tutorial.isComplete()) {
-			tutorial.takeInput(keyCode);
-		}
-		if (keyCode == ESCAPE) {
-			gamemenu.invertActive(); // Pause the game
-		}
-		if (keyCode == 81) { // Q
-			// activate first ability
-		}
-		if (keyCode == 69) { // E
-			// activate second ability
-		}
-		if (keyCode == 82) { // R
-			// activate third ability
-		}
-		if (keyCode == SHIFT) {
-			// activate dash
-			level.player.activateDash();
-		}
+		if (!gamemenu.active && !tutorial.isComplete()) { tutorial.takeInput(keyCode); }
+		if (keyCode == ESCAPE) { gamemenu.invertActive(); } // Pause the game
+		if (keyCode == SHIFT) { level.player.activateDash(); }
 	}
 }
 
@@ -67,7 +51,7 @@ function playPlaylist(playlist) {
 	setTimeout(function playSong() {
 		placeInPL++;
 		playPlaylist(playlist);
-	}, playlist[placeInPL].duration() * 1000);
+	}, (playlist[placeInPL].duration() * 1000) + 5000);
 }
 
 function mousePressed() {
@@ -120,7 +104,6 @@ function draw() {
 		}
 		camera.adjust();
 		noStroke();
-		level.checkDoors();
 		level.displayFloor();
 		level.displayWalls();
 		level.displayRoof();

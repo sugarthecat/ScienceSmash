@@ -20,6 +20,12 @@ class Entity {
             this.maxHealth = health
         }
     }
+    getMaxHealth() {
+        return this.maxHealth;
+    }
+    heal(amount) {
+        this.health += amount;
+    }
     takeDamage(damage) {
         this.health -= damage;
     }

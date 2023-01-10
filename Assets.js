@@ -11,7 +11,6 @@ class Assets {
         this.music = {};
         this.music.game = [];
         this.music.menu;
-        this.music.shop = [];
         this.sound = {};
         this.sound.load;
         this.sound.laugh = [];
@@ -19,8 +18,6 @@ class Assets {
         this.images = {};
         this.images.walls = [];
         this.images.floors = [];
-        this.images.doorTop;
-        this.images.doorSide;
         this.images.portal = [];
         this.images.aura;
         this.images.enemies = {};
@@ -42,12 +39,12 @@ class Assets {
         for (let i = 0; i < 18; i++) {
             this.rooms.standard.push(loadTable('assets/rooms/standard/s' + i + '.csv', 'csv', 'noheader', loaded));
         }
-        for (let i = 0; i < 2; i++) {
+        /*for (let i = 0; i < 2; i++) {
             this.rooms.loot.push(loadTable('assets/rooms/loot/l' + i + '.csv', 'csv', 'noheader', loaded));
         }
         for (let i = 0; i < 7; i++) {
             this.rooms.shop.push(loadTable('assets/rooms/shop/shop' + i + '.csv', 'csv', 'noheader', loaded));
-        }
+        }*/
         for (let i = 0; i < 3; i++) {
             this.rooms.progression.push(loadTable('assets/rooms/progression/p' + i + '.csv', 'csv', 'noheader', loaded));
         }
@@ -65,15 +62,12 @@ class Assets {
         for (let i = 0; i < 5; i++) {
             this.music.game.push(loadSound('assets/music/game' + i + '.mp3', loaded));
         }
-        for (let i = 0; i < 2; i++) {
-            this.music.shop.push(loadSound('assets/music/shop' + i + '.mp3', loaded));
-        }
         this.music.menu = loadSound('assets/music/menu.mp3', loaded);
 
         for (let i = 0; i < 5; i++) {
             this.sound.laugh.push(loadSound('assets/sound/laugh' + i + '.mp3', loaded));
         }
-        this.sound.load = loadSound('assets/music/menu.mp3', loaded);
+        this.sound.load = loadSound('assets/sound/load.mp3', loaded);
 
         // load sprites
         for (let i = 0; i < 4; i++) {
@@ -95,8 +89,6 @@ class Assets {
         for (let i = 0; i < 2; i++) {
             this.images.backgrounds.push(loadImage('assets/sprites/background' + i + '.png', loaded));
         }
-        this.images.doorTop = loadImage('assets/sprites/doorTop.png', loaded);
-        this.images.doorSide = loadImage('assets/sprites/doorSide.png', loaded);
         this.spritesheets.player.run = new SpriteSheet('assets/spritesheets/playerRun.png', loaded);
     }
 }

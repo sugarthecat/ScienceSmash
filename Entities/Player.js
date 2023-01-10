@@ -19,13 +19,22 @@ class Player extends Entity {
         this.dashTimer = 0
         this.phase = 0;
         this.facingLeft = false;
-        // true if the player is on a door
-        this.onDoor = false;
         // abilities
         this.baseAbility = new BasicAttack();
-        this.specialAbility = new Chemistry();
+        this.specialAbility = new Theology();
         this.allSpecialAbilities = [this.specialAbility];
         this.setHealth(20)
+        // items
+        this.keys = 0;
+    }
+    foundKey() {
+        this.keys++;
+    }
+    getKeys() {
+        return this.keys;
+    }
+    useKey() {
+        this.keys--;
     }
     drawGround() {
         this.baseAbility.drawGround();
