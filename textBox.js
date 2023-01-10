@@ -67,6 +67,7 @@ class TextBox {
         }
         fill(255);
         if (this.isComplete()) {
+            textSize(0.2 * min((xWidth - 20), (yWidth - 20)));
             text(this.bottomtext, (width - xWidth) / 2 + xWidth * this.margin, height - textSize());
         }
     }

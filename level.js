@@ -111,6 +111,7 @@ class Level {
         let LP = [[0, 0]]; // an array of all the rooms' x and y positions in the layout
         let rooms = []; // an array of all the rooms to be generated in the layout (starts with initial room at 0,0)
         let amountOfRooms = (Math.ceil(this.lvl)) + (Math.floor(Math.random() * 3));
+        this.roomCount = amountOfRooms;
         for (let i = 0; i < amountOfRooms; i++) {
             rooms.push(new Room(1)); // Randomly push one of the main room types
         }
@@ -195,7 +196,7 @@ class Level {
                     }
                 }
             }
-        }*/
+        }
         // Build the tileTable
         for (let i = 0; i < layout[0].length; i++) { // position on the y axis of layout array
             for (let r = 0; r < 25; r++) { // position on the y axis of the csv array
@@ -260,7 +261,7 @@ class Level {
                         this.generateRooms();
                         this.generateItems()
                         camera.setPositionAs(this.player)
-                        this.warningTextBox = new TextBox("{255,255,255}Level " + this.lvl, 10)
+                        this.warningTextBox = new TextBox("{255,255,255}Level " + this.lvl + "\\("+this.roomCount+" rooms)", 10)
                         this.warningTextBox.textSize = 0.5
                     } else if (!(this.warningTextBox instanceof TextBox)) {
                         this.warningTextBox = new TextBox("{255,255,255}I think I should really defeat some more enemies before moving on...", 10);
@@ -269,7 +270,7 @@ class Level {
                 }
             }
         }
-        if (this.warningTextBox instanceof TextBox && this.warningTextBox.totalShown > 120) {
+        if (this.warningTextBox instanceof TextBox && this.warningTextBox.totalShown > 80) {
             this.warningTextBox = undefined;
         }
     }
