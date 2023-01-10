@@ -24,6 +24,7 @@ class Assets {
         this.images.target;
         this.images.cone;
         this.images.book;
+        this.images.chest;
         this.images.player = {};
         this.images.player.idle;
         this.images.player.run = [];
@@ -69,7 +70,7 @@ class Assets {
         }
         this.sound.load = loadSound('assets/sound/load.mp3', loaded);
 
-        // load sprites
+        // load tiles
         for (let i = 0; i < 4; i++) {
             this.images.walls.push(loadImage('assets/sprites/wallTile' + i + '.png', loaded));
         }
@@ -79,14 +80,24 @@ class Assets {
         for (let i = 0; i < 7; i++) {
             this.images.portal.push(loadImage('assets/sprites/portalTile' + i + '.png', loaded));
         }
+
+        // load details
         this.images.aura = loadImage('assets/sprites/playerAura.png', loaded);
         this.images.target = loadImage('assets/sprites/target.png', loaded);
+
+        // load enemy sprites
         this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);
+        // load ability sprites
         this.images.cone = loadImage('assets/sprites/cone.png', loaded);
         this.images.pentagram = loadImage('assets/sprites/pentagram.png', loaded);
         this.images.laserbeam = loadImage('assets/sprites/laserbeam.png', loaded);
         this.images.laserbeambody = loadImage('assets/sprites/laserbeambody.png', loaded);
         this.images.book = loadImage('assets/sprites/book.png', loaded);
+
+        // load items
+        this.images.chest = loadImage('assets/sprites/chest.png', loaded);
+
+        // load player sprites
         this.images.player.idle = loadImage('assets/sprites/idle.png', loaded);
         for (let i = 0; i < 2; i++) {
             this.images.backgrounds.push(loadImage('assets/sprites/background' + i + '.png', loaded));
