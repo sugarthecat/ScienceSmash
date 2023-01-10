@@ -1,9 +1,9 @@
 class MeleeEnemy extends Enemy {
     hasDecollideFunction = true;
 
-    constructor(x, y, recoilDistance) {
+    constructor(x, y) {
         super(x, y);
-        this.recoilDistance = recoilDistance;
+        this.recoilDistance = 100;
     }
     decollideWithEnemy(enemy) {
         enemy.takeDamage(this.damage)
