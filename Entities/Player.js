@@ -109,12 +109,8 @@ class Player extends Entity {
     }
     getAbilityProjectiles() {
         let objectsToReturn = [];
-        if (this.baseAbility.isActive()) {
-            objectsToReturn.push(this.baseAbility);
-        }
-        if (this.specialAbility.isActive()) {
-            objectsToReturn.push(this.specialAbility);
-        }
+        objectsToReturn.push(this.baseAbility);
+        objectsToReturn.push(this.specialAbility);
         return objectsToReturn;
     }
     // draw upright display of character

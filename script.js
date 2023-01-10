@@ -4,7 +4,7 @@ const TILE_SCALE = 1 / Math.sqrt(3); // Initialize tile scale
 let assets = new Assets(); // Initialize assets class
 let level = new Level(); // Initialize the level class
 let gamemenu = new GameMenu(); // Initialize the game menu
-let loadscreen = new LoadingScreen(64); // Initialize the loading screen with how many files need to be loaded
+let loadscreen = new LoadingScreen(66); // Initialize the loading screen with how many files need to be loaded
 let placeInPL = 0; // Place in the music playlist
 let gameStarted = false; // boolean of whether the player has clicked continue after the loading screen
 let loadTick = 0; // Loadtick speed
@@ -106,17 +106,8 @@ function draw() {
 		noStroke();
 		level.displayFloor();
 		level.displayWalls();
-		level.displayRoof();
-		level.displayGround();
-		if (!gamemenu.active) {
-			level.updateTargetPosition();
-			level.runEntityMovement();
-			level.runPlayerMovement();
-			if (!tutorial.isComplete()) {
-				tutorial.advanceText();
-			}
-		}
 		level.runDamage();
+		level.areItemsColliding();
 		level.testLevelCompletion();
 		pop();
 		if (!tutorial.isComplete()) {
