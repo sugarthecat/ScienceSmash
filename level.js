@@ -37,6 +37,7 @@ class Level {
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
                         break;
                     case "p": // Portal
+                        console.log('ooo')
                         this.addTile(new ProgressionTile(assets.images.portal[Math.floor(Math.random() * assets.images.portal.length)]), x, y);
                         break;
                     default:
@@ -232,7 +233,10 @@ class Level {
             for (let y = 0; y < this.tiles[x].length; y++) {
                 if (this.tiles[x][y] instanceof ProgressionTile && this.tiles[x][y].collides(this.player)) {
                     if (this.entities.length == 0) {
-
+                        tutorial.complete();
+                        this.incrementLvl();
+                        this.generateRooms();
+                        camera.setPositionAs(this.player)
                     } else if (!(this.warningTextBox instanceof TextBox)) {
                         this.warningTextBox = new TextBox("{255,255,255}I think I should really defeat some more enemies before moving on...", 10)
                     }
@@ -252,7 +256,7 @@ class Level {
     }
     openTutorialCorridor() {
         for (let x = 9; x < 16; x++) {
-            for (let y = 24; y < 48; y++) {
+            for (let y = 24; y < 42; y++) {
                 this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
             }
         }

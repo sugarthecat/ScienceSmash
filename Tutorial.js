@@ -19,13 +19,16 @@ class Tutorial {
     display() {
         this.textbox.display();
     }
+    complete(){
+        this.phase = this.textBoxes.length;
+    }
     takeInput(key) {
         if (key == 32) {
             if (this.textbox.isComplete() &&
                 (this.phase <= 2
                     || (this.phase >= 9 && this.phase <= 10)
                     || (this.phase >= 12 && this.phase <= 16)
-                    || (this.phase >= 18 && this.phase <= 20))) {
+                    || (this.phase == 18))) {
                 this.advancePhase();
             } else {
                 this.textbox.advanceText(true);
