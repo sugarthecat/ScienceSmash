@@ -7,31 +7,31 @@ class Level {
         this.player = new Player();
         this.entities = [];
         //this.roomTable = []; // TODO: construct table of rooms to add a layer of abstraction to certain methods
-        this.doorPositions = []; 
+        this.doorPositions = [];
         this.warningTextBox = false;
     }
-    displayWarning(){
-        if(this.warningTextBox instanceof TextBox){
+    displayWarning() {
+        if (this.warningTextBox instanceof TextBox) {
             this.warningTextBox.display();
         }
     }
     incrementLvl() {
         this.lvl++;
     }
-    loadTurorialRoom(){
+    loadTurorialRoom() {
         let tileTable = []
-        for(let i = 0; i<assets.rooms.tutorial.rows.length; i++){
+        for (let i = 0; i < assets.rooms.tutorial.rows.length; i++) {
             tileTable.push([])
-            for(let j = 0; j<assets.rooms.tutorial.rows[i].arr.length; j++){
+            for (let j = 0; j < assets.rooms.tutorial.rows[i].arr.length; j++) {
                 tileTable[i].push(assets.rooms.tutorial.rows[i].arr[j])
             }
         }
-        
+
         for (var x = 0; x < tileTable.length; x++) {
             for (var y = 0; y < tileTable[x].length; y++) {
                 switch (tileTable[x][y]) {
                     case "w": // Wall
-                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
+                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y);
                         break;
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
@@ -40,13 +40,13 @@ class Level {
                         this.addTile(new ProgressionTile(assets.images.portal[Math.floor(Math.random() * assets.images.portal.length)]), x, y);
                         break;
                     default:
-                        this.addTile(new VoidTile(), x, y); 
+                        this.addTile(new VoidTile(), x, y);
                         break;
                 }
             }
         }
-    
-        this.player.setPosition(1200,1200)
+
+        this.player.setPosition(1200, 1200)
     }
     generateRooms() {
         // layout of the level in regard to the rooms
@@ -55,7 +55,7 @@ class Level {
         let layout = [[new Room(0)]];
 
         let tileTable = [];
-        let LP = [[0,0]]; // an array of all the rooms' x and y positions in the layout
+        let LP = [[0, 0]]; // an array of all the rooms' x and y positions in the layout
         let rooms = []; // an array of all the rooms to be generated in the layout (starts with initial room at 0,0)
         let mainRoomsTypes = [1, 1, 1, 1, 1, 1, 1, 1, 2, /*should be 3 when shops are introduced*/1]; // 80% chance for standard, 10% chance for loot, 10% chance for shop
         let amountOfRooms = (Math.ceil(this.lvl)) + (Math.floor(Math.random() * 3));
@@ -72,38 +72,38 @@ class Level {
             let b = Math.floor(Math.random() * LP.length);
             let branchx = LP[b][0]; // A randomly selected already placed room's x axis in the layout array
             let branchy = LP[b][1]; // A randomly selected already placed room's y axis in the layout array
-            switch(dir) {
+            switch (dir) {
                 case 0: // North
                     if (branchy == 0) {
                         for (let j = 0; j < layout.length; j++) { layout[j].unshift(undefined); }
                         for (let j = 0; j < LP.length; j++) { LP[j][1]++; } // Update the branch's layout array position in the LP array 
                         branchy++;
                     }
-                    if (layout[branchx][branchy-1] === undefined) {
-                        layout[branchx][branchy-1] = rooms[i];
-                        LP.push([branchx,branchy-1]);
+                    if (layout[branchx][branchy - 1] === undefined) {
+                        layout[branchx][branchy - 1] = rooms[i];
+                        LP.push([branchx, branchy - 1]);
                     } else {
                         i--;
                         continue;
                     }
                     break;
                 case 1: // East
-                    if (branchx+1 == layout.length) { layout.push(new Array(layout[0].length).fill(undefined)); }
-                    if (layout[branchx+1][branchy] === undefined) {
-                        layout[branchx+1][branchy] = rooms[i];
-                        LP.push([branchx+1,branchy]);
+                    if (branchx + 1 == layout.length) { layout.push(new Array(layout[0].length).fill(undefined)); }
+                    if (layout[branchx + 1][branchy] === undefined) {
+                        layout[branchx + 1][branchy] = rooms[i];
+                        LP.push([branchx + 1, branchy]);
                     } else {
                         i--;
                         continue;
                     }
                     break;
                 case 2: // South
-                    if (branchy+1 == layout[0].length) {
+                    if (branchy + 1 == layout[0].length) {
                         for (let j = 0; j < layout.length; j++) { layout[j].push(undefined); }
                     }
-                    if (layout[branchx][branchy+1] === undefined) {
-                        layout[branchx][branchy+1] = rooms[i];
-                        LP.push([branchx,branchy+1]);
+                    if (layout[branchx][branchy + 1] === undefined) {
+                        layout[branchx][branchy + 1] = rooms[i];
+                        LP.push([branchx, branchy + 1]);
                     } else {
                         i--;
                         continue;
@@ -115,9 +115,9 @@ class Level {
                         for (let j = 0; j < LP.length; j++) { LP[j][0]++; }
                         branchx++;
                     }
-                    if (layout[branchx-1][branchy] === undefined) {
-                        layout[branchx-1][branchy] = rooms[i];
-                        LP.push([branchx-1,branchy]);
+                    if (layout[branchx - 1][branchy] === undefined) {
+                        layout[branchx - 1][branchy] = rooms[i];
+                        LP.push([branchx - 1, branchy]);
                     } else {
                         i--;
                         continue;
@@ -129,29 +129,37 @@ class Level {
         for (let i = 0; i < layout.length; i++) { // position on the y axis of layout array
             for (let j = 0; j < layout[i].length; j++) { // position on the x axis of layout array
                 if (layout[i][j] instanceof Room) {
-                    if (i == 0 || !(layout[i-1][j] instanceof Room)) { // top
+                    if (i == 0 || !(layout[i - 1][j] instanceof Room)) { // top
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "w"; } // seal north wall
-                    } else if (layout[i-1][j] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; } // add north door
-                        this.doorPositions.push(new DoorPosition((j*25)+11,(i*25),300,100,0)); }
+                    } else if (layout[i - 1][j] instanceof Room) {
+                        if (layout[i][j].type != 0) {
+                            for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][0] = "d"; } // add north door
+                            this.doorPositions.push(new DoorPosition((j * 25) + 11, (i * 25), 300, 100, 0));
+                        }
                     }
-                    if (j == layout[i].length-1 || !(layout[i][j+1] instanceof Room)) { // right
+                    if (j == layout[i].length - 1 || !(layout[i][j + 1] instanceof Room)) { // right
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "w"; } // seal east wall
-                    } else if (layout[i][j+1] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "d"; } // add  east door
-                        this.doorPositions.push(new DoorPosition((j*25)+24,(i*25)+11,100,300,1)); }
+                    } else if (layout[i][j + 1] instanceof Room) {
+                        if (layout[i][j].type != 0) {
+                            for (let k = 11; k < 14; k++) { layout[i][j].tileTable[24][k] = "d"; } // add  east door
+                            this.doorPositions.push(new DoorPosition((j * 25) + 24, (i * 25) + 11, 100, 300, 1));
+                        }
                     }
-                    if (i == layout.length-1 || !(layout[i+1][j] instanceof Room)) { // bottom
+                    if (i == layout.length - 1 || !(layout[i + 1][j] instanceof Room)) { // bottom
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "w"; } // seal south wall
-                    } else if (layout[i+1][j] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "d"; } // add south door
-                        this.doorPositions.push(new DoorPosition((j*25)+11,(i*25)+24,300,100,2)); }
+                    } else if (layout[i + 1][j] instanceof Room) {
+                        if (layout[i][j].type != 0) {
+                            for (let k = 11; k < 14; k++) { layout[i][j].tileTable[k][24] = "d"; } // add south door
+                            this.doorPositions.push(new DoorPosition((j * 25) + 11, (i * 25) + 24, 300, 100, 2));
+                        }
                     }
-                    if (j == 0 || !(layout[i][j-1] instanceof Room)) { // left
+                    if (j == 0 || !(layout[i][j - 1] instanceof Room)) { // left
                         for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "w"; } // seal west wall
-                    } else if (layout[i][j-1] instanceof Room) {
-                        if (layout[i][j].type != 0) { for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; } // add west door
-                        this.doorPositions.push(new DoorPosition((j*25),(i*25)+11,100,300,3)); }
+                    } else if (layout[i][j - 1] instanceof Room) {
+                        if (layout[i][j].type != 0) {
+                            for (let k = 11; k < 14; k++) { layout[i][j].tileTable[0][k] = "d"; } // add west door
+                            this.doorPositions.push(new DoorPosition((j * 25), (i * 25) + 11, 100, 300, 3));
+                        }
                     }
                 }
             }
@@ -173,11 +181,11 @@ class Level {
             }
         }
         // Set the player's starting position to the middle of the initial room
-        for (let x = 0; x<layout.length; x++) {
-            for (let y = 0; y<layout[x].length; y++) {
+        for (let x = 0; x < layout.length; x++) {
+            for (let y = 0; y < layout[x].length; y++) {
                 if (layout[x][y] !== undefined && layout[x][y].type == 0) {
-                    this.spawn = [y*2500 + 1250,x*2500 + 1250];
-                    this.player.setPosition(this.spawn[0],this.spawn[1]);
+                    this.spawn = [y * 2500 + 1250, x * 2500 + 1250];
+                    this.player.setPosition(this.spawn[0], this.spawn[1]);
                 }
             }
         }
@@ -185,7 +193,7 @@ class Level {
             for (var y = 0; y < tileTable[x].length; y++) {
                 switch (tileTable[x][y]) {
                     case "w": // Wall
-                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y); 
+                        this.addTile(new CollisionTile(assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)], assets.images.walls[Math.floor(Math.random() * assets.images.walls.length)]), x, y);
                         break;
                     case "g": // Ground 
                         this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
@@ -194,7 +202,7 @@ class Level {
                         this.addTile(new VoidTile(), x, y);
                         break;
                     case "d": // Door
-                        this.addTile(new DoorTile(assets.images.doorSide, assets.images.doorTop), x, y); 
+                        this.addTile(new DoorTile(assets.images.doorSide, assets.images.doorTop), x, y);
                         break;
                     case "t": // Trap
                         this.addTile(new Tile(assets.images.floors[0]), x, y); // TODO: add trap tile
@@ -213,46 +221,46 @@ class Level {
                     case "b": // Buyable
                         break;*/
                     default:
-                        this.addTile(new VoidTile(), x, y); 
+                        this.addTile(new VoidTile(), x, y);
                         break;
                 }
             }
         }
     }
-    testLevelCompletion(){
-        for(let x = 0; x<this.tiles.length; x++){
-            for(let y = 0; y<this.tiles[x].length; y++){
-                if(this.tiles[x][y] instanceof ProgressionTile && this.tiles[x][y].collides(this.player)){
-                    if(this.entities.length == 0){
+    testLevelCompletion() {
+        for (let x = 0; x < this.tiles.length; x++) {
+            for (let y = 0; y < this.tiles[x].length; y++) {
+                if (this.tiles[x][y] instanceof ProgressionTile && this.tiles[x][y].collides(this.player)) {
+                    if (this.entities.length == 0) {
 
-                    }else if(!(this.warningTextBox instanceof TextBox)){
-                        this.warningTextBox = new TextBox("{255,255,255}I think I should really defeat some more enemies before moving on...",10)
+                    } else if (!(this.warningTextBox instanceof TextBox)) {
+                        this.warningTextBox = new TextBox("{255,255,255}I think I should really defeat some more enemies before moving on...", 10)
                     }
                 }
             }
         }
-        if(this.warningTextBox instanceof TextBox && this.warningTextBox.totalShown > 120){
+        if (this.warningTextBox instanceof TextBox && this.warningTextBox.totalShown > 120) {
             this.warningTextBox = undefined
         }
     }
-    spawnTutorialEnemy(){
-        if(this.player.x + this.player.w/2 > 1250){
-            this.entities.push(new TutorialFrog(100,1200))
-        }else{
-            this.entities.push(new TutorialFrog(2300,1200))
+    spawnTutorialEnemy() {
+        if (this.player.x + this.player.w / 2 > 1250) {
+            this.entities.push(new TutorialFrog(100, 1200))
+        } else {
+            this.entities.push(new TutorialFrog(2300, 1200))
         }
     }
-    openTutorialCorridor(){
-        for(let x = 9; x< 16; x++){
-            for(let y = 24; y<48; y++){
+    openTutorialCorridor() {
+        for (let x = 9; x < 16; x++) {
+            for (let y = 24; y < 48; y++) {
                 this.addTile(new Tile(assets.images.floors[Math.floor(Math.random() * assets.images.floors.length)]), x, y);
             }
         }
-        for(let y = 24; y<41; y++){
+        for (let y = 24; y < 41; y++) {
             this.tiles[8][y].hasLeft = true;
         }
     }
-    getCollisionTileArray(){
+    getCollisionTileArray() {
         let outArray = []
         for (let i = 0; i < this.tiles.length; i++) {
             outArray.push([]);
@@ -270,48 +278,48 @@ class Level {
             } else if (this.doorPositions[i].onDoor) {
                 this.doorPositions[i].activated = true;
                 this.doorPositions[i].onDoor = false;
-                this.flipWalls(this.doorPositions[i].x,this.doorPositions[i].y,this.doorPositions[i].position);
+                this.flipWalls(this.doorPositions[i].x, this.doorPositions[i].y, this.doorPositions[i].position);
             }
         }
     }
     // Flips the doors up or down
-    flipWalls(x,y,p) { // p = position ( 0=N, 1=E, 2=S, 3=W )
+    flipWalls(x, y, p) { // p = position ( 0=N, 1=E, 2=S, 3=W )
         if (p == 0 || p == 2) { // North or South
             // This
-            for (let i = 0; i < 3; i++) { this.tiles[x+i][y].changeCollision(); }
+            for (let i = 0; i < 3; i++) { this.tiles[x + i][y].changeCollision(); }
             // Opposite
             let a1 = 24;
             if (p == 2) { a1 = -24; }
-            if (this.tiles[x][y+a1] instanceof DoorTile) {
-                for (let i = 0; i < 3; i++) { this.tiles[x+i][y+a1].changeCollision(); }
+            if (this.tiles[x][y + a1] instanceof DoorTile) {
+                for (let i = 0; i < 3; i++) { this.tiles[x + i][y + a1].changeCollision(); }
             }
             // East and West
             let a2 = 11
             if (p == 2) { a2 = -13; }
             let a3 = 13
             for (let i = 0; i < 2; i++) {
-                if (this.tiles[x+a3][y+a2] instanceof DoorTile) {
-                    for (let j = 0; j < 3; j++) { this.tiles[x+a3][y+a2+j].changeCollision(); }
+                if (this.tiles[x + a3][y + a2] instanceof DoorTile) {
+                    for (let j = 0; j < 3; j++) { this.tiles[x + a3][y + a2 + j].changeCollision(); }
                 }
                 a3 = -11;
             }
         } else if (p == 1 || p == 3) { // East or West
             // This
-            for (let i = 0; i < 3; i++) { this.tiles[x][y+i].changeCollision(); }
+            for (let i = 0; i < 3; i++) { this.tiles[x][y + i].changeCollision(); }
             // Opposite
             let a1 = 24;
             if (p == 1) { a1 = -24; }
-            if (this.tiles[x+a1][y] instanceof DoorTile) {
-                for (let i = 0; i < 3; i++) { this.tiles[x+a1][y+i].changeCollision(); }
+            if (this.tiles[x + a1][y] instanceof DoorTile) {
+                for (let i = 0; i < 3; i++) { this.tiles[x + a1][y + i].changeCollision(); }
             }
             // North and South
             let a2 = 11
             if (p == 1) { a2 = -13; }
             let a3 = 13
             for (let i = 0; i < 2; i++) {
-                if (this.tiles[x+a2][y+a3] instanceof DoorTile) {
+                if (this.tiles[x + a2][y + a3] instanceof DoorTile) {
                     for (let j = 0; j < 3; j++) {
-                        this.tiles[x+a2+j][y+a3].changeCollision(); 
+                        this.tiles[x + a2 + j][y + a3].changeCollision();
                     }
                 }
                 a3 = -11;
@@ -335,7 +343,7 @@ class Level {
             }
         }
     }
-    sharedNavCollide(x,y,entity) {
+    sharedNavCollide(x, y, entity) {
         if (this.navigationTiles[x][y].length > 0) {
             return !(this.navigationTiles[x][y][0] == entity && this.navigationTiles[x][y].length == 1);
         }
@@ -348,13 +356,13 @@ class Level {
     runDamage() {
         this.runPlayerDamage();
     }
-    runPlayerDamage() { 
+    runPlayerDamage() {
         let attacks = this.player.getAttacks();
-        for(let i = 0; i<attacks.length; i++) {
+        for (let i = 0; i < attacks.length; i++) {
             this.dealDamage(attacks[i]);
         }
     }
-    addTile(t,x,y) {
+    addTile(t, x, y) {
         if (x < 0 || y < 0) {
             console.error('error: attempt to add tile out of bounds')
         }
@@ -374,12 +382,12 @@ class Level {
     }
     removeFalseWalls() {
         // Remove any walls that would be behind others
-        for (let x = 0; x<this.tiles.length-1; x++) {
-            for (let y = 0; y<this.tiles[x].length-1; y++) {
-                if (this.tiles[x][y].hasLeft && this.tiles[x+1][y].hasLeft) {
+        for (let x = 0; x < this.tiles.length - 1; x++) {
+            for (let y = 0; y < this.tiles[x].length - 1; y++) {
+                if (this.tiles[x][y].hasLeft && this.tiles[x + 1][y].hasLeft) {
                     this.tiles[x][y].hasLeft = false;
                 }
-                if (this.tiles[x][y].hasRight && this.tiles[x][y+1].hasRight) {
+                if (this.tiles[x][y].hasRight && this.tiles[x][y + 1].hasRight) {
                     this.tiles[x][y].hasRight = false;
                 }
             }
@@ -390,7 +398,7 @@ class Level {
     displayFloor() {
         push();
         // Vertically scale and rotate tiles in order to make isometric viewpoint
-        scale(1,TILE_SCALE);
+        scale(1, TILE_SCALE);
         rotate(45);
         // call function "displayGround" for all items in 2d array tiles where hasGround is true
         for (let x = 0; x < this.tiles.length; x++) {
@@ -402,42 +410,42 @@ class Level {
         }
         this.player.drawGround();
         this.displayTarget();
-        for (let i = 0; i< this.entities.length; i++) {
+        for (let i = 0; i < this.entities.length; i++) {
             this.entities[i].drawGround();
         }
         pop();
     }
-    getObjectsToDraw(){
+    getObjectsToDraw() {
         let objectsToDraw = []
         objectsToDraw.push(this.player)
         let projectiles = this.player.getAbilityProjectiles()
-        for(let i = 0; i<projectiles.length; i++){
+        for (let i = 0; i < projectiles.length; i++) {
             objectsToDraw.push(projectiles[i])
         }
-        for(let i = 0; i<this.entities.length; i++){
+        for (let i = 0; i < this.entities.length; i++) {
             objectsToDraw.push(this.entities[i])
         }
-        objectsToDraw.sort(function(a,b){return (a.x+a.y -b.x-b.y)})
+        objectsToDraw.sort(function (a, b) { return (a.x + a.y - b.x - b.y) })
         return objectsToDraw
     }
     // Displays the parts 
     displayWalls() {
         let objectsToDraw = this.getObjectsToDraw();
         let objectDrawn = [];
-        for (let i = 0; i< objectsToDraw.length; i++) {
+        for (let i = 0; i < objectsToDraw.length; i++) {
             objectDrawn.push(false);
         }
-        for (let d = 0; d < this.tiles.length+this.tiles[0].length; d++) {
-            for (let p = 0; p<=d; p++) {
+        for (let d = 0; d < this.tiles.length + this.tiles[0].length; d++) {
+            for (let p = 0; p <= d; p++) {
                 let x = d - p;
                 let y = p;
-                for (let i = 0; i<objectsToDraw.length; i++) {
-                    if (!objectDrawn[i] && (x+y+1)*100 > objectsToDraw[i].x + objectsToDraw[i].w + objectsToDraw[i].y) {
+                for (let i = 0; i < objectsToDraw.length; i++) {
+                    if (!objectDrawn[i] && (x + y + 1) * 100 > objectsToDraw[i].x + objectsToDraw[i].w + objectsToDraw[i].y) {
                         objectsToDraw[i].draw();
                         objectDrawn[i] = true;
                     }
                 }
-                if ( x < this.tiles.length && y < this.tiles[x].length) {
+                if (x < this.tiles.length && y < this.tiles[x].length) {
                     if (this.tiles[x][y].hasLeft) {
                         push();
                         this.tiles[x][y].displayLeft()
@@ -454,10 +462,10 @@ class Level {
     }
     displayRoof() {
         push();
-        scale(1,TILE_SCALE);
+        scale(1, TILE_SCALE);
         rotate(45);
-        for (let x = 0; x<this.tiles.length; x++) {
-            for (let y = 0; y<this.tiles[x].length; y++) {
+        for (let x = 0; x < this.tiles.length; x++) {
+            for (let y = 0; y < this.tiles[x].length; y++) {
                 if (this.tiles[x][y].isCollisionTile) {
                     this.tiles[x][y].displayGround();
                 }
@@ -468,37 +476,37 @@ class Level {
     displayGround() {
 
     }
-    runEntityMovement(){
+    runEntityMovement() {
         this.generateNavCollideArray()
-        for(let i = 0; i<this.entities.length; i++){
-            if(this.entities[i].isNavigationEntity && this.entities[i].destination === undefined){
-                this.entities[i].navTowardsPosition(this,this.player)
+        for (let i = 0; i < this.entities.length; i++) {
+            if (this.entities[i].isNavigationEntity && this.entities[i].destination === undefined) {
+                this.entities[i].navTowardsPosition(this, this.player)
             }
             this.entities[i].runMoveTick(this);
-            if(this.entities[i].collides(this.player) && this.entities[i].hasDecollideFunction){
+            if (this.entities[i].collides(this.player) && this.entities[i].hasDecollideFunction) {
                 this.entities[i].decollideWithEnemy(this.player)
             }
         }
     }
     // Returns whether an object collides with anything on the level, given it has an x, y, w, and h property
-    collides(other,ignore="default") {
+    collides(other, ignore = "default") {
         // If improper object properties, pass an error.
         if (typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number") {
             console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h");
         }
-        if (other.x < 0 || other.y < 0 || other.x+ other.w> this.tiles.length*100 || other.h+ other.y > this.tiles[0].length*100) {
+        if (other.x < 0 || other.y < 0 || other.x + other.w > this.tiles.length * 100 || other.h + other.y > this.tiles[0].length * 100) {
             return true
         }
         // If colliding with any tiles, return true
-        for (let x = floor(other.x/100); x <= min(floor((other.x+other.w)/100),this.tiles.length-1); x++) {
-            for (let y = floor(other.y/100); y <= min(floor((other.y+other.h)/100),this.tiles[x].length-1); y++) {
+        for (let x = floor(other.x / 100); x <= min(floor((other.x + other.w) / 100), this.tiles.length - 1); x++) {
+            for (let y = floor(other.y / 100); y <= min(floor((other.y + other.h) / 100), this.tiles[x].length - 1); y++) {
                 if (this.tiles[x][y].isCollisionTile && this.tiles[x][y].collides(other)) {
                     return true;
                 }
             }
         }
         // If colliding with any entities, return ture
-        for (let i = 0; i<this.entities.length; i++){
+        for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i] != other && this.entities[i] != ignore && this.entities[i].collides(other)) {
                 return true;
             }
@@ -510,11 +518,11 @@ class Level {
         if (typeof other.x != "number" || typeof other.y != "number" || typeof other.w != "number" || typeof other.h != "number") {
             console.error("Other object inserted into collides function of level must have type number attributes for x, y, w, and h");
         }
-        if (other.x < 0 || other.y < 0 || other.x > this.tiles.length*100 || other.y > this.tiles[0].length*100) {
+        if (other.x < 0 || other.y < 0 || other.x > this.tiles.length * 100 || other.y > this.tiles[0].length * 100) {
             return true;
         }
-        for (let x = floor(other.x/100); x<=min(floor((other.x+other.w)/100),this.tiles.length-1); x++) {
-            for (let y = floor(other.y/100); y<=min(floor((other.y+other.h)/100),this.tiles[x].length-1); y++) {
+        for (let x = floor(other.x / 100); x <= min(floor((other.x + other.w) / 100), this.tiles.length - 1); x++) {
+            for (let y = floor(other.y / 100); y <= min(floor((other.y + other.h) / 100), this.tiles[x].length - 1); y++) {
                 if (this.tiles[x][y] && this.tiles[x][y].collides(other)) {
                     return true;
                 }
@@ -526,56 +534,56 @@ class Level {
         let disx = (mouseX / camera.worldScale + camera.x)
         let disy = (mouseY / camera.worldScale + camera.y)
         disy /= TILE_SCALE
-        let xydist = dist(disx,disy,0,0)
-        let targetAngle = atan2(disx,disy) + 45
+        let xydist = dist(disx, disy, 0, 0)
+        let targetAngle = atan2(disx, disy) + 45
         disx = sin(targetAngle) * xydist
         disy = cos(targetAngle) * xydist
-        let currentDist = min(dist(disx,disy,this.player.x,this.player.y),750)
-        let currentAngle = atan2(disx-this.player.x,disy-this.player.y)
+        let currentDist = min(dist(disx, disy, this.player.x, this.player.y), 750)
+        let currentAngle = atan2(disx - this.player.x, disy - this.player.y)
 
-        disx = sin(currentAngle)*currentDist+this.player.x
-        disy = cos(currentAngle)*currentDist+this.player.y
-        return [disx,disy];
+        disx = sin(currentAngle) * currentDist + this.player.x
+        disy = cos(currentAngle) * currentDist + this.player.y
+        return [disx, disy];
     }
     updateTargetPosition() {
         this.targetRotation += 1.5
-        let [dx,dy] = this.getProjectedMouseXY();
+        let [dx, dy] = this.getProjectedMouseXY();
         this.targetx = dx
         this.targety = dy
     }
     displayTarget() {
-        let [disx,disy] = this.getProjectedMouseXY();
+        let [disx, disy] = this.getProjectedMouseXY();
         push()
-        translate (this.targetx,this.targety)
-        rotate (this.targetRotation)
-        image(assets.images.target,-100,-100,200,200)
+        translate(this.targetx, this.targety)
+        rotate(this.targetRotation)
+        image(assets.images.target, -100, -100, 200, 200)
         pop()
     }
     activateBasicAttack() {
-        let [disx,disy] = this.getProjectedMouseXY();
-        this.player.activateBaseAbility(disx,disy);
+        let [disx, disy] = this.getProjectedMouseXY();
+        this.player.activateBaseAbility(disx, disy);
     }
     activateSpecialAttack() {
-        let [disx,disy] = this.getProjectedMouseXY();
-        this.player.activateSpecialAbility(disx,disy);
+        let [disx, disy] = this.getProjectedMouseXY();
+        this.player.activateSpecialAbility(disx, disy);
     }
 
     //accepts shapes: point, square, circle
     //x, y represent middle of shape.
     dealDamage(attack) { // x,y,size,shape="point",damage
         let doesDamagefunction;
-        switch(attack.shape) {
+        switch (attack.shape) {
             case "point":
-                doesDamagefunction = function(enemy) { return enemy.collides({x:attack.x,y:attack.y,w:0,h:0}); }
+                doesDamagefunction = function (enemy) { return enemy.collides({ x: attack.x, y: attack.y, w: 0, h: 0 }); }
                 break;
             case "rectangle":
-                doesDamagefunction = function(enemy) { return enemy.degreeCollides(attack,30); }
+                doesDamagefunction = function (enemy) { return enemy.degreeCollides(attack, 30); }
                 break;
             case "circle":
-                doesDamagefunction = function(enemy) { return dist(enemy.x+enemy.w/2,enemy.y+enemy.h/2,attack.x,attack.y) < attack.size; }
+                doesDamagefunction = function (enemy) { return dist(enemy.x + enemy.w / 2, enemy.y + enemy.h / 2, attack.x, attack.y) < attack.size; }
                 break;
             case "halfcircle":
-                doesDamagefunction = function(enemy) { return enemy.degreeCollides(attack,180); }
+                doesDamagefunction = function (enemy) { return enemy.degreeCollides(attack, 180); }
                 break;
             /*case "board":
                 doesDamagefunction = function(enemy) { return (false) }
@@ -585,7 +593,7 @@ class Level {
             if (doesDamagefunction(this.entities[i])) {
                 this.entities[i].takeDamage(attack.damage);
                 if (this.entities[i].health <= 0) {
-                    this.entities.splice(i,1);
+                    this.entities.splice(i, 1);
                 }
             }
         }

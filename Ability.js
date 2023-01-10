@@ -16,16 +16,16 @@ class Ability {
 
     }
     inflictBurning() {
-        
+
     }
     inflictRegeneration() {
-        
+
     }
     inflictStun() {
-        
+
     }
     inflictParalysis() {
-        
+
     }
     scalePower() {
         if (powerScale < 2.5) {
@@ -36,8 +36,8 @@ class Ability {
     }
     timeTick() {
         let previouslyActive = this.isActive();
-        this.cooldownTime -= deltaTime/1000;
-        this.attackTime -= deltaTime/1000;
+        this.cooldownTime -= deltaTime / 1000;
+        this.attackTime -= deltaTime / 1000;
         if (!this.finishedActivation) {
             this.finishedActivation = previouslyActive && !this.isActive();
         }
@@ -51,7 +51,7 @@ class Ability {
         }
         return false;
     }
-    activate(startX,startY,targetX,targetY) {
+    activate(startX, startY, targetX, targetY) {
         if (!this.isActive() && this.canActivate()) {
             this.startX = startX;
             this.startY = startY;

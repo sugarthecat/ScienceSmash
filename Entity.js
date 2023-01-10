@@ -1,5 +1,5 @@
 class Entity {
-    constructor(){
+    constructor() {
         this.maxHealth = 1;
         this.health = 1;
         this.x = 0;
@@ -14,9 +14,9 @@ class Entity {
     }
     //Given the level object, returns true if this player is colliding with any objects.
     //returns if it collides with another object
-    setHealth(health){
+    setHealth(health) {
         this.health = health
-        if(this.maxHealth < health){
+        if (this.maxHealth < health) {
             this.maxHealth = health
         }
     }
@@ -26,11 +26,11 @@ class Entity {
     collides(other) {
         return (this.x + this.w > other.x && other.x + other.w > this.x && this.y + this.h > other.y && other.y + other.h > this.y);
     }
-    degreeCollides(other,degrees) {
-        let otherTarget1 = other.degree - degrees/2;
-        let otherTarget2 = other.degree + degrees/2;
-        let thisDeg = atan2(this.y+this.h/2 - other.startY, this.x+this.w/2 - other.startX) ;
-        return ((dist(this.x+this.w/2,this.y+this.h/2,other.x,other.y) < other.size) && (thisDeg > otherTarget1) && (thisDeg < otherTarget2));
+    degreeCollides(other, degrees) {
+        let otherTarget1 = other.degree - degrees / 2;
+        let otherTarget2 = other.degree + degrees / 2;
+        let thisDeg = atan2(this.y + this.h / 2 - other.startY, this.x + this.w / 2 - other.startX);
+        return ((dist(this.x + this.w / 2, this.y + this.h / 2, other.x, other.y) < other.size) && (thisDeg > otherTarget1) && (thisDeg < otherTarget2));
     }
     setPosition(x, y) {
         this.x = x;
@@ -77,45 +77,45 @@ class Entity {
             rect(this.x, this.y, this.w, this.h);
         }
     }
-    drawHealthBar(disx,disy) {
-        fill(0,255,0);
-        rect(disx-5,disy-15,(this.dispw+10)*this.health/this.maxHealth,10);
-        fill(255,0,0);
-        rect(disx-5+(this.dispw+10)*this.health/this.maxHealth, disy-15, (this.dispw+10)*(1-this.health/this.maxHealth), 10);
+    drawHealthBar(disx, disy) {
+        fill(0, 255, 0);
+        rect(disx - 5, disy - 15, (this.dispw + 10) * this.health / this.maxHealth, 10);
+        fill(255, 0, 0);
+        rect(disx - 5 + (this.dispw + 10) * this.health / this.maxHealth, disy - 15, (this.dispw + 10) * (1 - this.health / this.maxHealth), 10);
     }
     //draw upright section of character
     draw() {
         //display after adjusting for isometric angle
         let dispDir = atan2(this.x + this.w / 2, this.y + this.w / 2);
         dispDir -= 45;
-        let dispDist = dist(0,0,this.x+this.w/2,this.y+this.w/2);
-        let disx = sin(dispDir)*dispDist - this.dispw/2;
-        let disy = TILE_SCALE*(cos(dispDir)*dispDist) - this.disph;
+        let dispDist = dist(0, 0, this.x + this.w / 2, this.y + this.w / 2);
+        let disx = sin(dispDir) * dispDist - this.dispw / 2;
+        let disy = TILE_SCALE * (cos(dispDir) * dispDist) - this.disph;
         push();
-        if(this.destination){
-            if(this.x - this.y + this.destination.y - this.destination.x < 0){
+        if (this.destination) {
+            if (this.x - this.y + this.destination.y - this.destination.x < 0) {
                 this.facingLeft = true
-            }else{
+            } else {
                 this.facingLeft = false
             }
         }
         if (this.facingLeft) {
-            scale(-1,1);
+            scale(-1, 1);
             disx *= -1;
             disx -= this.dispw;
         }
-        if(this.displayImage){
-            image(this.displayImage,disx,disy,this.dispw,this.disph);
+        if (this.displayImage) {
+            image(this.displayImage, disx, disy, this.dispw, this.disph);
 
-        }else{
-            rect(disx,disy,this.dispw,this.disph);
+        } else {
+            rect(disx, disy, this.dispw, this.disph);
         }
-        if(this.facingLeft){
+        if (this.facingLeft) {
             disx += this.dispw;
             disx *= -1;
         }
         pop();
-        this.drawHealthBar(disx,disy);
-    
+        this.drawHealthBar(disx, disy);
+
     }
 }

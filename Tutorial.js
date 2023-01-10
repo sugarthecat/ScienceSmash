@@ -3,8 +3,8 @@ class Tutorial {
     constructor(blurbText) {
         this.textBoxes = [];
         let blurbs = blurbText.split('\n');
-        for (let i = 0; i<blurbs.length; i++) {
-            this.textBoxes.push(new TextBox(blurbs[i],15));
+        for (let i = 0; i < blurbs.length; i++) {
+            this.textBoxes.push(new TextBox(blurbs[i], 15));
         }
         this.textbox = this.textBoxes[0];
         this.phase = 0;
@@ -20,14 +20,14 @@ class Tutorial {
         this.textbox.display();
     }
     takeInput(key) {
-        if (key == 32 ) {
-            if(this.textbox.isComplete() && 
-                (this.phase <= 2 
-                    || (this.phase >= 9 && this.phase <= 10) 
+        if (key == 32) {
+            if (this.textbox.isComplete() &&
+                (this.phase <= 2
+                    || (this.phase >= 9 && this.phase <= 10)
                     || (this.phase >= 12 && this.phase <= 16)
-                    || (this.phase >= 18 && this.phase <= 20) )){
+                    || (this.phase >= 18 && this.phase <= 20))) {
                 this.advancePhase();
-            }else{
+            } else {
                 this.textbox.advanceText(true);
             }
         }
@@ -49,7 +49,7 @@ class Tutorial {
             else if (this.phase == 7 && level.player.dashTimer > 0) {
                 this.advancePhase();
             }
-            else if (this.phase == 17 && level.entities.length == 0){
+            else if (this.phase == 17 && level.entities.length == 0) {
                 this.advancePhase();
             }
         }
@@ -58,10 +58,10 @@ class Tutorial {
         if (this.phase < this.textBoxes.length) {
             this.phase++;
             this.textbox = this.textBoxes[this.phase];
-            if(this.phase == 17){
+            if (this.phase == 17) {
                 level.spawnTutorialEnemy();
             }
-            if(this.phase == 19){
+            if (this.phase == 19) {
                 level.openTutorialCorridor();
             }
         }

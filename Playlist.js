@@ -3,6 +3,6 @@ class Playlist {
         this.songs = songs; // Should be an array of MP3s
     }
     shuffleAndPlay() {
-        
+
     }
 }

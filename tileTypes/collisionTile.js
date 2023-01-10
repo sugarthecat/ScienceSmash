@@ -1,5 +1,5 @@
 class CollisionTile extends Tile {
-    constructor(img,roofImg) {
+    constructor(img, roofImg) {
         super(img);
         this.roofImg = roofImg;
         this.x = 0;
@@ -13,11 +13,11 @@ class CollisionTile extends Tile {
     }
     //different collision function for collisiontile subclass than default tile superclass
     collides(other) {
-        return (this.x + this.w > other.x && other.x + other.w > this.x && this.y +this.h > other.y && other.y + other.h > this.y);
+        return (this.x + this.w > other.x && other.x + other.w > this.x && this.y + this.h > other.y && other.y + other.h > this.y);
     }
     // Despite name, this method displays the roof
     displayGround() {
-        fill(255,0,0);
-        image(this.roofImg,this.x-100,this.y-100,this.w,this.h);
+        fill(255, 0, 0);
+        image(this.roofImg, this.x - 100, this.y - 100, this.w, this.h);
     }
 }  

@@ -52,8 +52,8 @@ function keyPressed() {
 function setup() {
 	level.lvl = 1; // needs to start at 1 and be incremented when level increases
 	camera.x = -windowWidth / 2;
-    camera.y = -windowHeight / 2;
-	assets.loadFiles(); 
+	camera.y = -windowHeight / 2;
+	assets.loadFiles();
 	createCanvas(windowWidth, windowHeight);
 	frameRate(60);
 	angleMode(DEGREES);
@@ -73,20 +73,20 @@ function playPlaylist(playlist) {
 function mousePressed() {
 	if (loadscreen.loadsLeft == 0) { // When loading screen is clicked after files have been loaded, load music and close loadingscreen
 		checkMousePress();
-		if(gameStarted){
-			if(mouseButton == LEFT){
+		if (gameStarted) {
+			if (mouseButton == LEFT) {
 				level.activateBasicAttack();
 				if (tutorial.phase == 8 && tutorial.textbox.isComplete()) {
 					tutorial.advancePhase();
 				}
 			}
-			if(mouseButton == RIGHT){
+			if (mouseButton == RIGHT) {
 				level.activateSpecialAttack();
 				if (tutorial.phase == 11 && tutorial.textbox.isComplete()) {
 					tutorial.advancePhase();
 				}
 			}
-		}else{
+		} else {
 			gameStarted = true;
 			playPlaylist(assets.music.game);
 			loadscreen.continue = true;

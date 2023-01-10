@@ -12,7 +12,7 @@ class Tile {
         this.isCollisionTile = false;
     }
     displayGround() {
-        image(this.img,this.x,this.y,this.w,this.h);
+        image(this.img, this.x, this.y, this.w, this.h);
     }
     collides(other) {
         return false;
@@ -20,17 +20,17 @@ class Tile {
     displayRight() {
         push();
         rotate(60);
-        scale(1,TILE_SCALE);
+        scale(1, TILE_SCALE);
         rotate(-45);
-        image(this.img,this.x-this.y-this.w,this.y,this.w,this.h);
+        image(this.img, this.x - this.y - this.w, this.y, this.w, this.h);
         pop();
     }
     displayLeft() {
         push();
         rotate(-60);
-        scale(1,TILE_SCALE);
+        scale(1, TILE_SCALE);
         rotate(45);
-        image(this.img,this.x-this.y,this.x,this.w,this.h);
+        image(this.img, this.x - this.y, this.x, this.w, this.h);
         pop();
     }
 }
