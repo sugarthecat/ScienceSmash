@@ -88,6 +88,7 @@ class Assets {
         this.images.target = loadImage('assets/sprites/target.png', loaded);
         this.images.enemies.frog = loadImage('assets/sprites/enemies/frog.png', loaded);
         this.images.cone = loadImage('assets/sprites/cone.png', loaded);
+        this.images.pentagram = loadImage('assets/sprites/pentagram.png', loaded);
         this.images.player.idle = loadImage('assets/sprites/idle.png', loaded);
         for (let i = 0; i < 2; i++) {
             this.images.backgrounds.push(loadImage('assets/sprites/background' + i + '.png', loaded));
