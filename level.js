@@ -261,7 +261,7 @@ class Level {
                         this.generateRooms();
                         this.generateItems()
                         camera.setPositionAs(this.player)
-                        this.warningTextBox = new TextBox("{255,255,255}Level " + this.lvl + "\\("+this.roomCount+" rooms)", 10)
+                        this.warningTextBox = new TextBox("{255,255,255}Level " + this.lvl + "\\("+(this.roomCount+2)+" rooms)", 10)
                         this.warningTextBox.textSize = 0.5
                     } else if (!(this.warningTextBox instanceof TextBox)) {
                         this.warningTextBox = new TextBox("{255,255,255}I think I should really defeat some more enemies before moving on...", 10);

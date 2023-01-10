@@ -98,7 +98,7 @@ function draw() {
 	} else {
 		background(assets.images.backgrounds[Math.floor(Math.random() * assets.images.backgrounds.length)]); // draws black background
 		push();
-		if (!gamemenu.active) {
+		if (!gamemenu.isActive()) {
 			camera.moveTowards(level.player);
 			level.updateTargetPosition();
 			level.runEntityMovement();
@@ -113,7 +113,7 @@ function draw() {
 		level.areItemsColliding();
 		level.testLevelCompletion();
 		pop();
-		if (!tutorial.isComplete()) {
+		if (!tutorial.isComplete() && !gamemenu.isActive()) {
 			tutorial.display();
 			tutorial.testLevel(); // test level for completed tutorial condition
 		}

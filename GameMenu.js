@@ -1,6 +1,7 @@
 class GameMenu {
     constructor() {
         this.active = false;
+        this.menuPage = "main"
     }
     invertActive() {
         this.active = !this.active;
@@ -12,11 +13,11 @@ class GameMenu {
         let adjw = width; // adjusted height for calculations
         let xoff = 20;
         let yoff = 20;
-        if (adjh / 400 < adjw / 600) {
-            adjw = (adjh * 600) / 400;
+        if (adjw / 400 > adjh / 600) {
+            adjw = adjh * 400 / 600;
             xoff = (width - adjw) / 2 + 20;
         } else {
-            adjh = adjw / 600 * 400;
+            adjh = adjw / 400 * 600;
             yoff = (height - adjh) / 2 + 20;
         }
         adjw -= 40;
@@ -31,27 +32,40 @@ class GameMenu {
     display() {
         if (this.active) {
             let scaleFactors = this.getScaleFactors();
+            let mousePos = this.getProjectedMousePosition();
+            let menubackgroundColor = color(0)
+            menubackgroundColor.setAlpha(200)
+            fill(menubackgroundColor)
+            rect(0, 0, width, height);
             push();
             noStroke();
-            fill(200);
+            textAlign(CENTER)
             translate(scaleFactors.xoff, scaleFactors.yoff);;
-            scale(scaleFactors.adjw / 600, scaleFactors.adjh / 400);;
-            //all menu items displayed on scale of 600 to 400
-            rect(0, 0, 600, 400);
-            let img = assets.images.portal[5];
-            img.resize(40, 40);
-            image(img, 10, 10);
+            scale(scaleFactors.adjw / 400, scaleFactors.adjh / 600);;
+            fill(160)
+            if(this.mousePosInRange(10,10,390,100)){
+                fill(255)
+            }
+            rect(10,10,380,90)
             fill(0)
+            textSize(50)
+            text("Exit Menu",200,70)
             pop();
         }
+    }
+    mousePosInRange(minx,miny,maxx,maxy){
+        let mousepos = this.getProjectedMousePosition();
+        return (mousepos.x >= minx && mousepos.x <= maxx && mousepos.y >= miny && mousepos.y <= maxy)
     }
     isActive() {
         return this.active
     }
     mouseClicked() {
         let mousepos = this.getProjectedMousePosition();
-        if(mousepos.x > 10 && mousepos.x < 50 && mousepos.y > 10 && mousepos.y < 50){
-            this.active = false;
+        if(this.menuPage == "main"){
+            if(this.mousePosInRange(10,10,390,100)){
+                this.active = false;
+            }
         }
     }
     getProjectedMousePosition() {
@@ -60,8 +74,8 @@ class GameMenu {
         let tempMouseY = mouseY;
         tempMouseX -= scaleFactors.xoff;
         tempMouseY -= scaleFactors.yoff;
-        tempMouseX /= scaleFactors.adjw / 600
-        tempMouseY /= scaleFactors.adjh / 400
+        tempMouseX /= scaleFactors.adjw / 400
+        tempMouseY /= scaleFactors.adjh / 600
         return {
             x: tempMouseX,
             y: tempMouseY
